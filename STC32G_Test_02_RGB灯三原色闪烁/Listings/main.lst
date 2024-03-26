@@ -1,0 +1,270 @@
+C251 COMPILER V5.60.0,  main                                                               26/03/24  18:22:30  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE main
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE main.c XSMALL INTR2 BROWSE DEBUG PRINT(.\Listings\main.lst) TABS(2) OB
+                    -JECT(.\Objects\main.obj) 
+
+stmt  level    source
+
+    1          #include <STC32G.h>
+    2          // #define MAIN_Fosc 24000000UL    // 主频，本实例中不需要
+    3          
+    4          // 定义按键引脚
+    5          sbit key1 = P2^0;
+    6          sbit key2 = P2^1;
+    7          sbit key3 = P2^2;
+    8          sbit key4 = P2^3;
+    9          // 定义LED引脚
+   10          sbit led_vcc_green = P5^0;
+   11          sbit led_vcc_red = P5^1;
+   12          sbit led_vcc_blue = P5^2;
+   13          
+   14          unsigned char led_power = 0; // LED 电源状态，0为关闭，1为开启
+   15          
+   16          unsigned int led_rgb_flash_interval = 750; // LED 三原色循环切换间隔，单位为毫秒
+   17          unsigned int led_rgb_flash_interval_index = 0; // LED 三原色循环切换间隔索引，用于选择数
+             -组中的某个值
+   18          unsigned int led_rgb_flash_intervals[6] = {100, 200, 500, 750, 1000, 2000}; // LED 三原色循环切换�
+             -��隔，单位为毫秒
+   19          unsigned char led_rgb_flash_array[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}; // LED 三原色循环切换
+             -数组，0为关闭，1为开启
+   20          unsigned char led_rgb_flash_index = 0; // LED 三原色循环切换主索引，用于选择数组中的�
+             -�个值
+   21          
+   22          unsigned int led_color_gradient_interval = 1000; // LED 彩色渐变周期长度，单位为毫秒
+   23          unsigned int led_color_gradient_interval_index = 0; // LED 彩色渐变周期长度索引，用于选择�
+             -��组中的某个值
+   24          unsigned int led_color_gradient_intervals[7] = {100, 200, 500, 750, 1000, 2000, 3000}; // LED 彩色渐�
+             -�周期长度，单位为毫秒
+   25          
+   26          unsigned char key1_up_store = 1; // 按键1状态暂存
+   27          unsigned char key2_up_store = 1; // 按键2状态暂存
+   28          unsigned char key3_up_store = 1; // 按键3状态暂存
+   29          unsigned char key4_up_store = 1; // 按键4状态暂存
+   30          
+   31          unsigned char led_rgb_mode = 0; // RGB LED灯光模式，0为白光常亮，1为三原色循环，2为彩
+             -色渐变循环
+   32          
+   33          // 计数器要使用int类型，如果使用char(最大值255)会溢出，导致功能异常
+   34          unsigned int timer0_counter = 0; // LED流水计数器
+   35          
+   36          void key1_short_press()
+   37          {
+   38   1          // 短按键1功能：关闭RGB灯
+   39   1          led_power = 0;
+   40   1      }
+   41          
+   42          void key2_short_press()
+   43          {
+   44   1          // 短按键2功能：打开RGB灯
+   45   1          led_power = 1;
+   46   1      }
+   47          
+   48          void key3_short_press()
+   49          {
+   50   1          // 短按键3功能：切换LED灯模式【白光常亮/三色循环】
+   51   1          led_rgb_mode++;
+C251 COMPILER V5.60.0,  main                                                               26/03/24  18:22:30  PAGE 2   
+
+   52   1          if(led_rgb_mode > 1)
+   53   1          {
+   54   2              led_rgb_mode = 0;
+   55   2          }
+   56   1      }
+   57          
+   58          void key4_short_press()
+   59          {
+   60   1          // 短按键4功能：更改LED变化的速度
+   61   1          if(led_rgb_mode == 1)
+   62   1          {
+   63   2              led_rgb_flash_interval_index++;
+   64   2              led_rgb_flash_interval = led_rgb_flash_intervals[led_rgb_flash_interval_index % 6];
+   65   2              if(led_rgb_flash_interval_index >= 6)
+   66   2              {
+   67   3                  led_rgb_flash_interval_index = 0;
+   68   3              }
+   69   2          }
+   70   1          else if(led_rgb_mode == 2)
+   71   1          {
+   72   2              led_color_gradient_interval_index++;
+   73   2              led_color_gradient_interval = led_color_gradient_intervals[led_color_gradient_interval_index % 7]
+             -;
+   74   2              if(led_color_gradient_interval_index >= 7)
+   75   2              {
+   76   3                  led_color_gradient_interval_index = 0;
+   77   3              }
+   78   2          }
+   79   1      }
+   80          
+   81          void key1_check() 
+   82          {
+   83   1          if(key1 == 0 && key1_up_store == 1)
+   84   1          {
+   85   2              key1_up_store = 0; // 标记按键被按下
+   86   2          }
+   87   1          if(key1 == 1 && key1_up_store == 0)
+   88   1          {
+   89   2              key1_up_store = 1; // 标记按键被释放
+   90   2              key1_short_press(); // 触发短按键1功能
+   91   2          }
+   92   1      }
+   93          
+   94          void key2_check()
+   95          {
+   96   1          if(key2 == 0 && key2_up_store == 1)
+   97   1          {
+   98   2              key2_up_store = 0; // 标记按键被按下
+   99   2          }
+  100   1          if(key2 == 1 && key2_up_store == 0)
+  101   1          {
+  102   2              key2_up_store = 1; // 标记按键被释放
+  103   2              key2_short_press(); // 触发短按键2功能
+  104   2          }
+  105   1      }
+  106          
+  107          void key3_check()
+  108          {
+  109   1          if(key3 == 0 && key3_up_store == 1)
+  110   1          {
+  111   2              key3_up_store = 0; // 标记按键被按下
+  112   2          }
+  113   1          if(key3 == 1 && key3_up_store == 0)
+  114   1          {
+  115   2              key3_up_store = 1; // 标记按键被释放
+  116   2              key3_short_press(); // 触发短按键3功能
+C251 COMPILER V5.60.0,  main                                                               26/03/24  18:22:30  PAGE 3   
+
+  117   2          }
+  118   1      }
+  119          
+  120          void key4_check()
+  121          {
+  122   1          if(key4 == 0 && key4_up_store == 1)
+  123   1          {
+  124   2              key4_up_store = 0; // 标记按键被按下
+  125   2          }
+  126   1          if(key4 == 1 && key4_up_store == 0)
+  127   1          {
+  128   2              key4_up_store = 1; // 标记按键被释放
+  129   2              key4_short_press(); // 触发短按键4功能
+  130   2          }
+  131   1      }
+  132          
+  133          void led_disabled()
+  134          {
+  135   1          led_vcc_green = 0;
+  136   1          led_vcc_red = 0;
+  137   1          led_vcc_blue = 0;
+  138   1      }
+  139          
+  140          void led_mode_0_white_light()
+  141          {
+  142   1          led_vcc_green = 1;
+  143   1          led_vcc_red = 1;
+  144   1          led_vcc_blue = 1;
+  145   1      }
+  146          
+  147          void led_mode_1_rgb_flash()
+  148          {
+  149   1          led_rgb_flash_index++;
+  150   1          if(led_rgb_flash_index >= 3)
+  151   1          {
+  152   2              led_rgb_flash_index = 0;
+  153   2          }
+  154   1          led_vcc_green = led_rgb_flash_array[led_rgb_flash_index][0];
+  155   1          led_vcc_red = led_rgb_flash_array[led_rgb_flash_index][1];
+  156   1          led_vcc_blue = led_rgb_flash_array[led_rgb_flash_index][2];
+  157   1      }
+  158          
+  159          void timer0_isr(void) interrupt 1
+  160          {
+  161   1          timer0_counter++;
+  162   1          if(led_power == 0)
+  163   1          {
+  164   2              led_disabled();
+  165   2          }
+  166   1          // RGB LED灯光模式，0为白光常亮
+  167   1          else if(led_rgb_mode == 0 && led_power == 1)
+  168   1          {
+  169   2              led_mode_0_white_light();
+  170   2          }
+  171   1          // 1为三原色循环
+  172   1          else if(led_rgb_mode == 1 && led_power == 1)
+  173   1          {
+  174   2              if(timer0_counter >= led_rgb_flash_interval)
+  175   2              {
+  176   3                  timer0_counter = 0;
+  177   3                  led_mode_1_rgb_flash();
+  178   3              }
+  179   2          }
+  180   1      }
+  181          
+  182          void timer0_init(void)    //0.1毫秒@24.000M 对应 PWM频率5000Hz
+C251 COMPILER V5.60.0,  main                                                               26/03/24  18:22:30  PAGE 4   
+
+  183          {
+  184   1        AUXR |= 0x80;     //定时器时钟1T模式
+  185   1        TMOD &= 0xF0;     //设置定时器模式
+  186   1        TL0 = 0xA0;       //设置定时初始值
+  187   1        TH0 = 0xF6;       //设置定时初始值
+  188   1        TF0 = 0;        //清除TF0标志
+  189   1        TR0 = 1;        //定时器0开
+  190   1        ET0 = 1;        //使能定时器0中断
+  191   1          EA = 1;           //使能总中断
+  192   1      }
+  193          
+  194          // 延时函数，本实例中未使用
+  195          // void delay_ms(unsigned char ms)
+  196          // {
+  197          //      unsigned int i;
+  198          //      do{
+  199          //           i = MAIN_Fosc / 6000;
+  200          //           while(--i);
+  201          //      }while(--ms);
+  202          // }
+  203          
+  204          void main(void)
+  205          {
+  206   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
+  207   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
+  208   1          CKCON = 0; //提高访问XRAM速度
+  209   1      
+  210   1          P5M0 = 0xff; P5M1 = 0x00;           //配置P5为输出模式
+  211   1          P2M0 = 0x00; P2M1 = 0x00;           //配置P2为准双向模式
+  212   1      
+  213   1          timer0_init();                      //初始化定时器0
+  214   1          while(1)
+  215   1          {
+  216   2              // 检测按键
+  217   2              key1_check();
+  218   2              key2_check();
+  219   2              key3_check();
+  220   2              key4_check();
+  221   2          }
+  222   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       520     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        52     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       112     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

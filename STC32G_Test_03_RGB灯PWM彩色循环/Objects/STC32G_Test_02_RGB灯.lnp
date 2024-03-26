@@ -1,0 +1,5 @@
+".\Objects\main.obj" 
+TO ".\Objects\STC32G_Test_02_RGBµÆ" 
+PRINT(".\Listings\STC32G_Test_02_RGBµÆ.map") CASE 
+CLASSES (EDATA (0x0-0xFFF), 
+HDATA (0x0-0xFFF)) 

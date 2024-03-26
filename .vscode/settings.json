@@ -1,0 +1,15 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "reg51.h": "c",
+        "REGX52.H": "cpp",
+        "REGX51.H": "cpp",
+        "ds18b20.h": "c",
+        "uart.h": "c",
+        "lm016l.h": "c",
+        "lcd1602.h": "c",
+        "delay.h": "c",
+        "stc32g.h": "c",
+        "STC32G.H": "cpp"
+    }
+}

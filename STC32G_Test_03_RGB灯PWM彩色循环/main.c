@@ -57,7 +57,6 @@ unsigned int led_color_gradient_interval = 1000; // LED 彩色渐变周期长度
 unsigned int led_color_gradient_interval_index = 0; // LED 彩色渐变周期长度索引，用于选择数组中的某个值
 unsigned int led_color_gradient_intervals[7] = {100, 200, 500, 750, 1000, 2000, 3000}; // LED 彩色渐变周期长度，单位为毫秒
 
-
 unsigned char key1_up_store = 1; // 按键1状态暂存
 unsigned char key2_up_store = 1; // 按键2状态暂存
 unsigned char key3_up_store = 1; // 按键3状态暂存

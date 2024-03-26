@@ -1,0 +1,233 @@
+C251 COMPILER V5.60.0,  main                                                               26/03/24  10:39:46  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE main
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE main.c XSMALL INTR2 BROWSE DEBUG PRINT(.\Listings\main.lst) TABS(2) OB
+                    -JECT(.\Objects\main.obj) 
+
+stmt  level    source
+
+    1          #include <STC32G.h>
+    2          #define LED_GND P4  // 连接到GND的LED
+    3          // #define MAIN_Fosc 24000000UL    // 主频
+    4          
+    5          // 定义按键引脚
+    6          sbit key1 = P2^0;
+    7          sbit key2 = P2^1;
+    8          sbit key3 = P2^2;
+    9          sbit key4 = P2^3;
+   10          
+   11          // 计数器要使用int类型，如果使用char(最大值255)会溢出，导致功能异常
+   12          unsigned int led_interval_flash = 500; // LED闪烁速度，默认500ms切换一次
+   13          unsigned int led_interval_light_up_in_turn = 1000; // LED依次点亮间隔，默认1000ms切换一次
+   14          unsigned char led_flash_index = 0; // LED流水起始位置
+   15          unsigned char led_flash_mode = 0; // LED流水模式，0为静态全部熄灭，1为静态全部亮，2�
+             -�依次点亮，3为流水灯
+   16          unsigned char led_flash_array[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};  // LED流水数组
+   17          unsigned char led_light_up_in_turn[8] = {0x01, 0x03, 0x07, 0x0f, 0x1f, 0x3f, 0x7f, 0xff}; // LED依次点
+             -亮数组
+   18          unsigned int timer0_counter = 0; // LED流水计数器
+   19          
+   20          unsigned char key1_up_store = 1; // 按键1状态暂存
+   21          unsigned char key2_up_store = 1; // 按键2状态暂存
+   22          unsigned char key3_up_store = 1; // 按键3状态暂存
+   23          unsigned char key4_up_store = 1; // 按键4状态暂存
+   24          
+   25          void key1_short_press()
+   26          {
+   27   1          // 短按键1功能
+   28   1          // 点亮所有LED
+   29   1          led_flash_mode = 1;
+   30   1      }
+   31          
+   32          void key2_short_press()
+   33          {
+   34   1          // 短按键2功能
+   35   1          // 熄灭所有LED
+   36   1          led_flash_mode = 0;
+   37   1      }
+   38          
+   39          void key3_short_press()
+   40          {
+   41   1          // 短按键3功能
+   42   1          // LED间隔一秒依次点亮
+   43   1          led_flash_mode = 2;
+   44   1      }
+   45          
+   46          void key4_short_press()
+   47          {
+   48   1          // 短按键4功能
+   49   1          // LED流水灯0.5秒
+   50   1          led_flash_mode = 3;
+   51   1      }
+   52          
+   53          void key1_check() 
+   54          {
+   55   1          if(key1 == 0 && key1_up_store == 1)
+   56   1          {
+C251 COMPILER V5.60.0,  main                                                               26/03/24  10:39:46  PAGE 2   
+
+   57   2              key1_up_store = 0; // 标记按键被按下
+   58   2          }
+   59   1          if(key1 == 1 && key1_up_store == 0)
+   60   1          {
+   61   2              key1_up_store = 1; // 标记按键被释放
+   62   2              key1_short_press(); // 触发短按键1功能
+   63   2          }
+   64   1      }
+   65          
+   66          void key2_check()
+   67          {
+   68   1          if(key2 == 0 && key2_up_store == 1)
+   69   1          {
+   70   2              key2_up_store = 0; // 标记按键被按下
+   71   2          }
+   72   1          if(key2 == 1 && key2_up_store == 0)
+   73   1          {
+   74   2              key2_up_store = 1; // 标记按键被释放
+   75   2              key2_short_press(); // 触发短按键2功能
+   76   2          }
+   77   1      }
+   78          
+   79          void key3_check()
+   80          {
+   81   1          if(key3 == 0 && key3_up_store == 1)
+   82   1          {
+   83   2              key3_up_store = 0; // 标记按键被按下
+   84   2          }
+   85   1          if(key3 == 1 && key3_up_store == 0)
+   86   1          {
+   87   2              key3_up_store = 1; // 标记按键被释放
+   88   2              key3_short_press(); // 触发短按键3功能
+   89   2          }
+   90   1      }
+   91          
+   92          void key4_check()
+   93          {
+   94   1          if(key4 == 0 && key4_up_store == 1)
+   95   1          {
+   96   2              key4_up_store = 0; // 标记按键被按下
+   97   2          }
+   98   1          if(key4 == 1 && key4_up_store == 0)
+   99   1          {
+  100   2              key4_up_store = 1; // 标记按键被释放
+  101   2              key4_short_press(); // 触发短按键4功能
+  102   2          }
+  103   1      }
+  104          
+  105          void led_flash()
+  106          {
+  107   1          // 0为静态全部熄灭，1为静态全部亮，2为依次点亮，3为流水灯
+  108   1          if(led_flash_mode == 0)
+  109   1          {
+  110   2              LED_GND = 0xFF; // 全部熄灭
+  111   2          }
+  112   1          else if(led_flash_mode == 1)
+  113   1          {
+  114   2              LED_GND = 0x00; // 全部熄灭
+  115   2          }
+  116   1          else if(led_flash_mode == 2)
+  117   1          {
+  118   2              LED_GND = ~led_light_up_in_turn[led_flash_index]; // 依次点亮
+  119   2              led_flash_index++;
+  120   2              if(led_flash_index >= 8)
+  121   2              {
+  122   3                  led_flash_index = 0;
+C251 COMPILER V5.60.0,  main                                                               26/03/24  10:39:46  PAGE 3   
+
+  123   3              }
+  124   2          }
+  125   1          else if(led_flash_mode == 3)
+  126   1          {
+  127   2              LED_GND = ~led_flash_array[led_flash_index]; // 流水灯
+  128   2              led_flash_index++;
+  129   2              if(led_flash_index >= 8)
+  130   2              {
+  131   3                  led_flash_index = 0;
+  132   3              }
+  133   2          }
+  134   1      }
+  135          
+  136          void timer0_isr(void) interrupt 1
+  137          {
+  138   1          timer0_counter++;
+  139   1          if (led_flash_mode == 0 || led_flash_mode == 1)
+  140   1          {
+  141   2              timer0_counter = 0;
+  142   2              led_flash();
+  143   2          }
+  144   1          else if(led_flash_mode == 3 && timer0_counter >= led_interval_flash)
+  145   1          {
+  146   2              timer0_counter = 0;
+  147   2              led_flash();
+  148   2          }
+  149   1          else if(led_flash_mode == 2 && timer0_counter >= led_interval_light_up_in_turn)
+  150   1          {
+  151   2              timer0_counter = 0;
+  152   2              led_flash();
+  153   2          }
+  154   1      }
+  155          
+  156          void timer0_init(void)    //1毫秒@24.000M
+  157          {
+  158   1        AUXR |= 0x80;     //定时器时钟1T模式
+  159   1        TMOD &= 0xF0;     //设置定时器模式
+  160   1        TL0 = 0x40;       //设置定时初始值
+  161   1        TH0 = 0xA2;       //设置定时初始值
+  162   1        TF0 = 0;        //清除TF0标志
+  163   1        TR0 = 1;        //定时器0
+  164   1        ET0 = 1;        //使能定时器0中断
+  165   1          EA = 1;           //使能总中断
+  166   1      }
+  167          
+  168          // 延时函数，本实例中未使用
+  169          // void delay_ms(unsigned char ms)
+  170          // {
+  171          //      unsigned int i;
+  172          //      do{
+  173          //           i = MAIN_Fosc / 6000;
+  174          //           while(--i);
+  175          //      }while(--ms);
+  176          // }
+  177          
+  178          
+  179          void main(void)
+  180          {
+  181   1          P4M0 = 0xff; P4M1 = 0x00;           //配置P4为输出模式
+  182   1          P2M0 = 0x00; P2M1 = 0x00;           //配置P2为输入模式
+  183   1          timer0_init();
+  184   1          while(1)
+  185   1          {
+  186   2              key1_check();
+  187   2              key2_check();
+  188   2              key3_check();
+C251 COMPILER V5.60.0,  main                                                               26/03/24  10:39:46  PAGE 4   
+
+  189   2              key4_check();
+  190   2          }
+  191   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       422     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        28     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        72     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

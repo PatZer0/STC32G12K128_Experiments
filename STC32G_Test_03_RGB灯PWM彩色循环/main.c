@@ -33,6 +33,7 @@ sbit key1 = P2^0;
 sbit key2 = P2^1;
 sbit key3 = P2^2;
 sbit key4 = P2^3;
+
 // 定义LED引脚
 sbit led_vcc_green = P5^0;
 sbit led_vcc_red = P5^1;
@@ -46,12 +47,6 @@ bit pwma_2_flag;
 bit pwma_3_flag;
 
 unsigned char led_power = 0; // LED 电源状态，0为关闭，1为开启
-
-unsigned int led_rgb_flash_interval = 750; // LED 三原色循环切换间隔，单位为毫秒
-unsigned int led_rgb_flash_interval_index = 0; // LED 三原色循环切换间隔索引，用于选择数组中的某个值
-unsigned int led_rgb_flash_intervals[6] = {100, 200, 500, 750, 1000, 2000}; // LED 三原色循环切换间隔，单位为毫秒
-unsigned char led_rgb_flash_array[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}; // LED 三原色循环切换数组，0为关闭，1为开启
-unsigned char led_rgb_flash_index = 0; // LED 三原色循环切换主索引，用于选择数组中的某个值
 
 unsigned int led_color_gradient_interval = 1000; // LED 彩色渐变周期长度，单位为毫秒
 unsigned int led_color_gradient_interval_index = 0; // LED 彩色渐变周期长度索引，用于选择数组中的某个值
@@ -91,24 +86,12 @@ void key3_short_press()
 
 void key4_short_press()
 {
-    // 短按键4功能：更改LED变化的速度
-    if(led_rgb_mode == 1)
+    // 短按键4功能：更改LED变化的速度0
+    led_color_gradient_interval_index++;
+    led_color_gradient_interval = led_color_gradient_intervals[led_color_gradient_interval_index % 7];
+    if (led_color_gradient_interval_index >= 7)
     {
-        led_rgb_flash_interval_index++;
-        led_rgb_flash_interval = led_rgb_flash_intervals[led_rgb_flash_interval_index % 6];
-        if(led_rgb_flash_interval_index >= 6)
-        {
-            led_rgb_flash_interval_index = 0;
-        }
-    }
-    else if(led_rgb_mode == 2)
-    {
-        led_color_gradient_interval_index++;
-        led_color_gradient_interval = led_color_gradient_intervals[led_color_gradient_interval_index % 7];
-        if(led_color_gradient_interval_index >= 7)
-        {
-            led_color_gradient_interval_index = 0;
-        }
+        led_color_gradient_interval_index = 0;
     }
 }
 
@@ -164,80 +147,9 @@ void key4_check()
     }
 }
 
-void led_disabled()
-{
-    led_vcc_green = 0;
-    led_vcc_red = 0;
-    led_vcc_blue = 0;
-}
-
-void led_mode_0_white_light()
-{
-    led_vcc_green = 1;
-    led_vcc_red = 1;
-    led_vcc_blue = 1;
-}
-
-void led_mode_1_rgb_flash()
-{
-    led_rgb_flash_index++;
-    if(led_rgb_flash_index >= 3)
-    {
-        led_rgb_flash_index = 0;
-    }
-    led_vcc_green = led_rgb_flash_array[led_rgb_flash_index][0];
-    led_vcc_red = led_rgb_flash_array[led_rgb_flash_index][1];
-    led_vcc_blue = led_rgb_flash_array[led_rgb_flash_index][2];
-}
-
 void led_mode_2_color_gradient()
 {
     
-}
-
-void timer0_isr(void) interrupt 1
-{
-    timer0_counter++;
-    if(led_power == 0)
-    {
-        led_disabled();
-    }
-    // RGB LED灯光模式，0为白光常亮
-    else if(led_rgb_mode == 0 && led_power == 1)
-    {
-        led_mode_0_white_light();
-    }
-    // 1为三原色循环
-    else if(led_rgb_mode == 1 && led_power == 1)
-    {
-        if(timer0_counter >= led_rgb_flash_interval)
-        {
-            timer0_counter = 0;
-            led_mode_1_rgb_flash();
-        }
-    }
-    // 2为彩色渐变循环
-    else if(led_rgb_mode == 2 && led_power == 1)
-    {
-        if(timer0_counter >= led_color_gradient_interval)
-        {
-            timer0_counter = 0;
-            led_mode_2_color_gradient();
-        }
-    }
-    pwm_duty_update();
-}
-
-void timer0_init(void)		//0.1毫秒@24.000M 对应 PWM频率5000Hz
-{
-	AUXR |= 0x80;			//定时器时钟1T模式
-	TMOD &= 0xF0;			//设置定时器模式
-	TL0 = 0xA0;				//设置定时初始值
-	TH0 = 0xF6;				//设置定时初始值
-	TF0 = 0;				//清除TF0标志
-	TR0 = 1;				//定时器0开
-	ET0 = 1;				//使能定时器0中断
-    EA = 1;			    	//使能总中断
 }
 
 // 延时函数，本实例中未使用
@@ -276,9 +188,17 @@ void pwma_init(void)
     PWMA_PS |= PWM4_2;      //选择 PWM4_2 通道
 
     // 4.输入输出模式设置
-    PWMA_CCER1 = 0x00;      // 清零
-    PWMA_CCMR1 = 0x68;      // 设置PWM模式为输出
-    PWMA_CCER1 = 0x01;      // 开启输出比较通道
+    PWMA_CCER1 = 0x00; //写 CCMRx 前必须先清零 CCxE 关闭通道
+    PWMA_CCER2 = 0x00;
+    PWMA_CCMR1 = 0x68; //通道模式配置
+    PWMA_CCMR2 = 0x68;
+    PWMA_CCMR3 = 0x68;
+    PWMA_CCMR4 = 0x68;
+    PWMA_CCER1 = 0x55; //配置通道输出使能和极性
+    PWMA_CCER2 = 0x55;
+
+    PWMA_ARRH = (unsigned char)(led_color_gradient_interval >> 8); //设置周期时间
+    PWMA_ARRL = (unsigned char)led_color_gradient_interval;
 
     PWMA_BKR = 0x80;        // 使能主输出
 
@@ -295,6 +215,93 @@ void pwm_duty_update(void)
     PWMA_CCR3L = (unsigned char)(pwma_3_duty);
 }
 
+void timer0_isr(void) interrupt 1
+{
+    // pwma_1 是 P6.0，pwma_2 是 P6.2，pwma_3 是 P6.4
+    // 蓝色            绿色            红色
+    static int state = 0;
+
+    timer0_counter++;
+
+    switch (state)
+    {
+        case 0: // 红色到黄色
+            if (pwma_2_duty < led_color_gradient_interval)
+            {
+                pwma_2_duty++;
+            }
+            else
+            {
+                state = 1;
+            }
+            break;
+        case 1: // 黄色到绿色
+            if (pwma_3_duty > 0)
+            {
+                pwma_3_duty--;
+            }
+            else
+            {
+                state = 2;
+            }
+            break;
+        case 2: // 绿色到青色
+            if (pwma_1_duty < led_color_gradient_interval)
+            {
+                pwma_1_duty++;
+            }
+            else
+            {
+                state = 3;
+            }
+            break;
+        case 3: // 青色到蓝色
+            if (pwma_2_duty > 0)
+            {
+                pwma_2_duty--;
+            }
+            else
+            {
+                state = 4;
+            }
+            break;
+        case 4: // 蓝色到紫色
+            if (pwma_3_duty < led_color_gradient_interval)
+            {
+                pwma_3_duty++;
+            }
+            else
+            {
+                state = 5;
+            }
+            break;
+        case 5: // 紫色到红色
+            if (pwma_1_duty > 0)
+            {
+                pwma_1_duty--;
+            }
+            else
+            {
+                state = 0;
+            }
+            break;
+    }
+
+    pwm_duty_update();
+}
+
+
+void timer0_init(void)		//0.1毫秒@24.000M 对应 PWM频率5000Hz
+{
+	AUXR |= 0x80;			//定时器时钟1T模式
+	TMOD &= 0xF0;			//设置定时器模式
+	TL0 = 0xA0;				//设置定时初始值
+	TH0 = 0xF6;				//设置定时初始值
+	TF0 = 0;				//清除TF0标志
+	TR0 = 1;				//定时器0开
+	ET0 = 1;				//使能定时器0中断
+    EA = 1;			    	//使能总中断
+}
 void main(void)
 {
     WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快

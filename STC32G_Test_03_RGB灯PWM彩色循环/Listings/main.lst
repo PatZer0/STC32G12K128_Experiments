@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               26/03/24  18:16:33  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               26/03/24  19:09:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -43,312 +43,329 @@ stmt  level    source
    33          sbit key2 = P2^1;
    34          sbit key3 = P2^2;
    35          sbit key4 = P2^3;
-   36          // 定义LED引脚
-   37          sbit led_vcc_green = P5^0;
-   38          sbit led_vcc_red = P5^1;
-   39          sbit led_vcc_blue = P5^2;
-   40          
-   41          unsigned int pwma_1_duty;
-   42          unsigned int pwma_2_duty;
-   43          unsigned int pwma_3_duty;
-   44          bit pwma_1_flag;
-   45          bit pwma_2_flag;
-   46          bit pwma_3_flag;
-   47          
-   48          unsigned char led_power = 0; // LED 电源状态，0为关闭，1为开启
-   49          
-   50          unsigned int led_rgb_flash_interval = 750; // LED 三原色循环切换间隔，单位为毫秒
-   51          unsigned int led_rgb_flash_interval_index = 0; // LED 三原色循环切换间隔索引，用于选择数
-             -组中的某个值
-   52          unsigned int led_rgb_flash_intervals[6] = {100, 200, 500, 750, 1000, 2000}; // LED 三原色循环切换�
-             -��隔，单位为毫秒
-   53          unsigned char led_rgb_flash_array[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}; // LED 三原色循环切换
-             -数组，0为关闭，1为开启
-   54          unsigned char led_rgb_flash_index = 0; // LED 三原色循环切换主索引，用于选择数组中的�
-             -�个值
-C251 COMPILER V5.60.0,  main                                                               26/03/24  18:16:33  PAGE 2   
-
-   55          
-   56          unsigned int led_color_gradient_interval = 1000; // LED 彩色渐变周期长度，单位为毫秒
-   57          unsigned int led_color_gradient_interval_index = 0; // LED 彩色渐变周期长度索引，用于选择�
+   36          
+   37          // 定义LED引脚
+   38          sbit led_vcc_green = P5^0;
+   39          sbit led_vcc_red = P5^1;
+   40          sbit led_vcc_blue = P5^2;
+   41          
+   42          unsigned int pwma_1_duty;
+   43          unsigned int pwma_2_duty;
+   44          unsigned int pwma_3_duty;
+   45          bit pwma_1_flag;
+   46          bit pwma_2_flag;
+   47          bit pwma_3_flag;
+   48          
+   49          unsigned char led_power = 0; // LED 电源状态，0为关闭，1为开启
+   50          
+   51          unsigned int led_color_gradient_interval = 1000; // LED 彩色渐变周期长度，单位为毫秒
+   52          unsigned int led_color_gradient_interval_index = 0; // LED 彩色渐变周期长度索引，用于选择�
              -��组中的某个值
-   58          unsigned int led_color_gradient_intervals[7] = {100, 200, 500, 750, 1000, 2000, 3000}; // LED 彩色渐�
+   53          unsigned int led_color_gradient_intervals[7] = {100, 200, 500, 750, 1000, 2000, 3000}; // LED 彩色渐�
              -�周期长度，单位为毫秒
+   54          
+   55          unsigned char key1_up_store = 1; // 按键1状态暂存
+   56          unsigned char key2_up_store = 1; // 按键2状态暂存
+C251 COMPILER V5.60.0,  main                                                               26/03/24  19:09:29  PAGE 2   
+
+   57          unsigned char key3_up_store = 1; // 按键3状态暂存
+   58          unsigned char key4_up_store = 1; // 按键4状态暂存
    59          
-   60          
-   61          unsigned char key1_up_store = 1; // 按键1状态暂存
-   62          unsigned char key2_up_store = 1; // 按键2状态暂存
-   63          unsigned char key3_up_store = 1; // 按键3状态暂存
-   64          unsigned char key4_up_store = 1; // 按键4状态暂存
-   65          
-   66          unsigned char led_rgb_mode = 0; // RGB LED灯光模式，0为白光常亮，1为三原色循环，2为彩
+   60          unsigned char led_rgb_mode = 0; // RGB LED灯光模式，0为白光常亮，1为三原色循环，2为彩
              -色渐变循环
-   67          
-   68          // 计数器要使用int类型，如果使用char(最大值255)会溢出，导致功能异常
-   69          unsigned int timer0_counter = 0; // LED流水计数器
+   61          
+   62          // 计数器要使用int类型，如果使用char(最大值255)会溢出，导致功能异常
+   63          unsigned int timer0_counter = 0; // LED流水计数器
+   64          
+   65          void key1_short_press()
+   66          {
+   67   1          // 短按键1功能：关闭RGB灯
+   68   1          led_power = 0;
+   69   1      }
    70          
-   71          void key1_short_press()
+   71          void key2_short_press()
    72          {
-   73   1          // 短按键1功能：关闭RGB灯
-   74   1          led_power = 0;
+   73   1          // 短按键2功能：打开RGB灯
+   74   1          led_power = 1;
    75   1      }
    76          
-   77          void key2_short_press()
+   77          void key3_short_press()
    78          {
-   79   1          // 短按键2功能：打开RGB灯
-   80   1          led_power = 1;
-   81   1      }
-   82          
-   83          void key3_short_press()
-   84          {
-   85   1          // 短按键3功能：切换LED灯模式【白光呼吸/彩色循环/七彩闪烁】
-   86   1          led_rgb_mode++;
-   87   1          if(led_rgb_mode > 2)
-   88   1          {
-   89   2              led_rgb_mode = 0;
-   90   2          }
-   91   1      }
-   92          
-   93          void key4_short_press()
-   94          {
-   95   1          // 短按键4功能：更改LED变化的速度
-   96   1          if(led_rgb_mode == 1)
-   97   1          {
-   98   2              led_rgb_flash_interval_index++;
-   99   2              led_rgb_flash_interval = led_rgb_flash_intervals[led_rgb_flash_interval_index % 6];
-  100   2              if(led_rgb_flash_interval_index >= 6)
-  101   2              {
-  102   3                  led_rgb_flash_interval_index = 0;
-  103   3              }
-  104   2          }
-  105   1          else if(led_rgb_mode == 2)
-  106   1          {
-  107   2              led_color_gradient_interval_index++;
-  108   2              led_color_gradient_interval = led_color_gradient_intervals[led_color_gradient_interval_index % 7]
-             -;
-  109   2              if(led_color_gradient_interval_index >= 7)
-  110   2              {
-  111   3                  led_color_gradient_interval_index = 0;
-  112   3              }
-  113   2          }
-  114   1      }
-  115          
-  116          void key1_check() 
-C251 COMPILER V5.60.0,  main                                                               26/03/24  18:16:33  PAGE 3   
-
-  117          {
-  118   1          if(key1 == 0 && key1_up_store == 1)
-  119   1          {
-  120   2              key1_up_store = 0; // 标记按键被按下
+   79   1          // 短按键3功能：切换LED灯模式【白光呼吸/彩色循环/七彩闪烁】
+   80   1          led_rgb_mode++;
+   81   1          if(led_rgb_mode > 2)
+   82   1          {
+   83   2              led_rgb_mode = 0;
+   84   2          }
+   85   1      }
+   86          
+   87          void key4_short_press()
+   88          {
+   89   1          // 短按键4功能：更改LED变化的速度0
+   90   1          led_color_gradient_interval_index++;
+   91   1          led_color_gradient_interval = led_color_gradient_intervals[led_color_gradient_interval_index % 7];
+   92   1          if (led_color_gradient_interval_index >= 7)
+   93   1          {
+   94   2              led_color_gradient_interval_index = 0;
+   95   2          }
+   96   1      }
+   97          
+   98          void key1_check() 
+   99          {
+  100   1          if(key1 == 0 && key1_up_store == 1)
+  101   1          {
+  102   2              key1_up_store = 0; // 标记按键被按下
+  103   2          }
+  104   1          if(key1 == 1 && key1_up_store == 0)
+  105   1          {
+  106   2              key1_up_store = 1; // 标记按键被释放
+  107   2              key1_short_press(); // 触发短按键1功能
+  108   2          }
+  109   1      }
+  110          
+  111          void key2_check()
+  112          {
+  113   1          if(key2 == 0 && key2_up_store == 1)
+  114   1          {
+  115   2              key2_up_store = 0; // 标记按键被按下
+  116   2          }
+  117   1          if(key2 == 1 && key2_up_store == 0)
+  118   1          {
+  119   2              key2_up_store = 1; // 标记按键被释放
+  120   2              key2_short_press(); // 触发短按键2功能
   121   2          }
-  122   1          if(key1 == 1 && key1_up_store == 0)
-  123   1          {
-  124   2              key1_up_store = 1; // 标记按键被释放
-  125   2              key1_short_press(); // 触发短按键1功能
-  126   2          }
-  127   1      }
-  128          
-  129          void key2_check()
-  130          {
-  131   1          if(key2 == 0 && key2_up_store == 1)
-  132   1          {
-  133   2              key2_up_store = 0; // 标记按键被按下
+C251 COMPILER V5.60.0,  main                                                               26/03/24  19:09:29  PAGE 3   
+
+  122   1      }
+  123          
+  124          void key3_check()
+  125          {
+  126   1          if(key3 == 0 && key3_up_store == 1)
+  127   1          {
+  128   2              key3_up_store = 0; // 标记按键被按下
+  129   2          }
+  130   1          if(key3 == 1 && key3_up_store == 0)
+  131   1          {
+  132   2              key3_up_store = 1; // 标记按键被释放
+  133   2              key3_short_press(); // 触发短按键3功能
   134   2          }
-  135   1          if(key2 == 1 && key2_up_store == 0)
-  136   1          {
-  137   2              key2_up_store = 1; // 标记按键被释放
-  138   2              key2_short_press(); // 触发短按键2功能
-  139   2          }
-  140   1      }
-  141          
-  142          void key3_check()
-  143          {
-  144   1          if(key3 == 0 && key3_up_store == 1)
-  145   1          {
-  146   2              key3_up_store = 0; // 标记按键被按下
+  135   1      }
+  136          
+  137          void key4_check()
+  138          {
+  139   1          if(key4 == 0 && key4_up_store == 1)
+  140   1          {
+  141   2              key4_up_store = 0; // 标记按键被按下
+  142   2          }
+  143   1          if(key4 == 1 && key4_up_store == 0)
+  144   1          {
+  145   2              key4_up_store = 1; // 标记按键被释放
+  146   2              key4_short_press(); // 触发短按键4功能
   147   2          }
-  148   1          if(key3 == 1 && key3_up_store == 0)
-  149   1          {
-  150   2              key3_up_store = 1; // 标记按键被释放
-  151   2              key3_short_press(); // 触发短按键3功能
-  152   2          }
+  148   1      }
+  149          
+  150          void led_mode_2_color_gradient()
+  151          {
+  152   1          
   153   1      }
   154          
-  155          void key4_check()
-  156          {
-  157   1          if(key4 == 0 && key4_up_store == 1)
-  158   1          {
-  159   2              key4_up_store = 0; // 标记按键被按下
-  160   2          }
-  161   1          if(key4 == 1 && key4_up_store == 0)
-  162   1          {
-  163   2              key4_up_store = 1; // 标记按键被释放
-  164   2              key4_short_press(); // 触发短按键4功能
-  165   2          }
-  166   1      }
-  167          
-  168          void led_disabled()
-  169          {
-  170   1          led_vcc_green = 0;
-  171   1          led_vcc_red = 0;
-  172   1          led_vcc_blue = 0;
-  173   1      }
-  174          
-  175          void led_mode_0_white_light()
-  176          {
-  177   1          led_vcc_green = 1;
-  178   1          led_vcc_red = 1;
-  179   1          led_vcc_blue = 1;
-  180   1      }
-  181          
-  182          void led_mode_1_rgb_flash()
-C251 COMPILER V5.60.0,  main                                                               26/03/24  18:16:33  PAGE 4   
+  155          // 延时函数，本实例中未使用
+  156          // void delay_ms(unsigned char ms)
+  157          // {
+  158          //      unsigned int i;
+  159          //      do{
+  160          //           i = MAIN_Fosc / 6000;
+  161          //           while(--i);
+  162          //      }while(--ms);
+  163          // }
+  164          
+  165          void pwma_init(void)
+  166          {
+  167   1          // 输出频率计算：(SYS_CLOCK) / (PSCR+1) / (ARR+1) = 24.0KHz
+  168   1          // 输出占空比计算：(CCR) / (ARR+1) * 100% = 50%
+  169   1      
+  170   1          // 1.选择时钟源（默认24.0MHz）
+  171   1          // 2.时基单元
+  172   1          PWMA_PSCRH = 0x00;  // 高低位都是0，1分频（不改变）
+  173   1          PWMA_PSCRL = 0x00;
+  174   1      
+  175   1          // 3.输入输出引脚配置
+  176   1          PWMA_ENO = 0x00;        // 清零
+  177   1          PWMA_ENO |= ENO1P;      //使能输出
+  178   1          PWMA_ENO |= ENO1N;      //使能输出
+  179   1          PWMA_ENO |= ENO2P;      //使能输出
+  180   1          PWMA_ENO |= ENO2N;      //使能输出
+  181   1          PWMA_ENO |= ENO3P;      //使能输出
+  182   1          PWMA_ENO |= ENO3N;      //使能输出
+  183   1      
+  184   1          PWMA_PS = 0x00;         //高级 PWM 通道输出脚选择位
+  185   1          PWMA_PS |= PWM1_2;      //选择 PWM1_2 通道
+  186   1          PWMA_PS |= PWM2_2;      //选择 PWM2_2 通道
+  187   1          PWMA_PS |= PWM3_2;      //选择 PWM3_2 通道
+C251 COMPILER V5.60.0,  main                                                               26/03/24  19:09:29  PAGE 4   
 
-  183          {
-  184   1          led_rgb_flash_index++;
-  185   1          if(led_rgb_flash_index >= 3)
-  186   1          {
-  187   2              led_rgb_flash_index = 0;
-  188   2          }
-  189   1          led_vcc_green = led_rgb_flash_array[led_rgb_flash_index][0];
-  190   1          led_vcc_red = led_rgb_flash_array[led_rgb_flash_index][1];
-  191   1          led_vcc_blue = led_rgb_flash_array[led_rgb_flash_index][2];
-  192   1      }
-  193          
-  194          void led_mode_2_color_gradient(){}
-  195          
-  196          void timer0_isr(void) interrupt 1
-  197          {
-  198   1          timer0_counter++;
-  199   1          if(led_power == 0)
-  200   1          {
-  201   2              led_disabled();
-  202   2          }
-  203   1          // RGB LED灯光模式，0为白光常亮
-  204   1          else if(led_rgb_mode == 0 && led_power == 1)
-  205   1          {
-  206   2              led_mode_0_white_light();
-  207   2          }
-  208   1          // 1为三原色循环
-  209   1          else if(led_rgb_mode == 1 && led_power == 1)
-  210   1          {
-  211   2              if(timer0_counter >= led_rgb_flash_interval)
-  212   2              {
-  213   3                  timer0_counter = 0;
-  214   3                  led_mode_1_rgb_flash();
-  215   3              }
-  216   2          }
-  217   1          // 2为彩色渐变循环
-  218   1          else if(led_rgb_mode == 2 && led_power == 1)
-  219   1          {
-  220   2              if(timer0_counter >= led_color_gradient_interval)
-  221   2              {
-  222   3                  timer0_counter = 0;
-  223   3                  led_mode_2_color_gradient();
-  224   3              }
-  225   2          }
-  226   1      }
-  227          
-  228          void timer0_init(void)    //0.1毫秒@24.000M 对应 PWM频率5000Hz
-  229          {
-  230   1        AUXR |= 0x80;     //定时器时钟1T模式
-  231   1        TMOD &= 0xF0;     //设置定时器模式
-  232   1        TL0 = 0xA0;       //设置定时初始值
-  233   1        TH0 = 0xF6;       //设置定时初始值
-  234   1        TF0 = 0;        //清除TF0标志
-  235   1        TR0 = 1;        //定时器0开
-  236   1        ET0 = 1;        //使能定时器0中断
-  237   1          EA = 1;           //使能总中断
-  238   1      }
-  239          
-  240          // 延时函数，本实例中未使用
-  241          // void delay_ms(unsigned char ms)
-  242          // {
-  243          //      unsigned int i;
-  244          //      do{
-  245          //           i = MAIN_Fosc / 6000;
-  246          //           while(--i);
-  247          //      }while(--ms);
-  248          // }
-C251 COMPILER V5.60.0,  main                                                               26/03/24  18:16:33  PAGE 5   
+  188   1          PWMA_PS |= PWM4_2;      //选择 PWM4_2 通道
+  189   1      
+  190   1          // 4.输入输出模式设置
+  191   1          PWMA_CCER1 = 0x00; //写 CCMRx 前必须先清零 CCxE 关闭通道
+  192   1          PWMA_CCER2 = 0x00;
+  193   1          PWMA_CCMR1 = 0x68; //通道模式配置
+  194   1          PWMA_CCMR2 = 0x68;
+  195   1          PWMA_CCMR3 = 0x68;
+  196   1          PWMA_CCMR4 = 0x68;
+  197   1          PWMA_CCER1 = 0x55; //配置通道输出使能和极性
+  198   1          PWMA_CCER2 = 0x55;
+  199   1      
+  200   1          PWMA_ARRH = (unsigned char)(led_color_gradient_interval >> 8); //设置周期时间
+  201   1          PWMA_ARRL = (unsigned char)led_color_gradient_interval;
+  202   1      
+  203   1          PWMA_BKR = 0x80;        // 使能主输出
+  204   1      
+  205   1          PWMA_CR1 = 1;           // 使能ARR预装载, 开始计时
+  206   1      }
+  207          
+  208          void pwm_duty_update(void)
+  209          {
+  210   1          PWMA_CCR1H = (unsigned char)(pwma_1_duty >> 8); //设置占空比时间
+  211   1          PWMA_CCR1L = (unsigned char)(pwma_1_duty);
+  212   1          PWMA_CCR2H = (unsigned char)(pwma_2_duty >> 8); //设置占空比时间
+  213   1          PWMA_CCR2L = (unsigned char)(pwma_2_duty);
+  214   1          PWMA_CCR3H = (unsigned char)(pwma_3_duty >> 8); //设置占空比时间
+  215   1          PWMA_CCR3L = (unsigned char)(pwma_3_duty);
+  216   1      }
+  217          
+  218          void timer0_isr(void) interrupt 1
+  219          {
+  220   1          // pwma_1 是 P6.0，pwma_2 是 P6.2，pwma_3 是 P6.4
+  221   1          // 蓝色            绿色            红色
+  222   1          static int state = 0;
+  223   1      
+  224   1          timer0_counter++;
+  225   1      
+  226   1          switch (state)
+  227   1          {
+  228   2              case 0: // 红色到黄色
+  229   2                  if (pwma_2_duty < led_color_gradient_interval)
+  230   2                  {
+  231   3                      pwma_2_duty++;
+  232   3                  }
+  233   2                  else
+  234   2                  {
+  235   3                      state = 1;
+  236   3                  }
+  237   2                  break;
+  238   2              case 1: // 黄色到绿色
+  239   2                  if (pwma_3_duty > 0)
+  240   2                  {
+  241   3                      pwma_3_duty--;
+  242   3                  }
+  243   2                  else
+  244   2                  {
+  245   3                      state = 2;
+  246   3                  }
+  247   2                  break;
+  248   2              case 2: // 绿色到青色
+  249   2                  if (pwma_1_duty < led_color_gradient_interval)
+  250   2                  {
+  251   3                      pwma_1_duty++;
+  252   3                  }
+  253   2                  else
+C251 COMPILER V5.60.0,  main                                                               26/03/24  19:09:29  PAGE 5   
 
-  249          
-  250          void pwma_init(void)
-  251          {
-  252   1          // 输出频率计算：(SYS_CLOCK) / (PSCR+1) / (ARR+1) = 24.0KHz
-  253   1          // 输出占空比计算：(CCR) / (ARR+1) * 100% = 50%
-  254   1      
-  255   1          // 1.选择时钟源（默认24.0MHz）
-  256   1          // 2.时基单元
-  257   1          PWMA_PSCRH = 0x00;  // 高低位都是0，1分频（不改变）
-  258   1          PWMA_PSCRL = 0x00;
-  259   1          
-  260   1          PWMA_ARRH = (unsigned char)(PWMA_ARR >> 8); // 高位
-*** ERROR C67 IN LINE 260 OF main.c: 'PWMA_ARR': undefined identifier
-  261   1          PWMA_ARRL = (unsigned char)PWMA_ARR;        // 低位
-*** ERROR C67 IN LINE 261 OF main.c: 'PWMA_ARR': undefined identifier
-  262   1      
-  263   1          PWMA_CCR1H = (unsigned char)(PWMA_ARR >> 8); // 高位
-*** ERROR C67 IN LINE 263 OF main.c: 'PWMA_ARR': undefined identifier
-  264   1          PWMA_CCR1L = (unsigned char)PWMA_ARR;        // 低位
-*** ERROR C67 IN LINE 264 OF main.c: 'PWMA_ARR': undefined identifier
-  265   1      
-  266   1          // 3.输入输出引脚配置
-  267   1          PWMA_ENO = 0x00;        // 清零
-  268   1          PWMA_ENO |= ENO1P;      //使能输出
-  269   1          PWMA_ENO |= ENO1N;      //使能输出
-  270   1          PWMA_ENO |= ENO2P;      //使能输出
-  271   1          PWMA_ENO |= ENO2N;      //使能输出
-  272   1          PWMA_ENO |= ENO3P;      //使能输出
-  273   1          PWMA_ENO |= ENO3N;      //使能输出
-  274   1      
-  275   1          PWMA_PS = 0x00;         //高级 PWM 通道输出脚选择位
-  276   1          PWMA_PS |= PWM1_2;      //选择 PWM1_2 通道
-  277   1          PWMA_PS |= PWM2_2;      //选择 PWM2_2 通道
-  278   1          PWMA_PS |= PWM3_2;      //选择 PWM3_2 通道
-  279   1          PWMA_PS |= PWM4_2;      //选择 PWM4_2 通道
-  280   1      
-  281   1          // 4.输入输出模式设置
-  282   1          PWMA_CCER1 = 0x00;      // 清零
-  283   1          PWMA_CCMR1 = 0x68;      // 设置PWM模式为输出
-  284   1          PWMA_CCER1 = 0x01;      // 开启输出比较通道
-  285   1      
-  286   1          PWMA_BKR = 0x80;        // 使能主输出
-  287   1      
-  288   1          PWMA_CR1 = 1;           // 使能ARR预装载, 开始计时
-  289   1      }
-  290          
-  291          void pwm_duty_update(void)
-  292          {
-  293   1          PWMA_CCR1H = (unsigned char)(pwma_1_duty >> 8); //设置占空比时间
-  294   1          PWMA_CCR1L = (unsigned char)(pwma_1_duty);
-  295   1          PWMA_CCR2H = (unsigned char)(pwma_2_duty >> 8); //设置占空比时间
-  296   1          PWMA_CCR2L = (unsigned char)(pwma_2_duty);
-  297   1          PWMA_CCR3H = (unsigned char)(pwma_3_duty >> 8); //设置占空比时间
-  298   1          PWMA_CCR3L = (unsigned char)(pwma_3_duty);
-  299   1      }
-  300          
-  301          void main(void)
-  302          {
-  303   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
-  304   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
-  305   1          CKCON = 0; //提高访问XRAM速度
-  306   1      
-  307   1          P5M0 = 0xff; P5M1 = 0x00;           //配置P5为输出模式
-  308   1          P2M0 = 0x00; P2M1 = 0x00;           //配置P2为准双向模式
-  309   1      
-  310   1          pwma_init();                        //初始化PWM
-C251 COMPILER V5.60.0,  main                                                               26/03/24  18:16:33  PAGE 6   
+  254   2                  {
+  255   3                      state = 3;
+  256   3                  }
+  257   2                  break;
+  258   2              case 3: // 青色到蓝色
+  259   2                  if (pwma_2_duty > 0)
+  260   2                  {
+  261   3                      pwma_2_duty--;
+  262   3                  }
+  263   2                  else
+  264   2                  {
+  265   3                      state = 4;
+  266   3                  }
+  267   2                  break;
+  268   2              case 4: // 蓝色到紫色
+  269   2                  if (pwma_3_duty < led_color_gradient_interval)
+  270   2                  {
+  271   3                      pwma_3_duty++;
+  272   3                  }
+  273   2                  else
+  274   2                  {
+  275   3                      state = 5;
+  276   3                  }
+  277   2                  break;
+  278   2              case 5: // 紫色到红色
+  279   2                  if (pwma_1_duty > 0)
+  280   2                  {
+  281   3                      pwma_1_duty--;
+  282   3                  }
+  283   2                  else
+  284   2                  {
+  285   3                      state = 0;
+  286   3                  }
+  287   2                  break;
+  288   2          }
+  289   1      
+  290   1          pwm_duty_update();
+  291   1      }
+  292          
+  293          
+  294          void timer0_init(void)    //0.1毫秒@24.000M 对应 PWM频率5000Hz
+  295          {
+  296   1        AUXR |= 0x80;     //定时器时钟1T模式
+  297   1        TMOD &= 0xF0;     //设置定时器模式
+  298   1        TL0 = 0xA0;       //设置定时初始值
+  299   1        TH0 = 0xF6;       //设置定时初始值
+  300   1        TF0 = 0;        //清除TF0标志
+  301   1        TR0 = 1;        //定时器0开
+  302   1        ET0 = 1;        //使能定时器0中断
+  303   1          EA = 1;           //使能总中断
+  304   1      }
+  305          void main(void)
+  306          {
+  307   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
+  308   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
+  309   1          CKCON = 0; //提高访问XRAM速度
+  310   1      
+  311   1          P5M0 = 0xff; P5M1 = 0x00;           //配置P5为输出模式
+  312   1          P2M0 = 0x00; P2M1 = 0x00;           //配置P2为准双向模式
+  313   1      
+  314   1          pwma_init();                        //初始化PWM
+  315   1          timer0_init();                      //初始化定时器0
+  316   1          while(1)
+  317   1          {
+  318   2              // 检测按键
+  319   2              key1_check();
+C251 COMPILER V5.60.0,  main                                                               26/03/24  19:09:29  PAGE 6   
 
-  311   1          timer0_init();                      //初始化定时器0
-  312   1          while(1)
-  313   1          {
-  314   2              // 检测按键
-  315   2              key1_check();
-  316   2              key2_check();
-  317   2              key3_check();
-  318   2              key4_check();
-  319   2          }
-  320   1      }
+  320   2              key2_check();
+  321   2              key3_check();
+  322   2              key4_check();
+  323   2          }
+  324   1      }
 
-C251 COMPILATION COMPLETE.  0 WARNING(S),  4 ERROR(S)
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       792     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        34     ------
+  bit size             =         3     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        72     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

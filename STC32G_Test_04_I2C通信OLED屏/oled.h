@@ -1,44 +1,42 @@
 #ifndef __OLED_H
 #define __OLED_H
 
-#include "stc.h"
 #include "iic.h"
+#define MAIN_Fosc       24000000L   //å®šä¹‰ä¸»æ—¶é’Ÿ
+//-----------------------------------------ï¿½ï¿½ï¿½ï¿½ê¶¨ï¿½ï¿½-----------------------------------------
+#define OLED_CMD  0	                                        //Ð´ï¿½ï¿½ï¿½ï¿½
+#define OLED_DATA 1	                                        //Ð´ï¿½ï¿½ï¿½ï¿½
 
 
-//-----------------------------------------ÌØÊâºê¶¨Òå-----------------------------------------
-#define OLED_CMD  0	                                        //Ð´ÃüÁî
-#define OLED_DATA 1	                                        //Ð´Êý¾Ý
+//------------------------------------------ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½------------------------------------------
 
 
-//------------------------------------------Òý½ÅÑ¡Ôñ------------------------------------------
+//------------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½------------------------------------------
+extern  unsigned char xdata ShowBUFF[8][128];               //OLEDÈ«ï¿½Ö»ï¿½ï¿½ï¿½
 
 
-//------------------------------------------±äÁ¿ÉùÃ÷------------------------------------------
-extern  unsigned char xdata ShowBUFF[8][128];               //OLEDÈ«¾Ö»º´æ
-
-
-//------------------------------------------º¯ÊýÉùÃ÷------------------------------------------
+//------------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½------------------------------------------
 void delay_ms(unsigned int ms);
-void OLED_WR_Byte(unsigned char dat,unsigned char cmd);                           //OLEDµØÖ·/Êý¾ÝÐ´Èëº¯Êý    
-void OLED_Init(void);                                       //OLED³õÊ¼»¯º¯Êý
-void OLED_Set_Pos(unsigned char x, unsigned char y);        //OLEDÉèÖÃÏÔÊ¾Î»ÖÃ
-void OLED_DrawBMP(unsigned char x0,unsigned char y0,unsigned char x1, unsigned char y1,unsigned char BMP[]);       //OLEDÏÔÊ¾Í¼Æ¬
-void OLED_DisplayOn(void);                                  //¿ªÏÔÊ¾
-void OLED_DisplayOff(void);                                 //¹ØÏÔÊ¾
+void OLED_WR_Byte(unsigned char dat,unsigned char cmd);                           //OLEDï¿½ï¿½Ö·/ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ëº¯ï¿½ï¿½    
+void OLED_Init(void);                                       //OLEDï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void OLED_Set_Pos(unsigned char x, unsigned char y);        //OLEDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Î»ï¿½ï¿½
+void OLED_DrawBMP(unsigned char x0,unsigned char y0,unsigned char x1, unsigned char y1,unsigned char BMP[]);       //OLEDï¿½ï¿½Ê¾Í¼Æ¬
+void OLED_DisplayOn(void);                                  //ï¿½ï¿½ï¿½ï¿½Ê¾
+void OLED_DisplayOff(void);                                 //ï¿½ï¿½ï¿½ï¿½Ê¾
 
-void OLED_BuffClear(void);                                  //ÇåÆÁ
-void OLED_BuffShow(void);                                   //OLEDË¢ÐÂÏÔÊ¾
-void OLED_BuffShowPoint(unsigned char x,unsigned char y);   //OLEDÏÔÊ¾Ò»¸öµã
-void OLED_BuffShowLine( unsigned char x1, unsigned char y1, unsigned char x2,unsigned char y2);         //OLEDÏÔÊ¾Ò»ÌõÏß
-void OLED_BuffShowRectangle(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2);    //OLEDÏÔÊ¾Ò»¸ö¾ØÐÎ
-void OLED_BuffShowCircle(unsigned char x, unsigned char y, unsigned char r);                 //OLEDÏÔÊ¾Ò»¸öÔ²ÐÎ
-void OLED_BuffShowChar(unsigned char x,unsigned char y,char asc, unsigned char mode);        //OLEDÏÔÊ¾Ò»¸ö8*16×Ö·û
-void OLED_BuffShowGBK(unsigned char x,unsigned char y,char *gbk,unsigned char mode);         //OLEDÏÔÊ¾Ò»¸ö16*16ºº×Ö
-void OLED_BuffShowString(unsigned char x,unsigned char y,char *s,unsigned char mode);        //OLEDÏÔÊ¾Ò»¸ö16ÏñËØµÄºº×ÖºÍ×Ö·û
-void OLED_BuffShowNum(unsigned char x,unsigned char y,long num,unsigned char mode);          //OLEDÏÔÊ¾Ò»¸öÕûÐÎ±äÁ¿
-void OLED_BuffShowNum02F(unsigned char x,unsigned char y,float num,unsigned char mode);      //OLEDÏÔÊ¾Ò»¸öÁ½Î»Ð¡Êý±äÁ¿
-void OLED_BuffShowChar32(unsigned char  x,unsigned char  y,unsigned char num, unsigned char mode) ;     //OLEDÏÔÊ¾Ò»¸ö16*32µÄ×Ö·û   
-void OLED_BuffShowBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,unsigned char BMP[]);  //OLEDÏÔÊ¾Ò»¸öÍ¼Æ¬ 
+void OLED_BuffClear(void);                                  //ï¿½ï¿½ï¿½ï¿½
+void OLED_BuffShow(void);                                   //OLEDË¢ï¿½ï¿½ï¿½ï¿½Ê¾
+void OLED_BuffShowPoint(unsigned char x,unsigned char y);   //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½
+void OLED_BuffShowLine( unsigned char x1, unsigned char y1, unsigned char x2,unsigned char y2);         //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½
+void OLED_BuffShowRectangle(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2);    //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void OLED_BuffShowCircle(unsigned char x, unsigned char y, unsigned char r);                 //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½Ô²ï¿½ï¿½
+void OLED_BuffShowChar(unsigned char x,unsigned char y,char asc, unsigned char mode);        //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½8*16ï¿½Ö·ï¿½
+void OLED_BuffShowGBK(unsigned char x,unsigned char y,char *gbk,unsigned char mode);         //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½16*16ï¿½ï¿½ï¿½ï¿½
+void OLED_BuffShowString(unsigned char x,unsigned char y,char *s,unsigned char mode);        //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½16ï¿½ï¿½ï¿½ØµÄºï¿½ï¿½Öºï¿½ï¿½Ö·ï¿½
+void OLED_BuffShowNum(unsigned char x,unsigned char y,long num,unsigned char mode);          //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½
+void OLED_BuffShowNum02F(unsigned char x,unsigned char y,float num,unsigned char mode);      //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½Î»Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void OLED_BuffShowChar32(unsigned char  x,unsigned char  y,unsigned char num, unsigned char mode) ;     //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½16*32ï¿½ï¿½ï¿½Ö·ï¿½   
+void OLED_BuffShowBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,unsigned char BMP[]);  //OLEDï¿½ï¿½Ê¾Ò»ï¿½ï¿½Í¼Æ¬ 
     
 #endif
 

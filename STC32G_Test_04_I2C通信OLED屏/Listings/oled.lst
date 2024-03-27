@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 1   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE oled
@@ -66,7 +66,7 @@ stmt  level    source
    56          void OLED_WR_Byte(unsigned char dat,unsigned char cmd)
    57          {
    58   1          unsigned char udat[1] ;
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 2   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 2   
 
    59   1          udat[0] = dat;
    60   1          if( cmd==1 )
@@ -134,7 +134,7 @@ stmt  level    source
   121          // 函数返回: 无
   122          // 当前版本: VER1.0
   123          // 修改日期: 2023 - 6 - 7
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 3   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 3   
 
   124          // 当前作者: ZCF
   125          // 其他备注:
@@ -202,7 +202,7 @@ stmt  level    source
   186          //========================================================================
   187          void OLED_DisplayOff(void)     //关显示
   188          {
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 4   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 4   
 
   189   1          OLED_WR_Byte(0x8D,OLED_CMD);//电荷泵使能
   190   1          OLED_WR_Byte(0x10,OLED_CMD);//关闭电荷泵
@@ -261,7 +261,8 @@ stmt  level    source
   243   1          {
   244   2             OLED_WR_Byte(0xb0+i,OLED_CMD); //设置行起始地址
 *** WARNING C188 IN LINE 244 OF oled.c: 'parameter 1': value truncated
-  245   2             OLED_WR_Byte(0x00,OLED_CMD);   //设置低列起始地址
+  245   2             OLED_WR_Byte(0x02,OLED_CMD);   //设置低列起始地址    // 2024.03.27修改低列起始，否则测试用屏幕显示
+             -不全
   246   2             OLED_WR_Byte(0x10,OLED_CMD);   //设置高列起始地址
   247   2      
   248   2             for(n=0;n<128;n++)
@@ -269,9 +270,9 @@ stmt  level    source
   250   2          }
   251   1      }
   252          
-  253          //========================================================================
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 5   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 5   
 
+  253          //========================================================================
   254          // 函数名称: OLED_BuffShowPoint
   255          // 函数功能: OLED显示一个点
   256          // 入口参数: @x：x起点   @y:y起点
@@ -337,9 +338,9 @@ stmt  level    source
   314          // 入口参数: @x1：x起点  @y1：y起点  @x2：x终点   @y2：y终点
   315          // 函数返回: 无
   316          // 当前版本: VER1.0
-  317          // 修改日期: 2023 - 6 - 7
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 6   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 6   
 
+  317          // 修改日期: 2023 - 6 - 7
   318          // 当前作者: ZCF
   319          // 其他备注: 写入的是缓存，需要电调用OLED_BuffShow才能显示出来
   320          //========================================================================
@@ -405,9 +406,9 @@ stmt  level    source
   364   3                  b--;
   365   3              }
   366   2          }
-  367   1      }
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 7   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 7   
 
+  367   1      }
   368          
   369          //========================================================================
   370          // 函数名称: OLED_BuffShowChar
@@ -473,9 +474,9 @@ stmt  level    source
   428          //========================================================================
   429          // 函数名称: OLED_BuffShowString
   430          // 函数功能: OLED显示字符串。汉字字符均可
-  431          // 入口参数: @x：x点  @y：y点  @s字符串   @mode：0正显  1反显
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 8   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 8   
 
+  431          // 入口参数: @x：x点  @y：y点  @s字符串   @mode：0正显  1反显
   432          // 函数返回: 无
   433          // 当前版本: VER1.0
   434          // 修改日期: 2023 - 6 - 7
@@ -541,9 +542,9 @@ stmt  level    source
   492          // 其他备注: 写入的是缓存，需要电调用OLED_BuffShow才能显示出来
   493          //========================================================================
   494          void OLED_BuffShowNum02F(unsigned char x,unsigned char y,float num,unsigned char mode)
-  495          {
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 9   
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 9   
 
+  495          {
   496   1          unsigned char xdata str[10];
   497   1          memset(str,0,10);
   498   1          sprintf(str,"%.2f",num);
@@ -607,12 +608,12 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      5225     ------
+  code size            =      5226     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
-  idata size           =    ------     ------
-C251 COMPILER V5.60.0,  oled                                                               27/03/24  16:12:37  PAGE 10  
+C251 COMPILER V5.60.0,  oled                                                               27/03/24  17:26:29  PAGE 10  
 
+  idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =      1024         23
   xdata-const size     =    ------     ------

@@ -242,7 +242,7 @@ void OLED_BuffShow(void)
     for(i=0;i<8;i++)
     {
        OLED_WR_Byte(0xb0+i,OLED_CMD); //设置行起始地址
-       OLED_WR_Byte(0x00,OLED_CMD);   //设置低列起始地址
+       OLED_WR_Byte(0x02,OLED_CMD);   //设置低列起始地址    // 2024.03.27修改低列起始，否则测试用屏幕显示不全
        OLED_WR_Byte(0x10,OLED_CMD);   //设置高列起始地址
 
        for(n=0;n<128;n++)

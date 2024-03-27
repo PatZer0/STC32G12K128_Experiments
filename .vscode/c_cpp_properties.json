@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "C:\\Keil_v5\\C51\\INC\\Atmel",
-                "C:\\Keil_v5\\C251\\INC\\STC"
+                "C:\\Keil_v5\\C251\\INC\\STC",
+                "C:\\Keil_v5\\C251\\INC"
             ],
             "defines": [
                 "_DEBUG",

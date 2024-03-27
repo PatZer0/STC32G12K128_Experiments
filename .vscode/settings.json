@@ -10,6 +10,7 @@
         "lcd1602.h": "c",
         "delay.h": "c",
         "stc32g.h": "c",
-        "STC32G.H": "cpp"
+        "STC32G.H": "cpp",
+        "stc.h": "c"
     }
 }

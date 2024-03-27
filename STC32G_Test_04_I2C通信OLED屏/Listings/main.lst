@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               27/03/24  18:19:30  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               27/03/24  19:22:07  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -34,149 +34,281 @@ stmt  level    source
    22          
    23          #define  DELAY_TIME   2000
    24          
-   25          void sys_init()
-   26          {
-   27   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
-   28   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
-   29   1          CKCON = 0; //提高访问XRAM速度
-   30   1      
-   31   1          P0M1 = 0x00;   P0M0 = 0x00;   //设置为准双向口
-   32   1          P1M1 = 0x00;   P1M0 = 0x00;   //设置为准双向口
-   33   1          P2M1 = 0x00;   P2M0 = 0x00;   //设置为准双向口
-   34   1          P3M1 = 0x00;   P3M0 = 0x00;   //设置为准双向口
-   35   1          P4M1 = 0x00;   P4M0 = 0x00;   //设置为准双向口
-   36   1          P5M1 = 0x00;   P5M0 = 0x00;   //设置为准双向口
-   37   1          P6M1 = 0x00;   P6M0 = 0x00;   //设置为准双向口
-   38   1          P7M1 = 0x00;   P7M0 = 0x00;   //设置为准双向口
-   39   1      }
-   40          
-   41          
-   42          
-   43          void main(void)
-   44          {
-   45   1          unsigned char i;
-   46   1          float dat = -12.345;
-   47   1          sys_init();                         //系统初始化
-   48   1          EA = 1;                             //开总中断
-   49   1        OLED_Init();                        //OLED初始化
-   50   1      
-   51   1          while (1)
-   52   1          {
-   53   2              // OLED_BuffClear();                                                       //清除全部缓存
-   54   2              // OLED_BuffShowString(0,0,"STC32G128K128   \xfdTEST测试",0);    //显示数据
-   55   2              // OLED_BuffShow();                                                        //将缓存写入显示屏显示
-   56   2              // delay_ms(DELAY_TIME);                                                   //延时 
-C251 COMPILER V5.60.0,  main                                                               27/03/24  18:19:30  PAGE 2   
+   25          // 定义按键引脚
+   26          sbit key1 = P2^0;
+   27          sbit key2 = P2^1;
+   28          sbit key3 = P2^2;
+   29          sbit key4 = P2^3;
+   30          unsigned char key1_up_store = 1; // 按键1状态暂存
+   31          unsigned char key2_up_store = 1; // 按键2状态暂存
+   32          unsigned char key3_up_store = 1; // 按键3状态暂存
+   33          unsigned char key4_up_store = 1; // 按键4状态暂存
+   34          
+   35          unsigned int counter = 0;
+   36          unsigned char current_mode = 0;
+   37          
+   38          void OLED_Loading()
+   39          {
+   40   1          OLED_BuffClear();                               //清除全部缓存
+   41   1          OLED_BuffShowString(0,3,"   PLEASE WAIT  ",1);   //显示数据
+   42   1          OLED_BuffShow();                                //将缓存写入显示屏显示
+   43   1      }
+   44          
+   45          void key1_short_press()
+   46          {
+   47   1          // 短按键1功能
+   48   1          current_mode = 1;
+   49   1          OLED_Loading();                                 //显示加载中
+   50   1          OLED_BuffClear();                               //清除全部缓存
+   51   1          OLED_BuffShowString(0,0,"测试STC32G12K128",0);      //显示数据
+   52   1          OLED_BuffShowString(0,2,"The quick brown fox jumps over the lazy dog.",0);        //显示数据
+   53   1          OLED_BuffShow();                                //将缓存写入显示屏显示
+   54   1      }
+   55          
+   56          void key2_short_press()
+C251 COMPILER V5.60.0,  main                                                               27/03/24  19:22:07  PAGE 2   
 
-   57   2              OLED_BuffClear();                                                       //清除全部缓存
-   58   2              OLED_BuffShowBMP(0,0,128,8,OLED12864_ZWU_LOGO);                              //显示LOGO图片
-*** WARNING C91 IN LINE 58 OF main.c: '&': pointer to different objects
-   59   2              OLED_BuffShow();                                                        //将缓存写入显示屏显示
-   60   2              delay_ms(DELAY_TIME);                                                   //延时  
-   61   2      
-   62   2      // =============================================================================================
-   63   2      // 以下均为源代码自带的测试代码，如需要使用可以取消注释
-   64   2      // //-----------------------------------------显示图片-----------------------------------------   
-   65   2          // OLED_BuffClear();                                                       //清除全部缓存
-   66   2          // OLED_BuffShowBMP(0,0,128,8,OLED12864_IMG);                              //显示LOGO图片
-   67   2          // OLED_BuffShow();                                                        //将缓存写入显示屏显示
-   68   2          // delay_ms(DELAY_TIME);                                                   //延时 
-   69   2      
-   70   2      // //-----------------------------------------显示字符-----------------------------------------   
-   71   2      //     OLED_BuffClear();                                                       //清除全部缓存
-   72   2      //     OLED_BuffShowString(0,0,"HEELO ,WELCOME TO USE STC32&OLED12864!",0);    //显示数据
-   73   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
-   74   2      //     delay_ms(DELAY_TIME);                                                   //延时 
-   75   2          
-   76   2      // //-----------------------------------------显示汉字-----------------------------------------   
-   77   2      //     OLED_BuffClear();                                                       //清除全部缓存
-   78   2      //     OLED_BuffShowString(0,0,"你好,欢迎使用STC 驱\xfd动OLED12864的历程",0);  //显示数据
-   79   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
-   80   2      //     delay_ms(DELAY_TIME);                                                   //延时        
-   81   2          
-   82   2      // //-----------------------------------------显示点-----------------------------------------   
-   83   2      //     OLED_BuffClear();                                                       //清除全部缓存
-   84   2      //     OLED_BuffShowString(32,0,"画点测试");                                   //显示数据
-   85   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
-   86   2      //     for( i=0;i<64;i++ )                                                     //循环64次
-   87   2      //     {
-   88   2      //         OLED_BuffShowPoint(i*2,25);                                         //显示一个点
-   89   2      //         OLED_BuffShow();                                                    //刷新显示
-   90   2      //         delay_ms(50);                                                       //延时
-   91   2      //     }
-   92   2          
-   93   2      // //-----------------------------------------显示线-----------------------------------------   
-   94   2      //     OLED_BuffClear();                                                       //清除全部缓存
-   95   2      //     OLED_BuffShowString(32,0,"画线测试");                                   //显示数据
-   96   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
-   97   2      //     for( i=0;i<6;i++ )                                                      //循环6次
-   98   2      //     {
-   99   2      //         OLED_BuffShowLine(4,16+8*i,124,16+8*i);                             //显示横着6条线
-  100   2      //         OLED_BuffShow();                                                    //刷新显示
-  101   2      //         delay_ms(100);
-  102   2      //     }        
-  103   2      //     for( i=0;i<16;i+=1 )                                                    //循环16次
-  104   2      //     {
-  105   2      //         OLED_BuffShowLine(8*i+4,16,8*i+4,56);                               //显示16条数线
-  106   2      //         OLED_BuffShow();                                                    //刷新显示
-  107   2      //         delay_ms(100);
-  108   2      //     }  
-  109   2      
-  110   2      // //-----------------------------------------显示圆-----------------------------------------   
-  111   2      //     OLED_BuffClear();                                                       //清除全部缓存
-  112   2      //     OLED_BuffShowString(32,0,"画圆测试");                                   //显示数据
-  113   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
-  114   2      //     for( i=0;i<6;i++ )                                                      //循环6次
-  115   2      //     {
-  116   2      //        OLED_BuffShowCircle(64,40,5+i*3);                                    //画一个圆    
-  117   2      //         OLED_BuffShow();                                                    //刷新显示
-  118   2      //         delay_ms(250);
-  119   2      //     }         
-  120   2      
-  121   2      // //-----------------------------------------显示32大字-----------------------------------------   
-C251 COMPILER V5.60.0,  main                                                               27/03/24  18:19:30  PAGE 3   
+   57          {
+   58   1          // 短按键2功能
+   59   1          current_mode = 2;
+   60   1          OLED_Loading();                                 //显示加载中
+   61   1          delay_ms(DELAY_TIME);                           //延时
+   62   1          OLED_BuffClear();                               //清除全部缓存
+   63   1          OLED_BuffShowBMP(0,0,128,8,OLED12864_ZWU_LOGO); //显示LOGO图片
+*** WARNING C91 IN LINE 63 OF main.c: '&': pointer to different objects
+   64   1          OLED_BuffShow();                                //将缓存写入显示屏显示
+   65   1          delay_ms(DELAY_TIME);                           //延时
+   66   1      }
+   67          
+   68          void key3_short_press()
+   69          {
+   70   1          // 短按键3功能
+   71   1          if (current_mode != 3)
+   72   1          {
+   73   2              // 当前不在计数器模式，初始化
+   74   2              OLED_Loading();                                 //显示加载中
+   75   2              // 显示计时器UI
+   76   2              OLED_BuffClear();                               //清除全部缓存
+   77   2              OLED_BuffShowString(0,0,"[Simple Counter]",0);  //显示数据
+   78   2              OLED_BuffShowString(0,3,"   Press Key3",0);      //显示数据
+   79   2              OLED_BuffShow();                                //将缓存写入显示屏显示
+   80   2              counter = 0;                                    //计数器清零
+   81   2              current_mode = 3;                              //进入计数器模式
+   82   2          }
+   83   1          else
+   84   1          {
+   85   2              counter++;                                      //计数器加1
+   86   2              if (counter > 9) counter = 0;                   //计数器溢出
+   87   2              OLED_BuffClear();                               //清除全部缓存
+   88   2              OLED_BuffShowString(0,0,"[Simple Counter]",0);  //显示数据
+   89   2              OLED_BuffShowChar32(58,3,counter,0);            //显示数字
+*** WARNING C188 IN LINE 89 OF main.c: 'parameter 3': value truncated
+   90   2              OLED_BuffShow();                                //将缓存写入显示屏显示
+   91   2          }
+   92   1      }
+   93          
+   94          void key4_short_press()
+   95          {
+   96   1          // 短按键4功能
+   97   1          current_mode = 4;
+   98   1      }
+   99          
+  100          void key1_check() 
+  101          {
+  102   1          if(key1 == 0 && key1_up_store == 1)
+  103   1          {
+  104   2              key1_up_store = 0; // 标记按键被按下
+  105   2          }
+  106   1          if(key1 == 1 && key1_up_store == 0)
+  107   1          {
+  108   2              key1_up_store = 1; // 标记按键被释放
+  109   2              key1_short_press(); // 触发短按键1功能
+  110   2          }
+  111   1      }
+  112          
+  113          void key2_check()
+  114          {
+  115   1          if(key2 == 0 && key2_up_store == 1)
+  116   1          {
+  117   2              key2_up_store = 0; // 标记按键被按下
+  118   2          }
+  119   1          if(key2 == 1 && key2_up_store == 0)
+  120   1          {
+C251 COMPILER V5.60.0,  main                                                               27/03/24  19:22:07  PAGE 3   
 
-  122   2      //     OLED_BuffClear();                                                       //清除全部缓存
-  123   2      //     OLED_BuffShowString(32,0,"大字测试");                                   //显示数据
-  124   2      //     OLED_BuffShowChar32(24,3,1,0);                                          //显示数字1
-  125   2      //     OLED_BuffShowChar32(40,3,0,0);                                          //显示数字0
-  126   2      //     OLED_BuffShowChar32(56,3,10,0);                                         //显示：
-  127   2      //     OLED_BuffShowChar32(72,3,5,0);                                          //显示数字5
-  128   2      //     OLED_BuffShowChar32(88,3,5,0);                                          //显示数字5
-  129   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
-  130   2      //     delay_ms(DELAY_TIME);                                                   //延时  
-  131   2      
-  132   2      // //-----------------------------------------反显测试-----------------------------------------   
-  133   2      //     OLED_BuffClear();                                                       //清除全部缓存
-  134   2      //     OLED_BuffShowString(32,0,"反显测试",0);                                 //显示数据
-  135   2      //     OLED_BuffShowString(16,2,"  这是正\xfd显  ",0);                         //显示数据
-  136   2      //     OLED_BuffShowString(16,4,"  这是反显  ",1);                             //显示数据
-  137   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
-  138   2      //     delay_ms(DELAY_TIME);   
-  139   2      
-  140   2      // //-----------------------------------------变量显示-----------------------------------------   
-  141   2      //     OLED_BuffClear();                                                       //清除全部缓存
-  142   2      //     OLED_BuffShowString(32,0,"变量显示",0);                                 //显示数据
-  143   2      //     OLED_BuffShowNum(0,2,-25169,0) ;                                        //显示数据
-  144   2      //     OLED_BuffShowNum02F(0,4,3.14159,0);                                     //显示数据
-  145   2      //     OLED_BuffShowNum02F(0,6,dat,1);                                         //显示数据
-  146   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
-  147   2      //     delay_ms(DELAY_TIME);   
-  148   2          }
-  149   1      }
-*** WARNING C47 IN LINE 45 OF main.c: 'i': unreferenced local variable
+  121   2              key2_up_store = 1; // 标记按键被释放
+  122   2              key2_short_press(); // 触发短按键2功能
+  123   2          }
+  124   1      }
+  125          
+  126          void key3_check()
+  127          {
+  128   1          if(key3 == 0 && key3_up_store == 1)
+  129   1          {
+  130   2              key3_up_store = 0; // 标记按键被按下
+  131   2          }
+  132   1          if(key3 == 1 && key3_up_store == 0)
+  133   1          {
+  134   2              key3_up_store = 1; // 标记按键被释放
+  135   2              key3_short_press(); // 触发短按键3功能
+  136   2          }
+  137   1      }
+  138          
+  139          void key4_check()
+  140          {
+  141   1          if(key4 == 0 && key4_up_store == 1)
+  142   1          {
+  143   2              key4_up_store = 0; // 标记按键被按下
+  144   2          }
+  145   1          if(key4 == 1 && key4_up_store == 0)
+  146   1          {
+  147   2              key4_up_store = 1; // 标记按键被释放
+  148   2              key4_short_press(); // 触发短按键4功能
+  149   2          }
+  150   1      }
+  151          
+  152          void sys_init()
+  153          {
+  154   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
+  155   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
+  156   1          CKCON = 0; //提高访问XRAM速度
+  157   1      
+  158   1          P0M1 = 0x00;   P0M0 = 0x00;   //设置为准双向口
+  159   1          P1M1 = 0x00;   P1M0 = 0x00;   //设置为准双向口
+  160   1          P2M1 = 0x00;   P2M0 = 0x00;   //设置为准双向口
+  161   1          P3M1 = 0x00;   P3M0 = 0x00;   //设置为准双向口
+  162   1          P4M1 = 0x00;   P4M0 = 0x00;   //设置为准双向口
+  163   1          P5M1 = 0x00;   P5M0 = 0x00;   //设置为准双向口
+  164   1          P6M1 = 0x00;   P6M0 = 0x00;   //设置为准双向口
+  165   1          P7M1 = 0x00;   P7M0 = 0x00;   //设置为准双向口
+  166   1      }
+  167          
+  168          void main(void)
+  169          {
+  170   1          unsigned char i;
+  171   1          float dat = -12.345;
+  172   1      
+  173   1          sys_init();                         //系统初始化
+  174   1          EA = 1;                             //开总中断
+  175   1          OLED_Init();                        //OLED初始化
+  176   1      
+  177   1          OLED_BuffClear();                               //清除全部缓存
+  178   1          OLED_BuffShowString(0,0,"Press any key to",0);  //显示数据
+  179   1          OLED_BuffShowString(0,2,"start...",0);          //显示数据
+  180   1          OLED_BuffShow();                                //将缓存写入显示屏显示
+  181   1      
+  182   1          while (1)
+  183   1          {
+  184   2              key1_check();                    //检查按键1
+  185   2              key2_check();                    //检查按键2
+  186   2              key3_check();                    //检查按键3
+C251 COMPILER V5.60.0,  main                                                               27/03/24  19:22:07  PAGE 4   
+
+  187   2              key4_check();                    //检查按键4
+  188   2      
+  189   2      // =============================================================================================
+  190   2      // 以下均为源代码自带的测试代码，如需要使用可以取消注释
+  191   2      // //-----------------------------------------显示图片-----------------------------------------   
+  192   2          // OLED_BuffClear();                                                       //清除全部缓存
+  193   2          // OLED_BuffShowBMP(0,0,128,8,OLED12864_IMG);                              //显示LOGO图片
+  194   2          // OLED_BuffShow();                                                        //将缓存写入显示屏显示
+  195   2          // delay_ms(DELAY_TIME);                                                   //延时 
+  196   2      
+  197   2      // //-----------------------------------------显示字符-----------------------------------------   
+  198   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  199   2      //     OLED_BuffShowString(0,0,"HEELO ,WELCOME TO USE STC32&OLED12864!",0);    //显示数据
+  200   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
+  201   2      //     delay_ms(DELAY_TIME);                                                   //延时 
+  202   2          
+  203   2      // //-----------------------------------------显示汉字-----------------------------------------   
+  204   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  205   2      //     OLED_BuffShowString(0,0,"你好,欢迎使用STC 驱\xfd动OLED12864的历程",0);  //显示数据
+  206   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
+  207   2      //     delay_ms(DELAY_TIME);                                                   //延时        
+  208   2          
+  209   2      // //-----------------------------------------显示点-----------------------------------------   
+  210   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  211   2      //     OLED_BuffShowString(32,0,"画点测试");                                   //显示数据
+  212   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
+  213   2      //     for( i=0;i<64;i++ )                                                     //循环64次
+  214   2      //     {
+  215   2      //         OLED_BuffShowPoint(i*2,25);                                         //显示一个点
+  216   2      //         OLED_BuffShow();                                                    //刷新显示
+  217   2      //         delay_ms(50);                                                       //延时
+  218   2      //     }
+  219   2          
+  220   2      // //-----------------------------------------显示线-----------------------------------------   
+  221   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  222   2      //     OLED_BuffShowString(32,0,"画线测试");                                   //显示数据
+  223   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
+  224   2      //     for( i=0;i<6;i++ )                                                      //循环6次
+  225   2      //     {
+  226   2      //         OLED_BuffShowLine(4,16+8*i,124,16+8*i);                             //显示横着6条线
+  227   2      //         OLED_BuffShow();                                                    //刷新显示
+  228   2      //         delay_ms(100);
+  229   2      //     }        
+  230   2      //     for( i=0;i<16;i+=1 )                                                    //循环16次
+  231   2      //     {
+  232   2      //         OLED_BuffShowLine(8*i+4,16,8*i+4,56);                               //显示16条数线
+  233   2      //         OLED_BuffShow();                                                    //刷新显示
+  234   2      //         delay_ms(100);
+  235   2      //     }  
+  236   2      
+  237   2      // //-----------------------------------------显示圆-----------------------------------------   
+  238   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  239   2      //     OLED_BuffShowString(32,0,"画圆测试");                                   //显示数据
+  240   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
+  241   2      //     for( i=0;i<6;i++ )                                                      //循环6次
+  242   2      //     {
+  243   2      //        OLED_BuffShowCircle(64,40,5+i*3);                                    //画一个圆    
+  244   2      //         OLED_BuffShow();                                                    //刷新显示
+  245   2      //         delay_ms(250);
+  246   2      //     }         
+  247   2      
+  248   2      // //-----------------------------------------显示32大字-----------------------------------------   
+  249   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  250   2      //     OLED_BuffShowString(32,0,"大字测试");                                   //显示数据
+  251   2      //     OLED_BuffShowChar32(24,3,1,0);                                          //显示数字1
+  252   2      //     OLED_BuffShowChar32(40,3,0,0);                                          //显示数字0
+C251 COMPILER V5.60.0,  main                                                               27/03/24  19:22:07  PAGE 5   
+
+  253   2      //     OLED_BuffShowChar32(56,3,10,0);                                         //显示：
+  254   2      //     OLED_BuffShowChar32(72,3,5,0);                                          //显示数字5
+  255   2      //     OLED_BuffShowChar32(88,3,5,0);                                          //显示数字5
+  256   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示 
+  257   2      //     delay_ms(DELAY_TIME);                                                   //延时  
+  258   2      
+  259   2      // //-----------------------------------------反显测试-----------------------------------------   
+  260   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  261   2      //     OLED_BuffShowString(32,0,"反显测试",0);                                 //显示数据
+  262   2      //     OLED_BuffShowString(16,2,"  这是正\xfd显  ",0);                         //显示数据
+  263   2      //     OLED_BuffShowString(16,4,"  这是反显  ",1);                             //显示数据
+  264   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
+  265   2      //     delay_ms(DELAY_TIME);   
+  266   2      
+  267   2      // //-----------------------------------------变量显示-----------------------------------------   
+  268   2      //     OLED_BuffClear();                                                       //清除全部缓存
+  269   2      //     OLED_BuffShowString(32,0,"变量显示",0);                                 //显示数据
+  270   2      //     OLED_BuffShowNum(0,2,-25169,0) ;                                        //显示数据
+  271   2      //     OLED_BuffShowNum02F(0,4,3.14159,0);                                     //显示数据
+  272   2      //     OLED_BuffShowNum02F(0,6,dat,1);                                         //显示数据
+  273   2      //     OLED_BuffShow();                                                        //将缓存写入显示屏显示
+  274   2      //     delay_ms(DELAY_TIME);   
+  275   2          }
+  276   1      }
+*** WARNING C47 IN LINE 170 OF main.c: 'i': unreferenced local variable
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      3173     ------
+  code size            =      3607     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =    ------     ------
+  edata size           =         7     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
@@ -184,8 +316,8 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =    ------     ------
+  hconst size          =       167     ------
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)

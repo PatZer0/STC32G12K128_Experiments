@@ -1,0 +1,42 @@
+{
+    "configurations": [
+        {
+            "name": "Target 1",
+            "includePath": [
+                "C:\\Keil_v5\\C251\\INC",
+                "C:\\Keil_v5\\C251\\INC\\STC",
+                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_04_I2C通信OLED屏",
+                "${default}",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__C251__",
+                "__VSCODE_C251__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "edata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "far=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

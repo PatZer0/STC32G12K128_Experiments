@@ -1,0 +1,105 @@
+C251 COMPILER V5.60.0,  uart1_timer2                                                       29/03/24  13:50:10  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE uart1_timer2
+OBJECT MODULE PLACED IN .\Objects\uart1_timer2.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE uart1_timer2.c XSMALL INTR2 BROWSE DEBUG PRINT(.\Listings\uart1_timer2
+                    -.lst) TABS(2) OBJECT(.\Objects\uart1_timer2.obj) 
+
+stmt  level    source
+
+    1          #include <STC32G.H>
+    2          #include "uart1_timer2.h"
+    3          
+    4          bit busy;
+    5          char wptr, rptr, buffer[16];
+    6          char rcv_data;
+    7          char rcv_buffer[16];  // 存储接收到的数据
+    8          bit data_ready = 0;   // 数据是否接收完毕的标志
+    9          
+   10          void Uart1_Isr() interrupt 4
+   11          {
+   12   1        if(TI)
+   13   1          {
+   14   2              TI = 0;     //清除中断标志
+   15   2              busy = 0;   //串口空闲
+   16   2          }
+   17   1          if(RI)
+   18   1          {
+   19   2              RI = 0;                     //清除接收中断标志
+   20   2              buffer[wptr++] = SBUF;      //接收数据存入缓冲区
+   21   2              wptr &= 0x0f;               //环形缓冲区
+   22   2          }
+   23   1      }
+   24          
+   25          void Uart1_Init(void) //9600bps@33.1776MHz
+   26          {
+   27   1        SCON = 0x50;    //8位数据,可变波特率
+   28   1        AUXR |= 0x40;   //定时器时钟1T模式
+   29   1        AUXR &= 0xFE;   //串口1选择定时器1为波特率发生器
+   30   1        TMOD &= 0x0F;   //设置定时器模式
+   31   1        TL1 = 0xA0;     //设置定时初始值
+   32   1        TH1 = 0xFC;     //设置定时初始值
+   33   1        ET1 = 0;      //禁止定时器中断
+   34   1        TR1 = 1;      //定时器1开始计时
+   35   1      
+   36   1        P_SW1 &= ~0xc0;           //UART1/USART1: RxD(P3.0), TxD(P3.1)
+   37   1      }
+   38          
+   39          void Uart1_SendChar(char dat)
+   40          {
+   41   1          while(busy);     //等待串口空闲
+   42   1          busy = 1;        //设置串口忙标志
+   43   1          SBUF = dat;      //发送数据
+   44   1      }
+   45          
+   46          void Uart1_SendString(char *str)
+   47          {
+   48   1          while(*str)                     //发送字符串
+   49   1          {
+   50   2              Uart1_SendChar(*str++);     //发送字符
+   51   2          }
+   52   1      }
+   53          
+   54          void Uart1_Running(void)
+   55          {
+   56   1          static char rcv_index = 0;  // 接收数据的索引
+   57   1          
+   58   1          if(rptr != wptr)  // 缓冲区有数据
+C251 COMPILER V5.60.0,  uart1_timer2                                                       29/03/24  13:50:10  PAGE 2   
+
+   59   1          {
+   60   2              rcv_buffer[rcv_index++] = buffer[rptr++];  // 接收数据存入 rcv_buffer
+   61   2              rptr &= 0x0f;  // 环形缓冲区
+   62   2              
+   63   2              if(rcv_index >= 16)  // 如果接收到足够的数据
+   64   2              {
+   65   3                  rcv_index = 0;  // 重置索引
+   66   3                  data_ready = 1;  // 设置数据接收完毕标志
+   67   3              }
+   68   2          }
+   69   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       190     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        36     ------
+  bit size             =         2     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =         5     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

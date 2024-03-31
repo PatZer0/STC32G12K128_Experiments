@@ -1,0 +1,14 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "uart1_timer2.h": "c",
+        "stdio.h": "c",
+        "STDIO.H": "cpp",
+        "intrins.h": "c",
+        "INTRINS.H": "cpp",
+        "laser_ranging.h": "c",
+        "stc32g.h": "c",
+        "STC32G.H": "cpp",
+        "iic.h": "c"
+    }
+}

@@ -1,0 +1,1 @@
+"uart.c" XSMALL INTR2 BROWSE DEBUG PRINT(.\Listings\uart.lst) TABS (2) OBJECT(.\Objects\uart.obj)

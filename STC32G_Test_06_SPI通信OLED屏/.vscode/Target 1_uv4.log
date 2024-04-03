@@ -1,0 +1,32 @@
+Build target 'Target 1'
+compiling main.c...
+main.c(67): warning C91: '&': pointer to different objects
+main.c(93): warning C188: 'parameter 3': value truncated
+main.c(174): warning C47: 'i': unreferenced local variable
+compiling oled.c...
+linking...
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowCircle/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowNum02F/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_LightSet/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowRectangle/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowNum/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_DrawBMP/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_DisplayOff/oled
+
+Program Size: data=8.0 edata+hdata=335 xdata=1047 const=182 code=10958
+creating hex file from ".\Objects\STC32G_Test_06_SPI通信OLED屏"...
+".\Objects\STC32G_Test_06_SPI通信OLED屏" - 0 Error(s), 10 Warning(s).
+Build Time Elapsed:  00:00:01

@@ -246,9 +246,9 @@ void OLED_BuffShow_NoInterrupt(void)
 // 函数功能: OLED刷新显示
 // 入口参数: 无
 // 函数返回: 无
-// 当前版本: VER1.0
-// 修改日期: 2023 - 6 - 7
-// 当前作者: ZCF
+// 当前版本: VER1.1
+// 修改日期: 2024 - 3 - 28
+// 当前作者: ZCF, PatZer0
 // 其他备注:
 //========================================================================
 void OLED_BuffShow(void)     
@@ -347,9 +347,9 @@ void OLED_BuffShowRectangle(unsigned char x1, unsigned char y1, unsigned char x2
 // 函数功能: OLED显示一个圆形
 // 入口参数: @x：x点  @y：y点  @r:半径
 // 函数返回: 无
-// 当前版本: VER1.0
-// 修改日期: 2023 - 6 - 7
-// 当前作者: ZCF
+// 当前版本: VER1.1
+// 修改日期: 2024 - 3 - 28
+// 当前作者: ZCF, PatZer0
 // 其他备注: 写入的是缓存，需要电调用OLED_BuffShow才能显示出来
 //========================================================================
 void OLED_BuffShowCircle(unsigned char x, unsigned char y, unsigned char r)

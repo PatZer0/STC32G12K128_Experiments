@@ -225,13 +225,30 @@ void OLED_BuffClear(void)     //清屏
 }
 
 //========================================================================
+// 函数名称: OLED_BuffShow_NoInterrupt
+// 函数功能: OLED刷新显示(关停中断)
+// 入口参数: 无
+// 函数返回: 无
+// 当前版本: VER1.0
+// 修改日期: 2024 - 3 - 31
+// 当前作者: PatZer0
+// 其他备注: 在刷新屏幕时，暂时关闭中断，以避免中断中断刷新屏幕I2C通信，导致显示不全/乱码
+//========================================================================
+void OLED_BuffShow_NoInterrupt(void)     
+{
+    EA = 0;
+    OLED_BuffShow();
+    EA = 1;
+}
+
+//========================================================================
 // 函数名称: OLED_BuffShow
 // 函数功能: OLED刷新显示
 // 入口参数: 无
 // 函数返回: 无
-// 当前版本: VER1.0
-// 修改日期: 2023 - 6 - 7
-// 当前作者: ZCF
+// 当前版本: VER1.1
+// 修改日期: 2024 - 3 - 28
+// 当前作者: ZCF, PatZer0
 // 其他备注:
 //========================================================================
 void OLED_BuffShow(void)     
@@ -330,9 +347,9 @@ void OLED_BuffShowRectangle(unsigned char x1, unsigned char y1, unsigned char x2
 // 函数功能: OLED显示一个圆形
 // 入口参数: @x：x点  @y：y点  @r:半径
 // 函数返回: 无
-// 当前版本: VER1.0
-// 修改日期: 2023 - 6 - 7
-// 当前作者: ZCF
+// 当前版本: VER1.1
+// 修改日期: 2024 - 3 - 28
+// 当前作者: ZCF, PatZer0
 // 其他备注: 写入的是缓存，需要电调用OLED_BuffShow才能显示出来
 //========================================================================
 void OLED_BuffShowCircle(unsigned char x, unsigned char y, unsigned char r)
@@ -407,19 +424,23 @@ void OLED_BuffShowChar(unsigned char x,unsigned char y,char asc, unsigned char m
 // 函数功能: OLED显示汉字
 // 入口参数: @x：x点  @y：y点  @gbk:汉字   @mode：0正显  1反显
 // 函数返回: 无
-// 当前版本: VER1.0
-// 修改日期: 2023 - 6 - 7
-// 当前作者: ZCF
+// 当前版本: VER1.1
+// 修改日期: 2024 - 3 - 29
+// 当前作者: ZCF, PatZer0
 // 其他备注: 写入的是缓存，需要电调用OLED_BuffShow才能显示出来
 //          用到的汉字需要自己取模放到字库里，字库多的话，这里这个循环变量要放大
+//          字库文件font.h里有汉字的GBK16数组，可以自己修改
+//          原代码使用固定的遍历次数，这里直接改为GBK16数组大小，确保所有字库都被遍历
 //========================================================================
 void OLED_BuffShowGBK(unsigned char x,unsigned char y,char *gbk,unsigned char mode)     //OLED显示一个16*16汉字
 {
     unsigned char i;
     unsigned char j,k;
-    for( i=0;i<200;i++ )
+    for( i=0;i<sizeof(GBK16)/sizeof(GBK16[0]);i++ )
     {
-        if(( gbk[0]== GBK16[i].gbn_bum[0] )&&( gbk[1]== GBK16[i].gbn_bum[1] ))
+        if((gbk[0] == GBK16[i].gbn_bum[0])
+         &&(gbk[1] == GBK16[i].gbn_bum[1])
+			)
         {
             for( j=0;j<2;j++ )
             {

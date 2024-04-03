@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  uart                                                               31/03/24  19:10:55  PAGE 1   
+C251 COMPILER V5.60.0,  uart                                                               03/04/24  15:03:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE uart
@@ -66,7 +66,7 @@ stmt  level    source
    55          void Uart2_SendString(unsigned char *puts)
    56          {
    57   1          for (; *puts != 0;  puts++)                     // 遇到停止符0结束
-C251 COMPILER V5.60.0,  uart                                                               31/03/24  19:10:55  PAGE 2   
+C251 COMPILER V5.60.0,  uart                                                               03/04/24  15:03:56  PAGE 2   
 
    58   1          {
    59   2              S2BUF = *puts;
@@ -134,7 +134,7 @@ stmt  level    source
   121   1          for (i = 0; i < length; i++)
   122   1          {
   123   2              S4BUF = bytes[i];
-C251 COMPILER V5.60.0,  uart                                                               31/03/24  19:10:55  PAGE 3   
+C251 COMPILER V5.60.0,  uart                                                               03/04/24  15:03:56  PAGE 3   
 
   124   2              Uart4_TX_Busy = 1;
   125   2              while(Uart4_TX_Busy);
@@ -202,7 +202,7 @@ stmt  level    source
   182   2          S4CON &= ~0x02;                                                     // 清除串口4发送中断请求�
              -��
   183   2              Uart4_TX_Busy = 0;                                                  // 发送空闲标志位
-C251 COMPILER V5.60.0,  uart                                                               31/03/24  19:10:55  PAGE 4   
+C251 COMPILER V5.60.0,  uart                                                               03/04/24  15:03:56  PAGE 4   
 
   184   2        }
   185   1        if (S4CON & 0x01)                                                     // 检测串口4接收中断
@@ -271,7 +271,7 @@ Module Information          Static   Overlayable
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
-C251 COMPILER V5.60.0,  uart                                                               31/03/24  19:10:55  PAGE 5   
+C251 COMPILER V5.60.0,  uart                                                               03/04/24  15:03:56  PAGE 5   
 
   huge data size       =    ------     ------
   const size           =    ------     ------

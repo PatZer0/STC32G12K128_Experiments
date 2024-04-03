@@ -23,6 +23,10 @@ Project File Date:  03/27/2024
 
 <h2>Output:</h2>
 Build target 'Target 1'
+compiling main.c...
+main.c(67): warning C91: '&': pointer to different objects
+main.c(93): warning C188: 'parameter 3': value truncated
+main.c(174): warning C47: 'i': unreferenced local variable
 compiling oled.c...
 linking...
 *** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
@@ -34,6 +38,8 @@ linking...
 *** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    delay/oled
 *** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShow_NoInterrupt/oled
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    OLED_LightSet/oled
 *** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    OLED_BuffShowRectangle/oled
@@ -43,9 +49,9 @@ linking...
     NAME:    OLED_DrawBMP/oled
 *** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
     NAME:    OLED_DisplayOff/oled
-Program Size: data=8.0 edata+hdata=338 xdata=1047 const=182 code=11248
+Program Size: data=8.0 edata+hdata=338 xdata=1047 const=182 code=11256
 creating hex file from ".\Objects\STC32G_Test_04_I2C通信OLED屏"...
-".\Objects\STC32G_Test_04_I2C通信OLED屏" - 0 Error(s), 9 Warning(s).
+".\Objects\STC32G_Test_04_I2C通信OLED屏" - 0 Error(s), 13 Warning(s).
 Build Time Elapsed:  00:00:00
 </pre>
 </body>

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  laser_ranging                                                      31/03/24  19:16:01  PAGE 1   
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  15:03:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE laser_ranging
@@ -66,7 +66,7 @@ stmt  level    source
    49          设定分辨率1mm       FA 04 0C 01 F5
    50          设定分辨率0.1mm     FA 04 0C 02 F4
    51          设定上电就测关闭    FA 04 0D 00 F5
-C251 COMPILER V5.60.0,  laser_ranging                                                      31/03/24  19:16:01  PAGE 2   
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  15:03:56  PAGE 2   
 
    52          设定上电就测开启    FA 04 0D 01 F4
    53          单次测量（广播）    FA 06 06 FA
@@ -134,7 +134,7 @@ stmt  level    source
   112   6                              OLED_BuffShowString(8*11, 2, "m", 0);
   113   6                              OLED_BuffShowString(0, 4, "   持续测距中   ", 0);
   114   6                          }
-C251 COMPILER V5.60.0,  laser_ranging                                                      31/03/24  19:16:01  PAGE 3   
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  15:03:56  PAGE 3   
 
   115   5                          else
   116   5                          {
@@ -202,7 +202,7 @@ stmt  level    source
   178   1      }
   179          
   180          void LaserRanging_Range_Increase()
-C251 COMPILER V5.60.0,  laser_ranging                                                      31/03/24  19:16:01  PAGE 4   
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  15:03:56  PAGE 4   
 
   181          {
   182   1          LaserRanging_Range_Index++;

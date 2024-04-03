@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               31/03/24  19:16:38  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    56   2              OLED_BuffShowString(0,6,"ON ",0);  //显示数据
    57   2              OLED_BuffShow_NoInterrupt();                    //将缓存写入显示屏显示
    58   2          }
-C251 COMPILER V5.60.0,  main                                                               31/03/24  19:16:38  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:56  PAGE 2   
 
    59   1      }
    60          
@@ -134,7 +134,7 @@ stmt  level    source
   122          void key4_short_press()
   123          {
   124   1          // 短按键4功能
-C251 COMPILER V5.60.0,  main                                                               31/03/24  19:16:38  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:56  PAGE 3   
 
   125   1          LaserRanging_State = !LaserRanging_State;
   126   1          OLED_LaserRanging_UI_OnOff();
@@ -202,7 +202,7 @@ stmt  level    source
   188          
   189          void key4_check()
   190          {
-C251 COMPILER V5.60.0,  main                                                               31/03/24  19:16:38  PAGE 4   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:56  PAGE 4   
 
   191   1          if(key4 == 0 && key4_up_store == 1)
   192   1          {
@@ -270,7 +270,7 @@ stmt  level    source
   254          void main(void)
   255          {
   256   1          EA = 1;                             //开总中断
-C251 COMPILER V5.60.0,  main                                                               31/03/24  19:16:38  PAGE 5   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:56  PAGE 5   
 
   257   1          Sys_Init();                         //系统初始化
   258   1          Uart1_Init();                       //串口1初始化

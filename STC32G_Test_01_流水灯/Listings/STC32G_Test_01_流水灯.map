@@ -1,4 +1,4 @@
-L251 LINKER/LOCATER V4.66.93.0                                                          03/26/2024  10:39:46  PAGE 1
+L251 LINKER/LOCATER V4.66.93.0                                                          04/01/2024  10:46:40  PAGE 1
 
 
 L251 LINKER/LOCATER V4.66.93.0, INVOKED BY:
@@ -67,7 +67,7 @@ FF01E9H   FF0232H   00004AH   BYTE   UNIT     HCONST         ?C_INITEDATA
 OVERLAY MAP OF MODULE:   .\Objects\STC32G_Test_01_流水灯 (main)
 
 
-L251 LINKER/LOCATER V4.66.93.0                                                        03/26/2024  10:39:46  PAGE 2
+L251 LINKER/LOCATER V4.66.93.0                                                        04/01/2024  10:46:40  PAGE 2
 
 
 FUNCTION/MODULE              BIT_GROUP   DATA_GROUP 
@@ -135,7 +135,7 @@ PUBLIC SYMBOLS OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
       00FF0000H   CODE     ---       ?C_STARTUP
 *SFR* 000000BCH   DATA     BYTE      ADC_CONTR
 *SFR* 000000DEH   DATA     BYTE      ADCCFG
-L251 LINKER/LOCATER V4.66.93.0                                                        03/26/2024  10:39:46  PAGE 3
+L251 LINKER/LOCATER V4.66.93.0                                                        04/01/2024  10:46:40  PAGE 3
 
 
 *SFR* 000000EFH   DATA     BYTE      AUXINTIF
@@ -203,7 +203,7 @@ PUBLIC SYMBOLS OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
 *SFR* 0000009AH   DATA     BYTE      S2CON
 *SFR* 000000ACH   DATA     BYTE      S3CON
 *SFR* 000000FDH   DATA     BYTE      S4CON
-L251 LINKER/LOCATER V4.66.93.0                                                        03/26/2024  10:39:46  PAGE 4
+L251 LINKER/LOCATER V4.66.93.0                                                        04/01/2024  10:46:40  PAGE 4
 
 
 *SFR* 00000098H   DATA     BYTE      SCON
@@ -271,7 +271,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
       0000008CH   SFRSYM    DATA     BYTE      TH0
       000000DFH   SFRSYM    DATA     BYTE      IP3
       000000F4H   SFRSYM    DATA     BYTE      USBCON
-L251 LINKER/LOCATER V4.66.93.0                                                        03/26/2024  10:39:46  PAGE 5
+L251 LINKER/LOCATER V4.66.93.0                                                        04/01/2024  10:46:40  PAGE 5
 
 
       000000B5H   SFRSYM    DATA     BYTE      IP2
@@ -339,7 +339,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
       00FF01E2H   LINE      CODE     ---       #51
       ---         BLOCKEND  ---      ---       LVL=0
 
-L251 LINKER/LOCATER V4.66.93.0                                                        03/26/2024  10:39:46  PAGE 6
+L251 LINKER/LOCATER V4.66.93.0                                                        04/01/2024  10:46:40  PAGE 6
 
 
       00FF00FFH   BLOCK     CODE     ---       LVL=0
@@ -407,7 +407,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
       00FF0067H   LINE      CODE     ---       #131
       00FF006CH   LINE      CODE     ---       #132
       00FF006CH   LINE      CODE     ---       #134
-L251 LINKER/LOCATER V4.66.93.0                                                        03/26/2024  10:39:46  PAGE 7
+L251 LINKER/LOCATER V4.66.93.0                                                        04/01/2024  10:46:40  PAGE 7
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -416,43 +416,43 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
       00FF006DH   LINE      CODE     ---       #136
       00FF0075H   LINE      CODE     ---       #138
       00FF007FH   LINE      CODE     ---       #139
-      00FF008CH   LINE      CODE     ---       #141
       00FF008CH   LINE      CODE     ---       #142
       00FF008CH   LINE      CODE     ---       #143
-      00FF008EH   LINE      CODE     ---       #144
-      00FF009DH   LINE      CODE     ---       #146
-      00FF009DH   LINE      CODE     ---       #147
+      00FF008CH   LINE      CODE     ---       #144
+      00FF008EH   LINE      CODE     ---       #145
       00FF009DH   LINE      CODE     ---       #148
-      00FF009FH   LINE      CODE     ---       #149
-      00FF00AEH   LINE      CODE     ---       #151
-      00FF00B4H   LINE      CODE     ---       #152
-      00FF00B7H   LINE      CODE     ---       #153
+      00FF009DH   LINE      CODE     ---       #149
+      00FF009DH   LINE      CODE     ---       #150
+      00FF009FH   LINE      CODE     ---       #151
+      00FF00AEH   LINE      CODE     ---       #154
+      00FF00B4H   LINE      CODE     ---       #155
+      00FF00B7H   LINE      CODE     ---       #156
       ---         BLOCKEND  ---      ---       LVL=0
 
       00FF01C0H   BLOCK     CODE     ---       LVL=0
-      00FF01C0H   LINE      CODE     ---       #156
-      00FF01C0H   LINE      CODE     ---       #158
-      00FF01C3H   LINE      CODE     ---       #159
-      00FF01C6H   LINE      CODE     ---       #160
-      00FF01C9H   LINE      CODE     ---       #161
-      00FF01CCH   LINE      CODE     ---       #162
-      00FF01CEH   LINE      CODE     ---       #163
-      00FF01D0H   LINE      CODE     ---       #164
-      00FF01D2H   LINE      CODE     ---       #165
-      00FF01D4H   LINE      CODE     ---       #166
+      00FF01C0H   LINE      CODE     ---       #159
+      00FF01C0H   LINE      CODE     ---       #161
+      00FF01C3H   LINE      CODE     ---       #162
+      00FF01C6H   LINE      CODE     ---       #163
+      00FF01C9H   LINE      CODE     ---       #164
+      00FF01CCH   LINE      CODE     ---       #165
+      00FF01CEH   LINE      CODE     ---       #166
+      00FF01D0H   LINE      CODE     ---       #167
+      00FF01D2H   LINE      CODE     ---       #168
+      00FF01D4H   LINE      CODE     ---       #169
       ---         BLOCKEND  ---      ---       LVL=0
 
       00FF01A3H   BLOCK     CODE     ---       LVL=0
-      00FF01A3H   LINE      CODE     ---       #179
-      00FF01A3H   LINE      CODE     ---       #181
-      00FF01A9H   LINE      CODE     ---       #182
-      00FF01AFH   LINE      CODE     ---       #183
-      00FF01B2H   LINE      CODE     ---       #184
-      00FF01B2H   LINE      CODE     ---       #186
-      00FF01B5H   LINE      CODE     ---       #187
-      00FF01B8H   LINE      CODE     ---       #188
-      00FF01BBH   LINE      CODE     ---       #189
-      00FF01BEH   LINE      CODE     ---       #190
+      00FF01A3H   LINE      CODE     ---       #182
+      00FF01A3H   LINE      CODE     ---       #184
+      00FF01A9H   LINE      CODE     ---       #185
+      00FF01AFH   LINE      CODE     ---       #186
+      00FF01B2H   LINE      CODE     ---       #187
+      00FF01B2H   LINE      CODE     ---       #190
+      00FF01B5H   LINE      CODE     ---       #191
+      00FF01B8H   LINE      CODE     ---       #192
+      00FF01BBH   LINE      CODE     ---       #193
+      00FF01BEH   LINE      CODE     ---       #194
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       ?C_START
@@ -464,10 +464,6 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_01_流水灯 (main)
 
       ---         MODULE    ---      ---       ?C?INITEDATA_END
       00FF0231H   PUBLIC    HCONST   WORD      ?C?INITEDATA_END
-
-******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 01EEH BYTE (24%) *
-******************************************************************************
 
 Program Size: data=8.0 edata+hdata=284 xdata=0 const=74 code=488
 L251 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

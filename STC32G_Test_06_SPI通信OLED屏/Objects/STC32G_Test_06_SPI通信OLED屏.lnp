@@ -1,0 +1,7 @@
+".\Objects\main.obj",
+".\Objects\oled.obj",
+".\Objects\spi.obj" 
+TO ".\Objects\STC32G_Test_06_SPI通信OLED屏" 
+PRINT(".\Listings\STC32G_Test_06_SPI通信OLED屏.map") CASE 
+CLASSES (EDATA (0x0-0xFFF), 
+HDATA (0x0-0xFFF)) 

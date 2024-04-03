@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 1   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE oled
@@ -66,7 +66,7 @@ stmt  level    source
    56          {
    57   1          unsigned char udat[1] ;
    58   1          udat[0] = dat;
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 2   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 2   
 
    59   1          if( cmd==1 )
    60   1              IIC_Write_NByte(0X78,0x40,udat,1);
@@ -134,7 +134,7 @@ stmt  level    source
   121          // 当前版本: VER1.0
   122          // 修改日期: 2023 - 6 - 7
   123          // 当前作者: ZCF
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 3   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 3   
 
   124          // 其他备注:
   125          //========================================================================
@@ -202,7 +202,7 @@ stmt  level    source
   186          void OLED_DisplayOff(void)     //关显示
   187          {
   188   1          OLED_WR_Byte(0x8D,OLED_CMD);//电荷泵使能
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 4   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 4   
 
   189   1          OLED_WR_Byte(0x10,OLED_CMD);//关闭电荷泵
   190   1          OLED_WR_Byte(0xAF,OLED_CMD);//关闭屏幕        
@@ -265,12 +265,12 @@ stmt  level    source
   246          // 函数功能: OLED刷新显示
   247          // 入口参数: 无
   248          // 函数返回: 无
-  249          // 当前版本: VER1.0
-  250          // 修改日期: 2023 - 6 - 7
-  251          // 当前作者: ZCF
+  249          // 当前版本: VER1.1
+  250          // 修改日期: 2024 - 3 - 28
+  251          // 当前作者: ZCF, PatZer0
   252          // 其他备注:
   253          //========================================================================
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 5   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 5   
 
   254          void OLED_BuffShow(void)     
   255          {
@@ -338,7 +338,7 @@ stmt  level    source
   314   2              if( y1>y2 )
   315   2              {
   316   3                  for( y = y2; y <= y1; y++ )
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 6   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 6   
 
   317   3                     OLED_BuffShowPoint(x1, y); 
   318   3              }
@@ -373,9 +373,9 @@ stmt  level    source
   347          // 函数功能: OLED显示一个圆形
   348          // 入口参数: @x：x点  @y：y点  @r:半径
   349          // 函数返回: 无
-  350          // 当前版本: VER1.0
-  351          // 修改日期: 2023 - 6 - 7
-  352          // 当前作者: ZCF
+  350          // 当前版本: VER1.1
+  351          // 修改日期: 2024 - 3 - 28
+  352          // 当前作者: ZCF, PatZer0
   353          // 其他备注: 写入的是缓存，需要电调用OLED_BuffShow才能显示出来
   354          //========================================================================
   355          void OLED_BuffShowCircle(unsigned char x, unsigned char y, unsigned char r)
@@ -406,7 +406,7 @@ stmt  level    source
   380   2              OLED_BuffShowPoint(x_add_b, y_add_a);
   381   2              OLED_BuffShowPoint(x_sub_b, y_sub_a);        //2
   382   2              OLED_BuffShowPoint(x_add_a, y_add_b);        //7
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 7   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 7   
 
   383   2              //重写代码，避免C251报Warning
   384   2      
@@ -474,7 +474,7 @@ stmt  level    source
   442   2               &&(gbk[1] == GBK16[i].gbn_bum[1])
   443   2            )
   444   2              {
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 8   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 8   
 
   445   3                  for( j=0;j<2;j++ )
   446   3                  {
@@ -542,7 +542,7 @@ stmt  level    source
   507          //========================================================================
   508          void OLED_BuffShowNum(unsigned char x,unsigned char y,long num,unsigned char mode)
   509          {
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 9   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 9   
 
   510   1          unsigned char xdata str[10];
   511   1          memset(str,0,10);
@@ -610,7 +610,7 @@ stmt  level    source
              - BMP[])
   573          {   
   574   1          unsigned int xdata num=0;
-C251 COMPILER V5.60.0,  oled                                                               31/03/24  18:37:57  PAGE 10  
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:56  PAGE 10  
 
   575   1          unsigned char k,j;
   576   1          

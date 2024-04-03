@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               29/03/24  08:58:44  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:41  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    56   1          OLED_BuffShowString(0,2,"The quick brown fox jumps over the lazy dog.",0);      //ÏÔÊ¾Êý¾Ý
    57   1          OLED_BuffShow();                                                                //½«»º´æÐ´ÈëÏÔÊ¾ÆÁÏÔÊ
              -¾
-C251 COMPILER V5.60.0,  main                                                               29/03/24  08:58:44  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:41  PAGE 2   
 
    58   1      }
    59          
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          if(key2 == 0 && key2_up_store == 1)
   120   1          {
   121   2              key2_up_store = 0; // ±ê¼Ç°´¼ü±»°´ÏÂ
-C251 COMPILER V5.60.0,  main                                                               29/03/24  08:58:44  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:41  PAGE 3   
 
   122   2          }
   123   1          if(key2 == 1 && key2_up_store == 0)
@@ -202,7 +202,7 @@ stmt  level    source
   185   1      
   186   1          while (1)
   187   1          {
-C251 COMPILER V5.60.0,  main                                                               29/03/24  08:58:44  PAGE 4   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:41  PAGE 4   
 
   188   2              key1_check();                    //¼ì²é°´¼ü1
   189   2              key2_check();                    //¼ì²é°´¼ü2
@@ -270,7 +270,7 @@ stmt  level    source
   251   2      
   252   2      // //-----------------------------------------ÏÔÊ¾32´ó×Ö-----------------------------------------   
   253   2      //     OLED_BuffClear();                                                       //Çå³ýÈ«²¿»º´æ
-C251 COMPILER V5.60.0,  main                                                               29/03/24  08:58:44  PAGE 5   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:41  PAGE 5   
 
   254   2      //     OLED_BuffShowString(32,0,"´ó×Ö²âÊÔ");                                   //ÏÔÊ¾Êý¾Ý
   255   2      //     OLED_BuffShowChar32(24,3,1,0);                                          //ÏÔÊ¾Êý×Ö1

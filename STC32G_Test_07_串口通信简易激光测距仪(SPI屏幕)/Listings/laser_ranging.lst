@@ -1,0 +1,259 @@
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  18:58:06  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE laser_ranging
+OBJECT MODULE PLACED IN .\Objects\laser_ranging.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE Externals\laser_ranging.c XSMALL INTR2 BROWSE INCDIR(.\Internals;.\Ext
+                    -ernals) DEBUG PRINT(.\Listings\laser_ranging.lst) TABS(2) OBJECT(.\Objects\laser_ranging.obj) 
+
+stmt  level    source
+
+    1          /*
+    2          
+    3          激光测距模块
+    4          
+    5          通信参数：波特率9600bps, 8位数据位，1位起始位，1位停止位，无奇偶校验
+    6          电气参数：3.0~3.3V 100mA
+    7          
+    8          功能描述                       | 指令                      | 说明                                        
+             -           | 返回值(成功/错误)
+    9          -------------------------------|---------------------------|---------------------------------------------
+             ------------|-------------------------
+   10          读取版本号                      FA 06 00 FF                                                               
+             -           FA 06 81 ADDR xx xx xx  CS
+   11          读取参数                      FA 06 01 FF                                                                 
+             -         FA 06 84 “DAT1 DAT2……DAT16”
+   12          读取机器号                      FA 06 04 FC                                                               
+             -           FA 04 81 81 / FA 84 81 02 FF
+   13          设置地址                      FA 04 01 ADDR CS                                                            
+             -         FA 04 8B 77 / FA 84 8B 01 F6
+   14          距离修改                      FA 04 06 符号 0xXX CS       符号为-/+，-为0x2d，+为0x2b)，(0下XX为修正值，一
+             -个字节   
+   15          连续测量时设置数据返回时间间隔  FA 04 05 MeaInterver CS
+   16          设置距离起止点                  FA 04 08 Position CS        注释：起始点可前、后端选择
+   17          设定量程                      FA 04 09 Range CS           Range : 05,10,30,50,80m
+   18          设定频率                        FA 04 0A Freq CS            Freq : 05 10 20
+   19          设定分辨率                      FA 04 0C Resolution CS      Resolution : 1(1mm),2(0.1mm)
+   20          设定上电即测                  FA 04 0D Start CS           Start : 0(关闭),1(开启)
+   21          单次测量                        FA 06 06 FA                 广播命令，返回结果存入模块缓存
+   22          读取缓存                      ADDR 06 07 CS
+   23          单次测量（1mm）                 ADDR 06 02 CS
+   24          单次测量 (0.1mm)              ADDR 06 02 CS
+   25          连续测量（1mm）                 ADDR 06 03 CS 
+   26          连续测量（0.1mm）             ADDR 06 03 CS
+   27          控制激光打开或关闭              ADDR 06 05 LASER CS         LASER : 00 关闭，01 开启
+   28          关机                          ADDR 04 02 CS
+   29          
+   30          出厂设置可直接使用的指令（ADDR出厂为0x80）：
+   31          单次测量            80 06 02 78
+   32          连续测量            80 06 03 77
+   33          关机                80 04 02 7A
+   34          设置地址            FA 04 01 80 81
+   35          距离修改-1          FA 04 06 2D 01 CE
+   36          距离修改+1          FA 04 06 2B 01 D0
+   37          时间间隔(1S)        FA 04 05 01 FC
+   38          设置起始点 顶端     FA 04 08 01 F9
+   39          设置起始点 尾端     FA 04 08 00 FA
+   40          设置量程5m          FA 04 09 05 F4
+   41          设置量程10m         FA 04 09 0A EF 10m
+   42          设置量程30m         FA 04 09 1E DB 30m
+   43          设置量程50m         FA 04 09 32 C7 50m
+   44          设置量程80m         FA 04 09 50 A9 80m
+   45          设置频率1Hz         FA 04 0A 00 F8
+   46          设置频率5Hz         FA 04 0A 05 F3
+   47          设置频率10Hz        FA 04 0A 0A EE
+   48          设置频率20Hz        FA 04 0A 14 E4
+   49          设定分辨率1mm       FA 04 0C 01 F5
+   50          设定分辨率0.1mm     FA 04 0C 02 F4
+   51          设定上电就测关闭    FA 04 0D 00 F5
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  18:58:06  PAGE 2   
+
+   52          设定上电就测开启    FA 04 0D 01 F4
+   53          单次测量（广播）    FA 06 06 FA
+   54          读取缓存            80 06 07 73
+   55          控制激光开启        80 06 05 01 74
+   56          控制激光关闭        80 06 05 00 75
+   57          */
+   58          #include <STC32G.H>
+   59          #include <STDIO.H>
+   60          #include "uart.h"
+   61          #include "oled.h"
+   62          #include "laser_ranging.h"
+   63          
+   64          float LaserRanging_Value;           // 存储测距值
+   65          unsigned char LaserRanging_Char[16];// 存储测距值字符
+   66          unsigned char LaserRanging_Range = 10;                       // 距离值
+   67          unsigned char LaserRanging_Range_Index = 1;                  // 距离值索引
+   68          unsigned char LaserRanging_Ranges[] = {5, 10, 30, 50, 80};   // 距离值数组
+   69          
+   70          unsigned char LaserRanging_Cmd_Single[] = {0x80, 0x06, 0x02, 0x78};
+   71          unsigned char LaserRanging_Cmd_Continous[] = {0x80, 0x06, 0x03, 0x77};
+   72          unsigned char LaserRanging_Cmd_Shutdown[] = {0x80, 0x04, 0x02, 0x7A};
+   73          unsigned char LaserRanging_Cmd_SetFreq_1Hz[] = {0xFA, 0x04, 0x0A, 0x00, 0xF8};
+   74          unsigned char LaserRanging_Cmd_SetFreq_5Hz[] = {0xFA, 0x04, 0x0A, 0x05, 0xF3};
+   75          unsigned char LaserRanging_Cmd_SetFreq_10Hz[] = {0xFA, 0x04, 0x0A, 0x0A, 0xEE};
+   76          unsigned char LaserRanging_Cmd_SetFreq_20Hz[] = {0xFA, 0x04, 0x0A, 0x14, 0xE4};
+   77          unsigned char LaserRanging_Cmd_SetRange_5m[] = {0xFA, 0x04, 0x09, 0x05, 0xF4};
+   78          unsigned char LaserRanging_Cmd_SetRange_10m[] = {0xFA, 0x04, 0x09, 0x0A, 0xEF};
+   79          unsigned char LaserRanging_Cmd_SetRange_30m[] = {0xFA, 0x04, 0x09, 0x1E, 0xDB};
+   80          unsigned char LaserRanging_Cmd_SetRange_50m[] = {0xFA, 0x04, 0x09, 0x32, 0xC7};
+   81          unsigned char LaserRanging_Cmd_SetRange_80m[] = {0xFA, 0x04, 0x09, 0x50, 0xA9};
+   82          unsigned char LaserRanging_Cmd_SetResolution_1mm[] = {0xFA, 0x04, 0x0C, 0x01, 0xF5};
+   83          unsigned char LaserRanging_Cmd_SetResolution_0_1mm[] = {0xFA, 0x04, 0x0C, 0x02, 0xF4};
+   84          unsigned char LaserRanging_Cmd_Single_Broadcast[] = {0xFA, 0x06, 0x06, 0xFA};
+   85          unsigned char LaserRanging_Cmd_ReadCache[] = {0x80, 0x06, 0x07, 0x73};
+   86          unsigned char LaserRanging_Cmd_LaserOn[] = {0x80, 0x06, 0x05, 0x01, 0x74};
+   87          unsigned char LaserRanging_Cmd_LaserOff[] = {0x80, 0x06, 0x05, 0x00, 0x75};
+   88          
+   89          void LaserRanging_IRQHandler(void)
+   90          {
+   91   1          unsigned int i;
+   92   1          if (Uart1_RX_Buffer[0] == 0x80)
+   93   1          {
+   94   2              if(Uart1_RX_Counter > 2)
+   95   2              {
+   96   3                  if(Uart1_RX_Buffer[1] == 0x06 && Uart1_RX_Buffer[2] == 0x83)
+   97   3                  {
+   98   4                      if(Uart1_RX_Counter >= 11)
+   99   4                      {
+  100   5                          Uart1_RX_Counter=0;
+  101   5                          if( (Uart1_RX_Buffer[3]<0x34) && (Uart1_RX_Buffer[3]!='E') && (Uart1_RX_Buffer[4]!='R
+             -') && (Uart1_RX_Buffer[5]!='R') && (Uart1_RX_Buffer[10] == (unsigned char)(~(0x80+0x06+0x83+Uart1_RX_Buffer[3]+Uart1_RX_
+             -Buffer[4]+Uart1_RX_Buffer[5]+0x2E+Uart1_RX_Buffer[7]+Uart1_RX_Buffer[8]+Uart1_RX_Buffer[9])+1)) ) 
+  102   5                          {
+  103   6                              // LaserRanging_Value = (Uart1_RX_Buffer[4]-0x30)*10000+(Uart1_RX_Buffer[5]-0x30)
+             -*1000 + (Uart1_RX_Buffer[7]-0x30)*100 + (Uart1_RX_Buffer[8]-0x30)*10 + (Uart1_RX_Buffer[9]-0x30);                 
+  104   6                              // sprintf(LaserRanging_Char, "%f", LaserRanging_Value);
+  105   6                              // 将Uart1_RX_Buffer[3]~Uart1_RX_Buffer[10]存储到LaserRanging_Char数组中
+  106   6                              for(i=3;i<11;i++)
+  107   6                              {
+  108   7                                  LaserRanging_Char[i-3] = Uart1_RX_Buffer[i];
+  109   7                              }
+  110   6                              OLED_BuffShowString(0,2,"                ", 0);
+  111   6                              OLED_BuffShowString(8*4, 2, LaserRanging_Char, 0);
+  112   6                              OLED_BuffShowString(8*11, 2, "m", 0);
+  113   6                              OLED_BuffShowString(0, 4, "   持续测距中   ", 0);
+  114   6                              OLED_BuffShow();
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  18:58:06  PAGE 3   
+
+  115   6                          }
+  116   5                          else
+  117   5                          {
+  118   6                              // 错误信息
+  119   6                              OLED_BuffShowString(0, 4, "    测距错误    ", 1);
+  120   6                              OLED_BuffShow();
+  121   6                          }
+  122   5                      }
+  123   4                  }
+  124   3              }
+  125   2          }
+  126   1      }
+  127          
+  128          void LaserRanging_Continous()
+  129          {
+  130   1          Uart1_SendCmd(LaserRanging_Cmd_Continous, LASER_RANGING_CMD_CONTINOUS_LEN);
+  131   1      }
+  132          
+  133          void LaserRanging_LaserOff()
+  134          {
+  135   1          Uart1_SendCmd(LaserRanging_Cmd_LaserOff, LASER_RANGING_CMD_LASER_OFF_LEN);
+  136   1      }
+  137          
+  138          void LaserRanging_SetFreq_1Hz()
+  139          {
+  140   1          Uart1_SendCmd(LaserRanging_Cmd_SetFreq_1Hz, LASER_RANGING_CMD_SET_FREQ_1HZ_LEN);
+  141   1      }
+  142          
+  143          void LaserRanging_SetFreq_5Hz()
+  144          {
+  145   1          Uart1_SendCmd(LaserRanging_Cmd_SetFreq_5Hz, LASER_RANGING_CMD_SET_FREQ_5HZ_LEN);
+  146   1      }
+  147          
+  148          void LaserRanging_SetFreq_10Hz()
+  149          {
+  150   1          Uart1_SendCmd(LaserRanging_Cmd_SetFreq_10Hz, LASER_RANGING_CMD_SET_FREQ_10HZ_LEN);
+  151   1      }
+  152          
+  153          void LaserRanging_SetFreq_20Hz()
+  154          {
+  155   1          Uart1_SendCmd(LaserRanging_Cmd_SetFreq_20Hz, LASER_RANGING_CMD_SET_FREQ_20HZ_LEN);
+  156   1      }
+  157          
+  158          void LaserRanging_Range_Set()
+  159          {
+  160   1          if(LaserRanging_Range == 5)
+  161   1          {
+  162   2              Uart1_SendCmd(LaserRanging_Cmd_SetRange_5m, LASER_RANGING_CMD_SET_RANGE_5M_LEN);
+  163   2          }
+  164   1          else if(LaserRanging_Range == 10)
+  165   1          {
+  166   2              Uart1_SendCmd(LaserRanging_Cmd_SetRange_10m, LASER_RANGING_CMD_SET_RANGE_10M_LEN);
+  167   2          }
+  168   1          else if(LaserRanging_Range == 30)
+  169   1          {
+  170   2              Uart1_SendCmd(LaserRanging_Cmd_SetRange_30m, LASER_RANGING_CMD_SET_RANGE_30M_LEN);
+  171   2          }
+  172   1          else if(LaserRanging_Range == 50)
+  173   1          {
+  174   2              Uart1_SendCmd(LaserRanging_Cmd_SetRange_50m, LASER_RANGING_CMD_SET_RANGE_50M_LEN);
+  175   2          }
+  176   1          else if(LaserRanging_Range == 80)
+  177   1          {
+  178   2              Uart1_SendCmd(LaserRanging_Cmd_SetRange_80m, LASER_RANGING_CMD_SET_RANGE_80M_LEN);
+  179   2          }
+  180   1      }
+C251 COMPILER V5.60.0,  laser_ranging                                                      03/04/24  18:58:06  PAGE 4   
+
+  181          
+  182          void LaserRanging_Range_Increase()
+  183          {
+  184   1          LaserRanging_Range_Index++;
+  185   1          if(LaserRanging_Range_Index > 4)
+  186   1          {
+  187   2              LaserRanging_Range_Index = 4;
+  188   2          }
+  189   1          LaserRanging_Range = LaserRanging_Ranges[LaserRanging_Range_Index];
+  190   1          LaserRanging_Range_Set();
+  191   1      }
+  192          
+  193          void LaserRanging_Range_Decrease()
+  194          {
+  195   1          LaserRanging_Range_Index--;
+  196   1          if(LaserRanging_Range_Index < 0)
+  197   1          {
+  198   2              LaserRanging_Range_Index = 0;
+  199   2          }
+  200   1          LaserRanging_Range = LaserRanging_Ranges[LaserRanging_Range_Index];
+  201   1          LaserRanging_Range_Set();
+  202   1      }
+  203          
+  204          void LaserRanging_Init()
+  205          {
+  206   1          LaserRanging_Range = LaserRanging_Ranges[LaserRanging_Range_Index];
+  207   1          LaserRanging_Range_Set();
+  208   1          LaserRanging_SetFreq_20Hz();
+  209   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       490     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       112     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       229     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

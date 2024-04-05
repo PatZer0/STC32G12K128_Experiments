@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:21  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  18:20:45  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -37,10 +37,10 @@ stmt  level    source
    27          #define  DELAY_TIME   2000
    28          
    29          // ¶¨Òå°´¼üÒý½Å
-   30          sbit key1 = P2^0;
-   31          sbit key2 = P2^1;
-   32          sbit key3 = P2^2;
-   33          sbit key4 = P2^3;
+   30          sbit key1 = P1^0;
+   31          sbit key2 = P1^1;
+   32          sbit key3 = P1^3;
+   33          sbit key4 = P1^4;
    34          unsigned char key1_up_store = 1; // °´¼ü1×´Ì¬ÔÝ´æ
    35          unsigned char key2_up_store = 1; // °´¼ü2×´Ì¬ÔÝ´æ
    36          unsigned char key3_up_store = 1; // °´¼ü3×´Ì¬ÔÝ´æ
@@ -66,7 +66,7 @@ stmt  level    source
    56   1          OLED_BuffShowString(0,2,"The quick brown fox jumps over the lazy dog.",0);      //ÏÔÊ¾Êý¾Ý
    57   1          OLED_BuffShow();                                                                //½«»º´æÐ´ÈëÏÔÊ¾ÆÁÏÔÊ
              -¾
-C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:21  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  18:20:45  PAGE 2   
 
    58   1      }
    59          
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          if(key2 == 0 && key2_up_store == 1)
   120   1          {
   121   2              key2_up_store = 0; // ±ê¼Ç°´¼ü±»°´ÏÂ
-C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:21  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  18:20:45  PAGE 3   
 
   122   2          }
   123   1          if(key2 == 1 && key2_up_store == 0)
@@ -170,7 +170,7 @@ stmt  level    source
   153   2          }
   154   1      }
   155          
-  156          void sys_init()
+  156          void Sys_Init()
   157          {
   158   1          WTST = 0;  //ÉèÖÃ³ÌÐòÖ¸ÁîÑÓÊ±²ÎÊý£¬¸³ÖµÎª0¿É½«CPUÖ´ÐÐÖ¸ÁîµÄËÙ¶ÈÉèÖÃÎª×î¿ì
   159   1          EAXFR = 1; //À©Õ¹¼Ä´æÆ÷(XFR)·ÃÎÊÊ¹ÄÜ
@@ -191,10 +191,10 @@ stmt  level    source
   174   1          unsigned char i;
   175   1          float dat = -12.345;
   176   1      
-  177   1          sys_init();                         //ÏµÍ³³õÊ¼»¯
+  177   1          Sys_Init();                         //ÏµÍ³³õÊ¼»¯
   178   1          EA = 1;                             //¿ª×ÜÖÐ¶Ï
-  179   1          OLED_Init();                        //OLED³õÊ¼»¯
-  180   1      
+  179   1          SPI_Init();                         //SPI³õÊ¼»¯
+  180   1          OLED_Init();                        //OLED³õÊ¼»¯
   181   1          OLED_BuffClear();                               //Çå³ýÈ«²¿»º´æ
   182   1          OLED_BuffShowString(0,0,"Press any key to",0);  //ÏÔÊ¾Êý¾Ý
   183   1          OLED_BuffShowString(0,2,"start...",0);          //ÏÔÊ¾Êý¾Ý
@@ -202,7 +202,7 @@ stmt  level    source
   185   1      
   186   1          while (1)
   187   1          {
-C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:21  PAGE 4   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  18:20:45  PAGE 4   
 
   188   2              key1_check();                    //¼ì²é°´¼ü1
   189   2              key2_check();                    //¼ì²é°´¼ü2
@@ -270,7 +270,7 @@ stmt  level    source
   251   2      
   252   2      // //-----------------------------------------ÏÔÊ¾32´ó×Ö-----------------------------------------   
   253   2      //     OLED_BuffClear();                                                       //Çå³ýÈ«²¿»º´æ
-C251 COMPILER V5.60.0,  main                                                               03/04/24  15:03:21  PAGE 5   
+C251 COMPILER V5.60.0,  main                                                               03/04/24  18:20:45  PAGE 5   
 
   254   2      //     OLED_BuffShowString(32,0,"´ó×Ö²âÊÔ");                                   //ÏÔÊ¾Êý¾Ý
   255   2      //     OLED_BuffShowChar32(24,3,1,0);                                          //ÏÔÊ¾Êý×Ö1
@@ -304,7 +304,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      3607     ------
+  code size            =      3610     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

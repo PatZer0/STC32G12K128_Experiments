@@ -13,7 +13,13 @@ https://www.stcaimcu.com/forum.php?mod=viewthread&tid=2592
     - 精简了include部分，移除了文件中非必要的头文件，否则编译时有太多warnings；
 
 * 提示：
-    - 默认使用P3.2/P3.3端口，修改请看 iic.c -> IIC_Init() 函数。
+    - 连接屏幕默认使用端口为：
+      D0 - P2.5(SCLK)
+      D1 - P2.3(MOSI)
+      CS - P2.2(CS)
+      DC - P2.1(DC)
+      RES - P2.0(RES)
+      修改请看 spi.h 和 spi.c
     - 如需添加图片，可以使用 https://javl.github.io/image2cpp/ 将图片转为数组，注意 
       Draw Mode 需要为 Vertical，否则图片显示不正常，然后添加到 pic.h 中即可。
 
@@ -27,10 +33,10 @@ https://www.stcaimcu.com/forum.php?mod=viewthread&tid=2592
 #define  DELAY_TIME   2000
 
 // 定义按键引脚
-sbit key1 = P2^0;
-sbit key2 = P2^1;
-sbit key3 = P2^2;
-sbit key4 = P2^3;
+sbit key1 = P1^0;
+sbit key2 = P1^1;
+sbit key3 = P1^3;
+sbit key4 = P1^4;
 unsigned char key1_up_store = 1; // 按键1状态暂存
 unsigned char key2_up_store = 1; // 按键2状态暂存
 unsigned char key3_up_store = 1; // 按键3状态暂存
@@ -153,7 +159,7 @@ void key4_check()
     }
 }
 
-void sys_init()
+void Sys_Init()
 {
     WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
     EAXFR = 1; //扩展寄存器(XFR)访问使能
@@ -174,10 +180,10 @@ void main(void)
     unsigned char i;
     float dat = -12.345;
 
-    sys_init();                         //系统初始化
+    Sys_Init();                         //系统初始化
     EA = 1;                             //开总中断
+    SPI_Init();                         //SPI初始化
     OLED_Init();                        //OLED初始化
-
     OLED_BuffClear();                               //清除全部缓存
     OLED_BuffShowString(0,0,"Press any key to",0);  //显示数据
     OLED_BuffShowString(0,2,"start...",0);          //显示数据

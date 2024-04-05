@@ -1,0 +1,9 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "oled.h": "c",
+        "pic.h": "c",
+        "laser_ranging.h": "c",
+        "uart.h": "c"
+    }
+}

@@ -1,0 +1,1 @@
+"Internals\uart.c" XSMALL INTR2 BROWSE INCDIR(.\Internals;.\Externals) DEBUG PRINT(.\Listings\uart.lst) TABS (2) OBJECT(.\Objects\uart.obj)

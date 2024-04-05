@@ -9,7 +9,7 @@ sbit    SPI_MISO = P2^4;    //PIN2
 sbit    SPI_MOSI = P2^3;    //PIN5
 sbit    SPI_SCK = P2^5;     //PIN6
 //------------------------------------------函数声明------------------------------------------
-void SPI_init(void);
+void SPI_Init(void);
 void SPI_WriteByte(unsigned char out);
     
 

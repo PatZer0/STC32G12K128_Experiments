@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 1   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE oled
@@ -66,7 +66,7 @@ stmt  level    source
    56          void OLED_WR_Byte(unsigned char dat,unsigned char cmd)
    57          {
    58   1          unsigned char udat[1] ;
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 2   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 2   
 
    59   1          udat[0] = dat;
    60   1          if(cmd)
@@ -97,6 +97,7 @@ stmt  level    source
    85          void OLED_Init(void)
    86          {
    87   1          SPI_init();
+*** WARNING C140 IN LINE 87 OF oled.c: 'SPI_init' undefined; assuming 'extern int SPI_init()'
    88   1          delay_ms(100);
    89   1          OLED_REST = 1;
    90   1          delay_ms(200);
@@ -133,9 +134,9 @@ stmt  level    source
   120   1          OLED_WR_Byte(0xA4,OLED_CMD);// Disable Entire Display On (0xa4/0xa5)
   121   1          OLED_WR_Byte(0xA6,OLED_CMD);// Disable Inverse Display On (0xa6/a7) 
   122   1          OLED_WR_Byte(0xAF,OLED_CMD);
-  123   1          
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 3   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 3   
 
+  123   1          
   124   1          OLED_DisplayOn();
   125   1      }
   126          
@@ -201,9 +202,9 @@ stmt  level    source
   185   1          OLED_WR_Byte(0xAF,OLED_CMD);//点亮屏幕       
   186   1      }
   187            
-  188          //========================================================================
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 4   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 4   
 
+  188          //========================================================================
   189          // 函数名称: OLED_DisplayOff
   190          // 函数功能: OLED关显示
   191          // 入口参数: 无
@@ -269,9 +270,9 @@ stmt  level    source
   251   1          unsigned char xdata i,n,j;
   252   1          for(i=0;i<8;i++)
   253   1          {
-  254   2              j = 0xb0 + i;             //C251更加严谨，这样写以避免warning
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 5   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 5   
 
+  254   2              j = 0xb0 + i;             //C251更加严谨，这样写以避免warning
   255   2              OLED_WR_Byte(j,OLED_CMD); //设置行起始地址
   256   2              OLED_WR_Byte(0x00,OLED_CMD);   //设置低列起始地址    // 修改低列起始，否则测试用屏幕显示不全
   257   2              OLED_WR_Byte(0x10,OLED_CMD);   //设置高列起始地址
@@ -337,9 +338,9 @@ stmt  level    source
   315   2              {
   316   3                  for( y = y1; y <= y2; y++ )
   317   3                     OLED_BuffShowPoint(x1, y);             
-  318   3              }
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 6   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 6   
 
+  318   3              }
   319   2          }
   320   1      }
   321          
@@ -405,9 +406,9 @@ stmt  level    source
   381   2       
   382   2              //使用Bresenham算法画圆
   383   2              if (di < 0)di += 4 * a + 6;
-  384   2              else
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 7   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 7   
 
+  384   2              else
   385   2              {
   386   3                  di += 10 + 4 * (a - b);
   387   3                  b--;
@@ -473,9 +474,9 @@ stmt  level    source
   445   5                              ShowBUFF[j+y][x+k]=GBK16[i].gbk_font[j*16+k];
   446   5                          else
   447   5                              ShowBUFF[j+y][x+k]=~GBK16[i].gbk_font[j*16+k];
-  448   5                      }
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 8   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 8   
 
+  448   5                      }
   449   4                  }
   450   3                  break;
   451   3              }
@@ -541,9 +542,9 @@ stmt  level    source
   511          //========================================================================
   512          // 函数名称: OLED_BuffShowNum02F
   513          // 函数功能: OLED显示一个两位小数变量
-  514          // 入口参数: @x：x点  @y：y点  @num：小数变量   @mode：0正显  1反显
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 9   
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 9   
 
+  514          // 入口参数: @x：x点  @y：y点  @num：小数变量   @mode：0正显  1反显
   515          // 函数返回: 无
   516          // 当前版本: VER1.0
   517          // 修改日期: 2023 - 6 - 7
@@ -609,9 +610,9 @@ stmt  level    source
   576   3                  ShowBUFF[j+y0][x0+k]=BMP[num++];
   577   3              }
   578   2          }  
-  579   1      } 
-C251 COMPILER V5.60.0,  oled                                                               03/04/24  15:03:22  PAGE 10  
+C251 COMPILER V5.60.0,  oled                                                               03/04/24  18:06:50  PAGE 10  
 
+  579   1      } 
   580           
 
 
@@ -636,4 +637,4 @@ Module Information          Static   Overlayable
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

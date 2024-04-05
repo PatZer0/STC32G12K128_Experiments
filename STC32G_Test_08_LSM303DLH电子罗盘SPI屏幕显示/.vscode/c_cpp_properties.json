@@ -5,6 +5,9 @@
             "includePath": [
                 "C:\\Keil_v5\\C251\\INC",
                 "C:\\Keil_v5\\C251\\INC\\STC",
+                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示",
+                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示\\Internals",
+                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示\\Externals",
                 "${default}",
                 "${workspaceFolder}/**"
             ],

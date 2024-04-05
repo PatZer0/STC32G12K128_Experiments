@@ -1,0 +1,269 @@
+C251 COMPILER V5.60.0,  lsm303                                                             05/04/24  20:20:56  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE lsm303
+OBJECT MODULE PLACED IN .\Objects\lsm303.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE Externals\lsm303.c XSMALL INTR2 BROWSE INCDIR(.\Internals;.\Externals)
+                    - DEBUG PRINT(.\Listings\lsm303.lst) TABS(2) OBJECT(.\Objects\lsm303.obj) 
+
+stmt  level    source
+
+    1          #include <STC32G.H>
+    2          #include <MATH.H>
+    3          #include <STDIO.H>
+    4          #include "stdint.h"
+    5          #include "lsm303.h"
+    6          #include "oled.h"
+    7          
+    8          unsigned char LSM303_Buffer[8];         //接收数据缓存区
+    9          int Output_Data;
+   10          
+   11          //单字节写入LSM303内部数据*******************************
+   12          void LSM303_Single_Write(unsigned char SlaveAddress,unsigned char REG_Address,unsigned char REG_data)
+   13          {
+   14   1          IIC_START();                  //起始信号
+   15   1          IIC_SENDBYTE(SlaveAddress);   //发送设备地址+写信号
+   16   1          IIC_SENDBYTE(REG_Address);    //内部寄存器地址
+   17   1          IIC_SENDBYTE(REG_data);       //内部寄存器数据
+   18   1          IIC_STOP();                   //发送停止信号
+   19   1      }
+   20          
+   21          //单字节读取LSM303内部数据********************************
+   22          unsigned char LSM303_Single_Read(unsigned char SlaveAddress,unsigned char REG_Address)
+   23          {   
+   24   1          unsigned char REG_data;
+   25   1          IIC_START();                          //起始信号
+   26   1          IIC_SENDBYTE(SlaveAddress);           //发送设备地址+写信号
+   27   1          IIC_SENDBYTE(REG_Address);            //发送存储单元地址
+   28   1          IIC_START();                          //起始信号
+   29   1          IIC_SENDBYTE(SlaveAddress+1);         //发送设备地址+读信号
+*** WARNING C188 IN LINE 29 OF Externals\lsm303.c: 'parameter 1': value truncated
+   30   1          REG_data = IIC_READBYTE();              //读出寄存器数据
+   31   1          IIC_SENDACK();
+   32   1          IIC_STOP();                           //停止信号
+   33   1          return REG_data;
+   34   1      }
+   35          
+   36          //连续读出LSM303内部数据
+   37          void LSM303_Continuous_Read(unsigned char SlaveAddress,unsigned char ST_Address)
+   38          {   
+   39   1          unsigned char i;
+   40   1          IIC_START();                            //起始信号
+   41   1          IIC_SENDBYTE(SlaveAddress);             //发送设备地址+写信号
+   42   1          IIC_SENDBYTE(ST_Address);               //发送存储单元地址
+   43   1          IIC_START();                            //起始信号
+   44   1          IIC_SENDBYTE(SlaveAddress+1);           //发送设备地址+读信号
+*** WARNING C188 IN LINE 44 OF Externals\lsm303.c: 'parameter 1': value truncated
+   45   1          for (i=0; i<6; i++)                     //连续读取6个地址数据，存储中BUF
+   46   1          {
+   47   2              LSM303_Buffer[i] = IIC_READBYTE();            //LSM303_Buffer[0]存储
+   48   2              if (i == 5)
+   49   2              {
+   50   3                  IIC_SENDNACK();                 //最后一个数据需要回NOACK
+   51   3              }
+   52   2              else
+   53   2              {
+   54   3                  IIC_SENDACK();                  //回应ACK
+   55   3              }
+   56   2          }
+C251 COMPILER V5.60.0,  lsm303                                                             05/04/24  20:20:56  PAGE 2   
+
+   57   1          IIC_STOP();                             //停止信号
+   58   1          IIC_DELAY();                            //延时
+   59   1      }
+   60          
+   61          //加速度显示x轴
+   62          void LSM303_Get_Acc_X()
+   63          {
+   64   1          float Acc_X;
+   65   1          unsigned char Acc_X_Str[16];
+   66   1          LSM303_Buffer[0]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x28);    //OUT_X_L_A
+   67   1          LSM303_Buffer[1]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x29);    //OUT_X_H_A
+   68   1          Output_Data=(LSM303_Buffer[1]<<8)+LSM303_Buffer[0];                 //合成数据
+   69   1      
+   70   1          // OLED显示X轴
+   71   1          OLED_BuffShowString(0,0,"X:",0);              //第0行，第0列 显示X
+   72   1          if(Output_Data<0) 
+   73   1          {
+   74   2              Output_Data=-Output_Data;
+   75   2              OLED_BuffShowString(2*8,0,"-",0);         //显示正负符号位
+   76   2          }
+   77   1          else
+   78   1          {
+   79   2              OLED_BuffShowString(2*8,0," ",0);         //显示空格
+   80   2          }
+   81   1          Acc_X = (float)Output_Data;///16.383;         //计算数据和显示
+   82   1          sprintf(Acc_X_Str, "%f", Acc_X);
+   83   1          OLED_BuffShowString(3*8,0,Acc_X_Str,0);       //显示数据
+   84   1          OLED_BuffShow();
+   85   1      }
+   86          
+   87          //加速度显示y轴
+   88          void LSM303_Get_Acc_Y()
+   89          {
+   90   1          float Acc_Y;
+   91   1          unsigned char Acc_Y_Str[16];
+   92   1          LSM303_Buffer[0]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2a);    //OUT_Y_L_A
+   93   1          LSM303_Buffer[1]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2b);    //OUT_Y_H_A
+   94   1          Output_Data=(LSM303_Buffer[3]<<8)+LSM303_Buffer[2];                 //合成数据
+   95   1      
+   96   1          // OLED显示Y轴
+   97   1          OLED_BuffShowString(0,2,"Y:",0);              //第1行，第0列 显示Y
+   98   1          if(Output_Data<0) 
+   99   1          {
+  100   2              Output_Data=-Output_Data;
+  101   2              OLED_BuffShowString(2*8,2,"-",0);         //显示正负符号位
+  102   2          }
+  103   1          else
+  104   1          {
+  105   2              OLED_BuffShowString(2*8,2," ",0);         //显示空格
+  106   2          }
+  107   1          Acc_Y = (float)Output_Data;///16.383;         //计算数据和显示
+  108   1          sprintf(Acc_Y_Str, "%f", Acc_Y);
+  109   1          OLED_BuffShowString(3*8,2,Acc_Y_Str,0);       //显示数据
+  110   1          OLED_BuffShow();
+  111   1      }
+  112          
+  113          //加速度显示z轴
+  114          void LSM303_Get_Acc_Z()
+  115          {
+  116   1          float Acc_Z;
+  117   1          unsigned char Acc_Z_Str[16];
+  118   1          LSM303_Buffer[0]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2c);    //OUT_Z_L_A
+  119   1          LSM303_Buffer[1]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2d);    //OUT_Z_H_A
+  120   1          Output_Data=(LSM303_Buffer[5]<<8)+LSM303_Buffer[4];                 //合成数据
+  121   1      
+  122   1          // OLED显示Z轴
+C251 COMPILER V5.60.0,  lsm303                                                             05/04/24  20:20:56  PAGE 3   
+
+  123   1          OLED_BuffShowString(0,4,"Z:",0);              //第2行，第0列 显示Z
+  124   1          if(Output_Data<0) 
+  125   1          {
+  126   2              Output_Data=-Output_Data;
+  127   2              OLED_BuffShowString(2*8,4,"-",0);         //显示正负符号位
+  128   2          }
+  129   1          else
+  130   1          {
+  131   2              OLED_BuffShowString(2*8,4," ",0);         //显示空格
+  132   2          }
+  133   1          Acc_Z = (float)Output_Data;///16.383;         //计算数据和显示
+  134   1          sprintf(Acc_Z_Str, "%f", Acc_Z);
+  135   1          OLED_BuffShowString(3*8,4,Acc_Z_Str,0);       //显示数据
+  136   1          OLED_BuffShow();
+  137   1      }
+  138          
+  139          
+  140          
+  141          // //加速度显示y轴
+  142          // void display_y()
+  143          // {   float temp;
+  144          //     LSM303_Buffer[2]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2a);//OUT_Y_L_A
+  145          //     LSM303_Buffer[3]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2b);//OUT_Y_H_A
+  146          
+  147          
+  148          //     Output_Data=(LSM303_Buffer[3]<<8)+LSM303_Buffer[2];  //合成数据
+  149          //     if(Output_Data<0) {
+  150          //         Output_Data=-Output_Data;
+  151          //         DisplayOneChar(2,1,'-');      //显示正负符号位
+  152          //     }
+  153          //     else DisplayOneChar(2,1,' '); //显示空格
+  154          
+  155          //     temp=(float)Output_Data/16.383;  //计算数据和显示
+  156          //     LSM303_ConvertData(temp);          //转换出显示需要的数据
+  157          //     DisplayOneChar(0,1,'Y');   //第1行，第0列 显示y
+  158          //     DisplayOneChar(1,1,':');
+  159          //     DisplayOneChar(3,1,qian);
+  160          //     DisplayOneChar(4,1,'.');
+  161          //     DisplayOneChar(5,1,bai);
+  162          //     //  DisplayOneChar(6,1,shi);
+  163          //     DisplayOneChar(6,1,'g');
+  164          // }
+  165          
+  166          // //加速度显示z轴
+  167          // void display_z()
+  168          // {   float temp;
+  169          //     LSM303_Buffer[4]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2c);//OUT_Z_L_A
+  170          //     LSM303_Buffer[5]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2d);//OUT_Z_H_A
+  171          
+  172          //     Output_Data=(LSM303_Buffer[5]<<8)+LSM303_Buffer[4];  //合成数据
+  173          //     if(Output_Data<0) {
+  174          //         Output_Data=-Output_Data;
+  175          //         DisplayOneChar(11,1,'-');     //显示负符号位
+  176          //     }
+  177          //     else DisplayOneChar(11,1,' ');//显示空格
+  178          
+  179          //     temp=(float)Output_Data/16.383;  //计算数据和显示
+  180          //     LSM303_ConvertData(temp);             //转换出显示需要的数据
+  181          //     DisplayOneChar(9,1,'Z');      //第0行，第10列 显示Z
+  182          //     DisplayOneChar(10,1,':');
+  183          //     DisplayOneChar(12,1,qian);
+  184          //     DisplayOneChar(13,1,'.');
+  185          //     DisplayOneChar(14,1,bai);
+  186          //     // DisplayOneChar(14,1,shi);
+  187          //     DisplayOneChar(15,1,'g');
+  188          // }
+C251 COMPILER V5.60.0,  lsm303                                                             05/04/24  20:20:56  PAGE 4   
+
+  189          
+  190          // void display_Angle(void)
+  191          // {   int x,y,z;
+  192          //     double  angle;
+  193          
+  194          //     x=LSM303_Buffer[0] << 8 | LSM303_Buffer[1]; //Combine MSB and LSB of X Data output register
+  195          //     y=LSM303_Buffer[2] << 8 | LSM303_Buffer[3]; //Combine MSB and LSB of Z Data output register
+  196          //     z=LSM303_Buffer[4] << 8 | LSM303_Buffer[5]; //Combine MSB and LSB of Y Data output register
+  197          
+  198          //     angle= atan2((double)y,(double)x) * (180 / 3.14159265) + 180; // angle in degrees
+  199          //     angle*=10;
+  200          
+  201          //     LSM303_ConvertData(angle);       //计算数据和显示
+  202          //     DisplayOneChar(9,0,'A');
+  203          //     DisplayOneChar(10,0,':');
+  204          //     DisplayOneChar(11,0,qian);
+  205          //     DisplayOneChar(12,0,bai);
+  206          //     DisplayOneChar(13,0,shi);
+  207          //     DisplayOneChar(14,0,'.');
+  208          //     DisplayOneChar(15,0,ge);
+  209          // }
+  210          
+  211          //初始化LSM303A(加速度)，根据需要请参考pdf进行修改
+  212          void LSM303_Acc_Init()
+  213          {
+  214   1          LSM303_Single_Write(LSM303DLH_ACC_ADDRESS,0x20,0x27);  //测量范围, 正负2g, 16位模式
+  215   1      }
+  216          
+  217          //初始化LSM303M(磁场)，根据需要请参考pdf进行修改
+  218          void LSM303_Mag_Init()
+  219          {
+  220   1          LSM303_Single_Write(LSM303DLH_MAG_ADDRESS,0x02,0x00);  //
+  221   1      }
+  222          
+  223          void LSM303_Init()
+  224          {
+  225   1          LSM303_Acc_Init();
+  226   1          LSM303_Mag_Init();
+  227   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       646     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        10         48
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        16     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

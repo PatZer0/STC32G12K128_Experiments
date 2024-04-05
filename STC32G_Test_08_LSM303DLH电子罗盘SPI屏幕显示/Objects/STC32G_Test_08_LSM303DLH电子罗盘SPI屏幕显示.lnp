@@ -1,0 +1,9 @@
+".\Objects\main.obj",
+".\Objects\spi.obj",
+".\Objects\iic.obj",
+".\Objects\lsm303.obj",
+".\Objects\oled.obj" 
+TO ".\Objects\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示" 
+PRINT(".\Listings\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示.map") CASE 
+CLASSES (EDATA (0x0-0xFFF), 
+HDATA (0x0-0xFFF)) 

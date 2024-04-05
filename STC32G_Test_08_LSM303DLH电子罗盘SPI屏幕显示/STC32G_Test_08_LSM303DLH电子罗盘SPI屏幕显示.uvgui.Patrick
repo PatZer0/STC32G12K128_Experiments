@@ -59,8 +59,8 @@
     <View>
       <WinId>466</WinId>
       <ViewName>Source Browser</ViewName>
-      <UserString>300</UserString>
-      <TableColWidths>0</TableColWidths>
+      <UserString>500</UserString>
+      <TableColWidths>300</TableColWidths>
     </View>
   </TreeListPane>
 

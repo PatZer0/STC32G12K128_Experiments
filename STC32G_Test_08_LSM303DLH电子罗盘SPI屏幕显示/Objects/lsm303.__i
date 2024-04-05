@@ -1,0 +1,1 @@
+"Externals\lsm303.c" XSMALL INTR2 BROWSE INCDIR(.\Internals;.\Externals) DEBUG PRINT(.\Listings\lsm303.lst) TABS (2) OBJECT(.\Objects\lsm303.obj)

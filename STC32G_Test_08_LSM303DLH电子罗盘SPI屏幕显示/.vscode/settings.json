@@ -3,6 +3,15 @@
     "files.associations": {
         "string.h": "c",
         "pic.h": "c",
-        "iic.h": "c"
+        "iic.h": "c",
+        "STC_LSM303DLH.C": "cpp",
+        "lsm303.h": "c",
+        "font.h": "c",
+        "oled.h": "c",
+        "intrins.h": "c",
+        "INTRINS.H": "cpp",
+        "stdint.h": "c",
+        "math.h": "c",
+        "MATH.H": "cpp"
     }
 }

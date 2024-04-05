@@ -29,6 +29,7 @@
 #include "oled.h"
 #include "pic.h"
 #include "iic.h"
+#include "lsm303.h"
 
 // 定义按键引脚
 sbit key1 = P1^0;
@@ -40,51 +41,24 @@ unsigned char key2_up_store = 1; // 按键2状态暂存
 unsigned char key3_up_store = 1; // 按键3状态暂存
 unsigned char key4_up_store = 1; // 按键4状态暂存
 
-void OLED_LaserRanging_UI_OnOff()
+void OLED_LSM303DLH_UI_OnOff()
 {
-    if(!LaserRanging_State)
-    {
-        OLED_BuffShowString(0,6,"OFF",0);  //显示数据
-        OLED_BuffShow();                    //将缓存写入显示屏显示
-    }
-    else
-    {
-        OLED_BuffShowString(0,6,"ON ",0);  //显示数据
-        OLED_BuffShow();                    //将缓存写入显示屏显示
-    }
 }
 
-void OLED_LaserRanging_UI_Range()
+void OLED_LSM303DLH_UI_Range()
 {
-    if(LaserRanging_Range == 5)
-    {
-        OLED_BuffShowString(8*(16-4),0," ",1);
-        OLED_BuffShowNum(8*(16-3),0,LaserRanging_Range,1);
-        OLED_BuffShowString(8*(16-2),0,"米",1);
-        OLED_BuffShow();                      //将缓存写入显示屏显示
-    }
-    else
-    {
-        OLED_BuffShowNum(8*(16-4),0,LaserRanging_Range,1);
-        OLED_BuffShowString(8*(16-2),0,"米",1);
-        OLED_BuffShow();                      //将缓存写入显示屏显示
-    }
 }
 
-void OLED_LaserRanging_UI_Refresh()
+void OLED_LSM303DLH_UI_Refresh()
 {
-    OLED_BuffShowString(0,0,"激光测距        ",1);
-    OLED_BuffShowString(0,2,"   按KEY4开始   ", 0);
-    OLED_BuffShowString(0,6,"          [+][-]",0);
-    OLED_BuffShow();                                //将缓存写入显示屏显示
 }
 
-void OLED_LaserRanging_UI_Init()
+void OLED_LSM303DLH_UI_Init()
 {
-    OLED_BuffClear();                           //清除全部缓存
-    OLED_LaserRanging_UI_Refresh();             //刷新激光测距UI
-    OLED_LaserRanging_UI_OnOff();               //显示激光测距状态
-    OLED_LaserRanging_UI_Range();           //显示距离值
+    OLED_BuffClear();                       //清除全部缓存
+    OLED_LSM303DLH_UI_Refresh();            //刷新UI
+    OLED_LSM303DLH_UI_OnOff();              //显示状态
+    OLED_LSM303DLH_UI_Range();              //显示距离值
 }
 
 void OLED_Loading()
@@ -114,7 +88,7 @@ void key4_short_press()
     // 短按键4功能
 }
 
-void key1_check() 
+void key1_check()
 {
     if(key1 == 0 && key1_up_store == 1)
     {
@@ -166,17 +140,6 @@ void key4_check()
     if(key4 == 0 && key4_up_store == 1)
     {
         key4_up_store = 0; // 标记按键被按下
-        if(!LaserRanging_State)
-        {
-            OLED_BuffShowString(0,6,"OFF",1);  //显示数据
-            OLED_BuffShow();                    //将缓存写入显示屏显示
-        }
-        else
-        {
-            OLED_BuffShowString(0,6,"ON ",1);  //显示数据
-            OLED_BuffShow();                    //将缓存写入显示屏显示
-        }
-
     }
     if(key4 == 1 && key4_up_store == 0)
     {
@@ -206,14 +169,21 @@ void main(void)
 {
     EA = 1;                             //开总中断
     Sys_Init();                         //系统初始化
-    SPI_Init();                         //SPI初始化
-    IIC_Init();                         //IIC初始化
+    SPI_init();                         //SPI初始化
     OLED_Init();                        //OLED初始化
+    OLED_BuffClear();                   //清除全部缓存
+    OLED_BuffShow();                    //将缓存写入显示屏显示
+    IIC_Init();                         //IIC初始化
+    LSM303_Init();                      //LSM303初始化
     while (1)
     {
         key1_check();                   //检查按键1
         key2_check();                   //检查按键2
         key3_check();                   //检查按键3
         key4_check();                   //检查按键4
+        LSM303_Get_Acc_X();             //获取加速度X轴数据
+        LSM303_Get_Acc_Y();             //获取加速度Y轴数据
+        LSM303_Get_Acc_Z();             //获取加速度Z轴数据
+        delay_ms(100);                  //延时100ms
     }
 }

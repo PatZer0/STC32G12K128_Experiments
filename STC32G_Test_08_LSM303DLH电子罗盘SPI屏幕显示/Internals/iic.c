@@ -15,7 +15,9 @@ void IIC_Init()				//IIC初始化
 {
     I2C_S1 =2;              //I2C功能脚选择，00:P1.5,P1.4; 01:P2.5,P2.4; 11:P3.2,P3.3
     I2C_S0 =1;
-    I2CCFG = 0XE0;			//设置速度和使能IIC
+    I2CCFG = 0XC0 + 0x13;	//设置速度MSSPEED[5:0]和使能IIC    
+    // I2C总线速度  = SYS_CLK / 2 / (MSSPEED * 2 + 4)
+    // 0x13 = 19d，394257.37 Hz，约等于400kHz
     I2CMSST = 0;			//清空主机状态
 }
 
@@ -147,10 +149,9 @@ void IIC_SENDBYTE(unsigned char dat)	//发送一个字节
 unsigned char IIC_READBYTE(void)	//读取一个字节
 {
     I2CMSCR = 0X04;			//发送
-    IIC_DELAY();		
+    IIC_DELAY();
     return I2CRXD;
 }
-
 
 
 //========================================================================
@@ -217,5 +218,3 @@ void IIC_Read_NByte( unsigned char slave,unsigned char addr,unsigned char *p,uns
     IIC_SENDNACK();
     IIC_STOP();	
 }
-
-	

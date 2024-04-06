@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               05/04/24  20:20:56  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               06/04/24  15:09:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -36,185 +36,204 @@ stmt  level    source
    26          -----------------------------------------------------------------------------------------*/
    27          #include <STRING.H>
    28          #include <STC32G.H>
-   29          #include "oled.h"
-   30          #include "pic.h"
-   31          #include "iic.h"
-   32          #include "lsm303.h"
-   33          
-   34          // 定义按键引脚
-   35          sbit key1 = P1^0;
-   36          sbit key2 = P1^1;
-   37          sbit key3 = P1^3;
-   38          sbit key4 = P1^4;
-   39          unsigned char key1_up_store = 1; // 按键1状态暂存
-   40          unsigned char key2_up_store = 1; // 按键2状态暂存
-   41          unsigned char key3_up_store = 1; // 按键3状态暂存
-   42          unsigned char key4_up_store = 1; // 按键4状态暂存
-   43          
-   44          void OLED_LSM303DLH_UI_OnOff()
-   45          {
-   46   1      }
-   47          
-   48          void OLED_LSM303DLH_UI_Range()
-   49          {
-   50   1      }
-   51          
-   52          void OLED_LSM303DLH_UI_Refresh()
-   53          {
+   29          #include <STDIO.H>
+   30          #include "oled.h"
+   31          #include "pic.h"
+   32          #include "iic.h"
+   33          #include "lsm303.h"
+   34          
+   35          // 定义按键引脚
+   36          sbit key1 = P1^0;
+   37          sbit key2 = P1^1;
+   38          sbit key3 = P1^3;
+   39          sbit key4 = P1^4;
+   40          unsigned char key1_up_store = 1; // 按键1状态暂存
+   41          unsigned char key2_up_store = 1; // 按键2状态暂存
+   42          unsigned char key3_up_store = 1; // 按键3状态暂存
+   43          unsigned char key4_up_store = 1; // 按键4状态暂存
+   44          
+   45          void OLED_LSM303DLH_AccX_GetDataNShow()
+   46          {
+   47   1          float Acc;
+   48   1          unsigned char Str[10];
+   49   1          Acc = LSM303_Read_Mag('x');
+   50   1          OLED_BuffShowString(0,0,"X:",0);
+   51   1          sprintf(Str, "%f", Acc);
+   52   1          OLED_BuffShowString(2*8,0,Str,0);
+   53   1          OLED_BuffShow();
    54   1      }
    55          
-   56          void OLED_LSM303DLH_UI_Init()
-   57          {
-   58   1          OLED_BuffClear();                       //清除全部缓存
-C251 COMPILER V5.60.0,  main                                                               05/04/24  20:20:56  PAGE 2   
+   56          // void OLED_LSM303DLH_AccY_GetDataNShow()
+   57          // {
+   58          //     float Acc;
+C251 COMPILER V5.60.0,  main                                                               06/04/24  15:09:00  PAGE 2   
 
-   59   1          OLED_LSM303DLH_UI_Refresh();            //刷新UI
-   60   1          OLED_LSM303DLH_UI_OnOff();              //显示状态
-   61   1          OLED_LSM303DLH_UI_Range();              //显示距离值
-   62   1      }
-   63          
-   64          void OLED_Loading()
-   65          {
-   66   1          OLED_BuffClear();                               //清除全部缓存
-   67   1          OLED_BuffShowString(0,3,"   PLEASE WAIT  ",1);  //显示数据
-   68   1          OLED_BuffShow();                                //将缓存写入显示屏显示
-   69   1      }
-   70          
-   71          void key1_short_press()
-   72          {
-   73   1          // 短按键1功能
-   74   1      }
-   75          
-   76          void key2_short_press()
-   77          {
-   78   1          // 短按键2功能
-   79   1      }
-   80          
-   81          void key3_short_press()
-   82          {
-   83   1          // 短按键3功能
-   84   1      }
-   85          
-   86          void key4_short_press()
-   87          {
-   88   1          // 短按键4功能
-   89   1      }
-   90          
-   91          void key1_check()
-   92          {
-   93   1          if(key1 == 0 && key1_up_store == 1)
-   94   1          {
-   95   2              key1_up_store = 0; // 标记按键被按下
-   96   2              OLED_BuffShowString(13*8,6,"[-]",1);  //显示数据
-   97   2              OLED_BuffShow();                    //将缓存写入显示屏显示
-   98   2          }
-   99   1          if(key1 == 1 && key1_up_store == 0)
-  100   1          {
-  101   2              key1_up_store = 1; // 标记按键被释放
-  102   2              key1_short_press(); // 触发短按键1功能
-  103   2              OLED_BuffShowString(13*8,6,"[-]",0);  //显示数据
-  104   2              OLED_BuffShow();                    //将缓存写入显示屏显示
-  105   2          }
-  106   1      }
-  107          
-  108          void key2_check()
-  109          {
-  110   1          if(key2 == 0 && key2_up_store == 1)
-  111   1          {
-  112   2              key2_up_store = 0; // 标记按键被按下
-  113   2              OLED_BuffShowString(10*8,6,"[+]",1);  //显示数据
-  114   2              OLED_BuffShow();                    //将缓存写入显示屏显示
-  115   2          }
-  116   1          if(key2 == 1 && key2_up_store == 0)
-  117   1          {
-  118   2              key2_up_store = 1; // 标记按键被释放
-  119   2              key2_short_press(); // 触发短按键2功能
-  120   2              OLED_BuffShowString(10*8,6,"[+]",0);  //显示数据
-  121   2              OLED_BuffShow();                    //将缓存写入显示屏显示
-  122   2          }
-  123   1      }
-  124          
-C251 COMPILER V5.60.0,  main                                                               05/04/24  20:20:56  PAGE 3   
+   59          //     unsigned char Str[10];
+   60          //     Acc = LSM303_Read_Mag('y');
+   61          //     OLED_BuffShowString(0,2,"Y:",0);
+   62          //     sprintf(Str, "%f", Acc);
+   63          //     OLED_BuffShowString(2*8,2,Str,0);
+   64          //     OLED_BuffShow();
+   65          // }
+   66          
+   67          // void OLED_LSM303DLH_AccZ_GetDataNShow()
+   68          // {
+   69          //     float Acc;
+   70          //     unsigned char Str[10];
+   71          //     Acc = LSM303_Read_Mag('z');
+   72          //     OLED_BuffShowString(0,4,"Z:",0);
+   73          //     sprintf(Str, "%f", Acc);
+   74          //     OLED_BuffShowString(2*8,4,Str,0);
+   75          //     OLED_BuffShow();
+   76          // }
+   77          
+   78          void OLED_LSM303DLH_UI_Init()
+   79          {
+   80   1          OLED_BuffClear();                       //清除全部缓存
+   81   1      }
+   82          
+   83          void OLED_Loading()
+   84          {
+   85   1          OLED_BuffClear();                               //清除全部缓存
+   86   1          OLED_BuffShowString(0,3,"   PLEASE WAIT  ",1);  //显示数据
+   87   1          OLED_BuffShow();                                //将缓存写入显示屏显示
+   88   1      }
+   89          
+   90          void key1_short_press()
+   91          {
+   92   1          // 短按键1功能
+   93   1      }
+   94          
+   95          void key2_short_press()
+   96          {
+   97   1          // 短按键2功能
+   98   1      }
+   99          
+  100          void key3_short_press()
+  101          {
+  102   1          // 短按键3功能
+  103   1      }
+  104          
+  105          void key4_short_press()
+  106          {
+  107   1          // 短按键4功能
+  108   1      }
+  109          
+  110          void key1_check()
+  111          {
+  112   1          if(key1 == 0 && key1_up_store == 1)
+  113   1          {
+  114   2              key1_up_store = 0; // 标记按键被按下
+  115   2              OLED_BuffShowString(13*8,6,"[-]",1);  //显示数据
+  116   2              OLED_BuffShow();                    //将缓存写入显示屏显示
+  117   2          }
+  118   1          if(key1 == 1 && key1_up_store == 0)
+  119   1          {
+  120   2              key1_up_store = 1; // 标记按键被释放
+  121   2              key1_short_press(); // 触发短按键1功能
+  122   2              OLED_BuffShowString(13*8,6,"[-]",0);  //显示数据
+  123   2              OLED_BuffShow();                    //将缓存写入显示屏显示
+  124   2          }
+C251 COMPILER V5.60.0,  main                                                               06/04/24  15:09:00  PAGE 3   
 
-  125          void key3_check()
-  126          {
-  127   1          if(key3 == 0 && key3_up_store == 1)
-  128   1          {
-  129   2              key3_up_store = 0; // 标记按键被按下
-  130   2          }
-  131   1          if(key3 == 1 && key3_up_store == 0)
-  132   1          {
-  133   2              key3_up_store = 1; // 标记按键被释放
-  134   2              key3_short_press(); // 触发短按键3功能
-  135   2          }
-  136   1      }
-  137          
-  138          void key4_check()
-  139          {
-  140   1          if(key4 == 0 && key4_up_store == 1)
-  141   1          {
-  142   2              key4_up_store = 0; // 标记按键被按下
-  143   2          }
-  144   1          if(key4 == 1 && key4_up_store == 0)
-  145   1          {
-  146   2              key4_up_store = 1; // 标记按键被释放
-  147   2              key4_short_press(); // 触发短按键4功能
-  148   2          }
-  149   1      }
-  150          
-  151          void Sys_Init()
-  152          {
-  153   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
-  154   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
-  155   1          CKCON = 0; //提高访问XRAM速度
-  156   1      
-  157   1          P0M1 = 0x00;   P0M0 = 0x00;   //设置为准双向口
-  158   1          P1M1 = 0x00;   P1M0 = 0x00;   //设置为准双向口
-  159   1          P1M0 = 0xff;   P1M1 = 0x00;   //设置为推挽输出
-  160   1          P2M1 = 0x00;   P2M0 = 0x00;   //设置为准双向口
-  161   1          P3M1 = 0x00;   P3M0 = 0x00;   //设置为准双向口
-  162   1          P4M1 = 0x00;   P4M0 = 0x00;   //设置为准双向口
-  163   1          P5M1 = 0x00;   P5M0 = 0x00;   //设置为准双向口
-  164   1          P6M1 = 0x00;   P6M0 = 0x00;   //设置为准双向口
-  165   1          P7M1 = 0x00;   P7M0 = 0x00;   //设置为准双向口
-  166   1      }
-  167          
-  168          void main(void)
-  169          {
-  170   1          EA = 1;                             //开总中断
-  171   1          Sys_Init();                         //系统初始化
-  172   1          SPI_init();                         //SPI初始化
-  173   1          OLED_Init();                        //OLED初始化
-  174   1          OLED_BuffClear();                   //清除全部缓存
-  175   1          OLED_BuffShow();                    //将缓存写入显示屏显示
-  176   1          IIC_Init();                         //IIC初始化
-  177   1          LSM303_Init();                      //LSM303初始化
-  178   1          while (1)
-  179   1          {
-  180   2              key1_check();                   //检查按键1
-  181   2              key2_check();                   //检查按键2
-  182   2              key3_check();                   //检查按键3
-  183   2              key4_check();                   //检查按键4
-  184   2              LSM303_Get_Acc_X();             //获取加速度X轴数据
-  185   2              LSM303_Get_Acc_Y();             //获取加速度Y轴数据
-  186   2              LSM303_Get_Acc_Z();             //获取加速度Z轴数据
-  187   2              delay_ms(100);                  //延时100ms
-  188   2          }
-  189   1      }
+  125   1      }
+  126          
+  127          void key2_check()
+  128          {
+  129   1          if(key2 == 0 && key2_up_store == 1)
+  130   1          {
+  131   2              key2_up_store = 0; // 标记按键被按下
+  132   2              OLED_BuffShowString(10*8,6,"[+]",1);  //显示数据
+  133   2              OLED_BuffShow();                    //将缓存写入显示屏显示
+  134   2          }
+  135   1          if(key2 == 1 && key2_up_store == 0)
+  136   1          {
+  137   2              key2_up_store = 1; // 标记按键被释放
+  138   2              key2_short_press(); // 触发短按键2功能
+  139   2              OLED_BuffShowString(10*8,6,"[+]",0);  //显示数据
+  140   2              OLED_BuffShow();                    //将缓存写入显示屏显示
+  141   2          }
+  142   1      }
+  143          
+  144          void key3_check()
+  145          {
+  146   1          if(key3 == 0 && key3_up_store == 1)
+  147   1          {
+  148   2              key3_up_store = 0; // 标记按键被按下
+  149   2          }
+  150   1          if(key3 == 1 && key3_up_store == 0)
+  151   1          {
+  152   2              key3_up_store = 1; // 标记按键被释放
+  153   2              key3_short_press(); // 触发短按键3功能
+  154   2          }
+  155   1      }
+  156          
+  157          void key4_check()
+  158          {
+  159   1          if(key4 == 0 && key4_up_store == 1)
+  160   1          {
+  161   2              key4_up_store = 0; // 标记按键被按下
+  162   2          }
+  163   1          if(key4 == 1 && key4_up_store == 0)
+  164   1          {
+  165   2              key4_up_store = 1; // 标记按键被释放
+  166   2              key4_short_press(); // 触发短按键4功能
+  167   2          }
+  168   1      }
+  169          
+  170          void Sys_Init()
+  171          {
+  172   1          WTST = 0;  //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
+  173   1          EAXFR = 1; //扩展寄存器(XFR)访问使能
+  174   1          CKCON = 0; //提高访问XRAM速度
+  175   1      
+  176   1          P0M1 = 0x00;   P0M0 = 0x00;   //设置为准双向口
+  177   1          P1M1 = 0x00;   P1M0 = 0x00;   //设置为准双向口
+  178   1          P1M0 = 0xff;   P1M1 = 0x00;   //设置为推挽输出
+  179   1          P2M1 = 0x00;   P2M0 = 0x00;   //设置为准双向口
+  180   1          P3M1 = 0x00;   P3M0 = 0x00;   //设置为准双向口
+  181   1          P4M1 = 0x00;   P4M0 = 0x00;   //设置为准双向口
+  182   1          P5M1 = 0x00;   P5M0 = 0x00;   //设置为准双向口
+  183   1          P6M1 = 0x00;   P6M0 = 0x00;   //设置为准双向口
+  184   1          P7M1 = 0x00;   P7M0 = 0x00;   //设置为准双向口
+  185   1      }
+  186          
+  187          void main(void)
+  188          {
+  189   1          EA = 1;                             //开总中断
+  190   1          Sys_Init();                         //系统初始化
+C251 COMPILER V5.60.0,  main                                                               06/04/24  15:09:00  PAGE 4   
 
-C251 COMPILER V5.60.0,  main                                                               05/04/24  20:20:56  PAGE 4   
+  191   1          SPI_init();                         //SPI初始化
+  192   1          OLED_Init();                        //OLED初始化
+  193   1          OLED_BuffClear();                   //清除全部缓存
+  194   1          OLED_BuffShow();                    //将缓存写入显示屏显示
+  195   1          IIC_Init();                         //IIC初始化
+  196   1          LSM303_Init();                      //LSM303初始化
+  197   1          while (1)
+  198   1          {
+  199   2              key1_check();                   //检查按键1
+  200   2              key2_check();                   //检查按键2
+  201   2              key3_check();                   //检查按键3
+  202   2              key4_check();                   //检查按键4
+  203   2              OLED_LSM303DLH_AccX_GetDataNShow(); //获取加速度X数据并显示
+  204   2              // OLED_LSM303DLH_AccY_GetDataNShow(); //获取加速度Y数据并显示
+  205   2              // OLED_LSM303DLH_AccZ_GetDataNShow(); //获取加速度Z数据并显示
+  206   2              delay_ms(100);                  //延时100ms
+  207   2          }
+  208   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      3482     ------
+  code size            =      3527     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =         4     ------
+  edata size           =         4         10
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
@@ -222,7 +241,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        45     ------
+  hconst size          =        51     ------
 End of Module Information.
 
 

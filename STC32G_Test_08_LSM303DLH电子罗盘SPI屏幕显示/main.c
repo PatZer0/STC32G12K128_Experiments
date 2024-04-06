@@ -26,6 +26,7 @@
 -----------------------------------------------------------------------------------------*/
 #include <STRING.H>
 #include <STC32G.H>
+#include <STDIO.H>
 #include "oled.h"
 #include "pic.h"
 #include "iic.h"
@@ -41,24 +42,42 @@ unsigned char key2_up_store = 1; // 按键2状态暂存
 unsigned char key3_up_store = 1; // 按键3状态暂存
 unsigned char key4_up_store = 1; // 按键4状态暂存
 
-void OLED_LSM303DLH_UI_OnOff()
+void OLED_LSM303DLH_AccX_GetDataNShow()
 {
+    float Acc;
+    unsigned char Str[10];
+    Acc = LSM303_Read_Mag('x');
+    OLED_BuffShowString(0,0,"X:",0);
+    sprintf(Str, "%f", Acc);
+    OLED_BuffShowString(2*8,0,Str,0);
+    OLED_BuffShow();
 }
 
-void OLED_LSM303DLH_UI_Range()
-{
-}
+// void OLED_LSM303DLH_AccY_GetDataNShow()
+// {
+//     float Acc;
+//     unsigned char Str[10];
+//     Acc = LSM303_Read_Mag('y');
+//     OLED_BuffShowString(0,2,"Y:",0);
+//     sprintf(Str, "%f", Acc);
+//     OLED_BuffShowString(2*8,2,Str,0);
+//     OLED_BuffShow();
+// }
 
-void OLED_LSM303DLH_UI_Refresh()
-{
-}
+// void OLED_LSM303DLH_AccZ_GetDataNShow()
+// {
+//     float Acc;
+//     unsigned char Str[10];
+//     Acc = LSM303_Read_Mag('z');
+//     OLED_BuffShowString(0,4,"Z:",0);
+//     sprintf(Str, "%f", Acc);
+//     OLED_BuffShowString(2*8,4,Str,0);
+//     OLED_BuffShow();
+// }
 
 void OLED_LSM303DLH_UI_Init()
 {
     OLED_BuffClear();                       //清除全部缓存
-    OLED_LSM303DLH_UI_Refresh();            //刷新UI
-    OLED_LSM303DLH_UI_OnOff();              //显示状态
-    OLED_LSM303DLH_UI_Range();              //显示距离值
 }
 
 void OLED_Loading()
@@ -181,9 +200,9 @@ void main(void)
         key2_check();                   //检查按键2
         key3_check();                   //检查按键3
         key4_check();                   //检查按键4
-        LSM303_Get_Acc_X();             //获取加速度X轴数据
-        LSM303_Get_Acc_Y();             //获取加速度Y轴数据
-        LSM303_Get_Acc_Z();             //获取加速度Z轴数据
+        OLED_LSM303DLH_AccX_GetDataNShow(); //获取加速度X数据并显示
+        // OLED_LSM303DLH_AccY_GetDataNShow(); //获取加速度Y数据并显示
+        // OLED_LSM303DLH_AccZ_GetDataNShow(); //获取加速度Z数据并显示
         delay_ms(100);                  //延时100ms
     }
 }

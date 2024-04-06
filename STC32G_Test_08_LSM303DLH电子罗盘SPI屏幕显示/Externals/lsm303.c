@@ -1,227 +1,201 @@
-#include <STC32G.H>
-#include <MATH.H>
-#include <STDIO.H>
-#include "stdint.h"
 #include "lsm303.h"
-#include "oled.h"
 
-unsigned char LSM303_Buffer[8];         //接收数据缓存区
-int Output_Data;
-
-//单字节写入LSM303内部数据*******************************
-void LSM303_Single_Write(unsigned char SlaveAddress,unsigned char REG_Address,unsigned char REG_data)
+void LSM303_MasterWriteOneBytetoSlave(unsigned char slave_addr, unsigned char register_addr, unsigned char dat_to_send) 
 {
-    IIC_START();                  //起始信号
-    IIC_SENDBYTE(SlaveAddress);   //发送设备地址+写信号
-    IIC_SENDBYTE(REG_Address);    //内部寄存器地址
-    IIC_SENDBYTE(REG_data);       //内部寄存器数据
-    IIC_STOP();                   //发送停止信号
+    // MASTER   Start   SlaveAddr+W             RegisterAddr            Data            Stop
+    // SLAVE                            ACK                     ACK             ACK
+    IIC_START();
+    IIC_SENDBYTE(slave_addr+0);
+    IIC_WAITACK();
+    IIC_SENDBYTE(register_addr);
+    IIC_WAITACK();
+    IIC_SENDBYTE(dat_to_send);
+    IIC_WAITACK();
+    IIC_STOP();
 }
 
-//单字节读取LSM303内部数据********************************
-unsigned char LSM303_Single_Read(unsigned char SlaveAddress,unsigned char REG_Address)
-{   
-    unsigned char REG_data;
-    IIC_START();                          //起始信号
-    IIC_SENDBYTE(SlaveAddress);           //发送设备地址+写信号
-    IIC_SENDBYTE(REG_Address);            //发送存储单元地址
-    IIC_START();                          //起始信号
-    IIC_SENDBYTE(SlaveAddress+1);         //发送设备地址+读信号
-    REG_data = IIC_READBYTE();              //读出寄存器数据
-    IIC_SENDACK();
-    IIC_STOP();                           //停止信号
-    return REG_data;
-}
-
-//连续读出LSM303内部数据
-void LSM303_Continuous_Read(unsigned char SlaveAddress,unsigned char ST_Address)
-{   
+void LSM303_MasterWriteMultipleBytestoSlave(unsigned char slave_addr, unsigned char register_addr, unsigned char *dat_to_send, unsigned char bytes_to_send)
+{
+    // MASTER   Start   SlaveAddr+W             RegisterAddr            Data0           Data1          ...  DataN          Stop
+    // SLAVE                            ACK                     ACK             ACK             ACK             ...  ACK
     unsigned char i;
-    IIC_START();                            //起始信号
-    IIC_SENDBYTE(SlaveAddress);             //发送设备地址+写信号
-    IIC_SENDBYTE(ST_Address);               //发送存储单元地址
-    IIC_START();                            //起始信号
-    IIC_SENDBYTE(SlaveAddress+1);           //发送设备地址+读信号
-    for (i=0; i<6; i++)                     //连续读取6个地址数据，存储中BUF
+
+    IIC_START();                            // 发送起始信号
+    IIC_SENDBYTE(slave_addr);               // 发送从设备地址加写操作位
+    IIC_WAITACK();                          // 等待从设备的应答
+    IIC_SENDBYTE(register_addr);            // 发送寄存器地址
+    IIC_WAITACK();                          // 等待从设备的应答
+
+    for(i = 0; i < bytes_to_send; i++)      // 对于所有要发送的数据
     {
-        LSM303_Buffer[i] = IIC_READBYTE();            //LSM303_Buffer[0]存储
-        if (i == 5)
-        {
-            IIC_SENDNACK();                 //最后一个数据需要回NOACK
-        }
-        else
-        {
-            IIC_SENDACK();                  //回应ACK
-        }
+        IIC_SENDBYTE(dat_to_send[i]);       // 发送数据
+        IIC_WAITACK();                      // 等待从设备的应答
     }
-    IIC_STOP();                             //停止信号
-    IIC_DELAY();                            //延时
+
+    IIC_STOP();                             // 发送停止信号
 }
 
-//加速度显示x轴
-void LSM303_Get_Acc_X()
+void LSM303_MasterRecieveOneBytefromSlave(unsigned char slave_addr, unsigned char register_addr, unsigned char dat_storage) 
 {
-    float Acc_X;
-    unsigned char Acc_X_Str[16];
-    LSM303_Buffer[0]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x28);    //OUT_X_L_A
-    LSM303_Buffer[1]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x29);    //OUT_X_H_A
-    Output_Data=(LSM303_Buffer[1]<<8)+LSM303_Buffer[0];                 //合成数据
-
-    // OLED显示X轴
-    OLED_BuffShowString(0,0,"X:",0);              //第0行，第0列 显示X
-    if(Output_Data<0) 
-    {
-        Output_Data=-Output_Data;
-        OLED_BuffShowString(2*8,0,"-",0);         //显示正负符号位
-    }
-    else
-    {
-        OLED_BuffShowString(2*8,0," ",0);         //显示空格
-    }
-    Acc_X = (float)Output_Data;///16.383;         //计算数据和显示
-    sprintf(Acc_X_Str, "%f", Acc_X);
-    OLED_BuffShowString(3*8,0,Acc_X_Str,0);       //显示数据
-    OLED_BuffShow();
+    // MASTER   Start   SlaveAddr+W             RegisterAddr            StartRepeat     SlaveAddr+R                     NACK    Stop
+    // SLAVE                            ACK                     ACK                                     ACK     Data
+    IIC_START();
+    IIC_SENDBYTE(slave_addr+0);
+    IIC_WAITACK();
+    IIC_SENDBYTE(register_addr);
+    IIC_WAITACK();
+    IIC_START();
+    IIC_SENDBYTE(slave_addr+1);
+    IIC_WAITACK();
+    dat_storage = IIC_READBYTE();
+    IIC_SENDNACK();
+    IIC_STOP();
 }
 
-//加速度显示y轴
-void LSM303_Get_Acc_Y()
+void LSM303_MasterReceiveMultipleBytesfromSlave(unsigned char slave_addr, unsigned char register_addr, unsigned char *data_buffer, unsigned char bytes_to_receive)
 {
-    float Acc_Y;
-    unsigned char Acc_Y_Str[16];
-    LSM303_Buffer[0]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2a);    //OUT_Y_L_A
-    LSM303_Buffer[1]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2b);    //OUT_Y_H_A
-    Output_Data=(LSM303_Buffer[3]<<8)+LSM303_Buffer[2];                 //合成数据
+    // MASTER   Start   SlaveAddr+W             RegisterAddr            StartRepeat     SlaveAddr+R                     ACK             ACK     ...     NACK    Stop
+    // SLAVE                            ACK                     ACK                                     ACK     Data1           DataN           ...
+    unsigned char i;
 
-    // OLED显示Y轴
-    OLED_BuffShowString(0,2,"Y:",0);              //第1行，第0列 显示Y
-    if(Output_Data<0) 
+    IIC_START();                            // 发送起始信号
+    IIC_SENDBYTE(slave_addr);               // 发送从设备地址加写操作位
+    IIC_WAITACK();                          // 等待从设备的应答
+    IIC_SENDBYTE(register_addr);            // 发送寄存器地址
+    IIC_WAITACK();                          // 等待从设备的应答
+
+    IIC_START();                            // 发送重复起始信号，切换到读模式
+    IIC_SENDBYTE(slave_addr + 1);           // 发送从设备地址加读操作位
+    IIC_WAITACK();                          // 等待从设备的应答
+
+    for(i = 0; i < bytes_to_receive - 1; i++) // 对于所有要接收的数据（最后一个字节除外）
     {
-        Output_Data=-Output_Data;
-        OLED_BuffShowString(2*8,2,"-",0);         //显示正负符号位
+        data_buffer[i] = IIC_READBYTE();    // 读取数据
+        IIC_SENDACK();                      // 发送应答信号，准备接收下一个字节
     }
-    else
-    {
-        OLED_BuffShowString(2*8,2," ",0);         //显示空格
-    }
-    Acc_Y = (float)Output_Data;///16.383;         //计算数据和显示
-    sprintf(Acc_Y_Str, "%f", Acc_Y);
-    OLED_BuffShowString(3*8,2,Acc_Y_Str,0);       //显示数据
-    OLED_BuffShow();
+    
+    // 读取最后一个字节并发送非应答信号
+    data_buffer[bytes_to_receive - 1] = IIC_READBYTE(); // 读取最后一个字节的数据
+    IIC_SENDNACK();                         // 对于最后一个字节，发送非应答信号
+    IIC_STOP();                             // 发送停止信号
 }
 
-//加速度显示z轴
-void LSM303_Get_Acc_Z()
-{
-    float Acc_Z;
-    unsigned char Acc_Z_Str[16];
-    LSM303_Buffer[0]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2c);    //OUT_Z_L_A
-    LSM303_Buffer[1]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2d);    //OUT_Z_H_A
-    Output_Data=(LSM303_Buffer[5]<<8)+LSM303_Buffer[4];                 //合成数据
-
-    // OLED显示Z轴
-    OLED_BuffShowString(0,4,"Z:",0);              //第2行，第0列 显示Z
-    if(Output_Data<0) 
-    {
-        Output_Data=-Output_Data;
-        OLED_BuffShowString(2*8,4,"-",0);         //显示正负符号位
-    }
-    else
-    {
-        OLED_BuffShowString(2*8,4," ",0);         //显示空格
-    }
-    Acc_Z = (float)Output_Data;///16.383;         //计算数据和显示
-    sprintf(Acc_Z_Str, "%f", Acc_Z);
-    OLED_BuffShowString(3*8,4,Acc_Z_Str,0);       //显示数据
-    OLED_BuffShow();
-}
-
-
-
-// //加速度显示y轴
-// void display_y()
-// {   float temp;
-//     LSM303_Buffer[2]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2a);//OUT_Y_L_A
-//     LSM303_Buffer[3]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2b);//OUT_Y_H_A
-
-
-//     Output_Data=(LSM303_Buffer[3]<<8)+LSM303_Buffer[2];  //合成数据
-//     if(Output_Data<0) {
-//         Output_Data=-Output_Data;
-//         DisplayOneChar(2,1,'-');      //显示正负符号位
-//     }
-//     else DisplayOneChar(2,1,' '); //显示空格
-
-//     temp=(float)Output_Data/16.383;  //计算数据和显示
-//     LSM303_ConvertData(temp);          //转换出显示需要的数据
-//     DisplayOneChar(0,1,'Y');   //第1行，第0列 显示y
-//     DisplayOneChar(1,1,':');
-//     DisplayOneChar(3,1,qian);
-//     DisplayOneChar(4,1,'.');
-//     DisplayOneChar(5,1,bai);
-//     //  DisplayOneChar(6,1,shi);
-//     DisplayOneChar(6,1,'g');
-// }
-
-// //加速度显示z轴
-// void display_z()
-// {   float temp;
-//     LSM303_Buffer[4]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2c);//OUT_Z_L_A
-//     LSM303_Buffer[5]=LSM303_Single_Read(LSM303DLH_ACC_ADDRESS,0x2d);//OUT_Z_H_A
-
-//     Output_Data=(LSM303_Buffer[5]<<8)+LSM303_Buffer[4];  //合成数据
-//     if(Output_Data<0) {
-//         Output_Data=-Output_Data;
-//         DisplayOneChar(11,1,'-');     //显示负符号位
-//     }
-//     else DisplayOneChar(11,1,' ');//显示空格
-
-//     temp=(float)Output_Data/16.383;  //计算数据和显示
-//     LSM303_ConvertData(temp);             //转换出显示需要的数据
-//     DisplayOneChar(9,1,'Z');      //第0行，第10列 显示Z
-//     DisplayOneChar(10,1,':');
-//     DisplayOneChar(12,1,qian);
-//     DisplayOneChar(13,1,'.');
-//     DisplayOneChar(14,1,bai);
-//     // DisplayOneChar(14,1,shi);
-//     DisplayOneChar(15,1,'g');
-// }
-
-// void display_Angle(void)
-// {   int x,y,z;
-//     double  angle;
-
-//     x=LSM303_Buffer[0] << 8 | LSM303_Buffer[1]; //Combine MSB and LSB of X Data output register
-//     y=LSM303_Buffer[2] << 8 | LSM303_Buffer[3]; //Combine MSB and LSB of Z Data output register
-//     z=LSM303_Buffer[4] << 8 | LSM303_Buffer[5]; //Combine MSB and LSB of Y Data output register
-
-//     angle= atan2((double)y,(double)x) * (180 / 3.14159265) + 180; // angle in degrees
-//     angle*=10;
-
-//     LSM303_ConvertData(angle);       //计算数据和显示
-//     DisplayOneChar(9,0,'A');
-//     DisplayOneChar(10,0,':');
-//     DisplayOneChar(11,0,qian);
-//     DisplayOneChar(12,0,bai);
-//     DisplayOneChar(13,0,shi);
-//     DisplayOneChar(14,0,'.');
-//     DisplayOneChar(15,0,ge);
-// }
-
-//初始化LSM303A(加速度)，根据需要请参考pdf进行修改
-void LSM303_Acc_Init()
-{
-    LSM303_Single_Write(LSM303DLH_ACC_ADDRESS,0x20,0x27);  //测量范围, 正负2g, 16位模式
-}
-
-//初始化LSM303M(磁场)，根据需要请参考pdf进行修改
-void LSM303_Mag_Init()
-{
-    LSM303_Single_Write(LSM303DLH_MAG_ADDRESS,0x02,0x00);  //
-}
-
-void LSM303_Init()
+void LSM303_Init(void) 
 {
     LSM303_Acc_Init();
     LSM303_Mag_Init();
+}
+
+void LSM303_Acc_Init(void) 
+{
+    // 初始化加速度传感器
+    // 写入LSM303_CTRL_REG[1:6]_A寄存器
+
+    unsigned char CTRL_REG1;
+    unsigned char CTRL_REG2;
+    unsigned char CTRL_REG3;
+    unsigned char CTRL_REG4;
+    unsigned char CTRL_REG5;
+    unsigned char CTRL_REG6;
+
+    CTRL_REG1 = 0x57
+    // 配置为 0101 0111 = 0x57
+    // 前四位： 0000 关机模式
+    //          0011 通用1Hz    0010 通用10Hz   0011 通用25Hz   0100 通用50Hz   0101 通用100Hz
+    //          0110 通用200Hz  0111 通用400Hz  1000 低功耗1.620kHz             1001 普通1.344kHz/低功耗5.376kHz
+    // 后四位： *___ 0:低功耗模式关闭   /   1:低功耗模式开启
+    //          _*__ 0:Z轴关闭          /   1:Z轴开启
+    //          __*_ 0:Y轴关闭          /   1:Y轴开启
+    //          ___* 0:X轴关闭          /   1:X轴开启
+
+    CTRL_REG2 = 0x00; // 高通滤波器配置关闭
+    CTRL_REG3 = 0x00; // 所有中断关闭
+    CTRL_REG4 = 0x00; // 数据输出格式设置为正常模式，±2g
+    CTRL_REG5 = 0x00; // FIFO关闭，不使用高通滤波器
+    CTRL_REG6 = 0x00; // 中断活动配置关闭
+
+    // 写入寄存器
+    LSM303_MasterWriteOneBytetoSlave(LSM303_ACC_ADDRESS, LSM303_CTRL_REG1_A, CTRL_REG1);
+    LSM303_MasterWriteOneBytetoSlave(LSM303_ACC_ADDRESS, LSM303_CTRL_REG2_A, CTRL_REG2);
+    LSM303_MasterWriteOneBytetoSlave(LSM303_ACC_ADDRESS, LSM303_CTRL_REG3_A, CTRL_REG3);
+    LSM303_MasterWriteOneBytetoSlave(LSM303_ACC_ADDRESS, LSM303_CTRL_REG4_A, CTRL_REG4);
+    LSM303_MasterWriteOneBytetoSlave(LSM303_ACC_ADDRESS, LSM303_CTRL_REG5_A, CTRL_REG5);
+    LSM303_MasterWriteOneBytetoSlave(LSM303_ACC_ADDRESS, LSM303_CTRL_REG6_A, CTRL_REG6);
+}
+
+void LSM303_Mag_Init(void) {
+    // 初始化磁场传感器
+    unsigned char data;
+
+    // 配置CRA_REG_M，数据输出速率为15Hz
+    data = 0x10; // 0001 0000
+    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_CRA_REG_M, data);
+
+    // 配置CRB_REG_M，增益配置为±1.3Gauss
+    data = 0x20; // 0010 0000
+    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_CRB_REG_M, data);
+
+    // 配置MR_REG_M，设置为连续转换模式
+    data = 0x00; // 0000 0000
+    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_MR_REG_M, data);
+}
+
+float LSM303_Read_Acc(char axis) 
+{
+    unsigned char acc_data[2];
+    float acc_value;
+    unsigned char addr;
+
+    // 根据轴选择正确的寄存器地址
+    switch(axis) {
+        case 'x':
+            addr = LSM303_OUT_X_L_A;
+            break;
+        case 'y':
+            addr = LSM303_OUT_Y_L_A;
+            break;
+        case 'z':
+            addr = LSM303_OUT_Z_L_A;
+            break;
+        default:
+            return 0; // 如果轴不正确，则返回0
+    }
+
+    // 读取加速度计的数据
+    LSM303_MasterReceiveMultipleBytesfromSlave(LSM303_ACC_ADDRESS, addr, acc_data, 2);
+
+    // 计算加速度值，考虑到数据为16位，左移高位并加上低位
+    acc_value = ((short)(acc_data[1] << 8 | acc_data[0])) / 16384.0f;
+
+    return acc_value;
+}
+
+float LSM303_Read_Mag(char axis) 
+{
+    unsigned char mag_data[2];
+    float mag_value;
+    unsigned char addr;
+
+    // 根据轴选择正确的寄存器地址
+    switch(axis) {
+        case 'x':
+            addr = LSM303_OUT_X_H_M;
+            break;
+        case 'y':
+            addr = LSM303_OUT_Y_H_M;
+            break;
+        case 'z':
+            addr = LSM303_OUT_Z_H_M;
+            break;
+        default:
+            return 0; // 如果轴不正确，则返回0
+    }
+
+    // 读取磁场计的数据
+    LSM303_MasterReceiveMultipleBytesfromSlave(LSM303_MAG_ADDRESS, addr, mag_data, 2);
+
+    // 计算磁场值，由于磁场传感器的数据排列与加速度计不同，需要先读高位
+    mag_value = ((short)(mag_data[0] << 8 | mag_data[1])) / 1100.0f;
+
+    return mag_value;
 }

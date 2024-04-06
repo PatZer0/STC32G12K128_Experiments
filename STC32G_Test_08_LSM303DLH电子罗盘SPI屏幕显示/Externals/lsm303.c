@@ -98,7 +98,7 @@ void LSM303_Acc_Init(void)
     unsigned char CTRL_REG5;
     unsigned char CTRL_REG6;
 
-    CTRL_REG1 = 0x57
+    CTRL_REG1 = 0x57;
     // 配置为 0101 0111 = 0x57
     // 前四位： 0000 关机模式
     //          0011 通用1Hz    0010 通用10Hz   0011 通用25Hz   0100 通用50Hz   0101 通用100Hz
@@ -125,19 +125,20 @@ void LSM303_Acc_Init(void)
 
 void LSM303_Mag_Init(void) {
     // 初始化磁场传感器
-    unsigned char data;
-
-    // 配置CRA_REG_M，数据输出速率为15Hz
-    data = 0x10; // 0001 0000
-    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_CRA_REG_M, data);
+    unsigned char CRA_REG_M;
+    unsigned char CRB_REG_M;
+    unsigned char MR_REG_M;
+    // 配置CRA_REG_M，数据输出速率为220Hz，温度传感器开
+    CRA_REG_M = 0x9C; 
+    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_CRA_REG_M, CRA_REG_M);
 
     // 配置CRB_REG_M，增益配置为±1.3Gauss
-    data = 0x20; // 0010 0000
-    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_CRB_REG_M, data);
+    CRB_REG_M = 0x20; // 0010 0000
+    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_CRB_REG_M, CRB_REG_M);
 
     // 配置MR_REG_M，设置为连续转换模式
-    data = 0x00; // 0000 0000
-    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_MR_REG_M, data);
+    MR_REG_M = 0x00; // 0000 0000
+    LSM303_MasterWriteOneBytetoSlave(LSM303_MAG_ADDRESS, LSM303_MR_REG_M, MR_REG_M);
 }
 
 float LSM303_Read_Acc(char axis) 
@@ -147,7 +148,8 @@ float LSM303_Read_Acc(char axis)
     unsigned char addr;
 
     // 根据轴选择正确的寄存器地址
-    switch(axis) {
+    switch(axis) 
+    {
         case 'x':
             addr = LSM303_OUT_X_L_A;
             break;

@@ -1,6 +1,6 @@
 #ifndef __OLED_H
 #define __OLED_H
-#define MAIN_Fosc 33176600UL
+#define MAIN_Fosc 24000000UL
 #include "spi.h"
 
 

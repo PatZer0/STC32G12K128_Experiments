@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 1   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE oled
@@ -66,7 +66,7 @@ stmt  level    source
    56          {
    57   1          unsigned char udat[1] ;
    58   1          udat[0] = dat;
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 2   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 2   
 
    59   1          if(cmd)
    60   1          {
@@ -134,7 +134,7 @@ stmt  level    source
   121   1          OLED_WR_Byte(0xAF,OLED_CMD);
   122   1          
   123   1          OLED_DisplayOn();
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 3   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 3   
 
   124   1      }
   125          
@@ -202,7 +202,7 @@ stmt  level    source
   186            
   187          //========================================================================
   188          // 函数名称: OLED_DisplayOff
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 4   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 4   
 
   189          // 函数功能: OLED关显示
   190          // 入口参数: 无
@@ -270,7 +270,7 @@ stmt  level    source
   252   1          {
   253   2              j = 0xb0 + i;             //C251更加严谨，这样写以避免warning
   254   2              OLED_WR_Byte(j,OLED_CMD); //设置行起始地址
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 5   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 5   
 
   255   2              OLED_WR_Byte(0x00,OLED_CMD);   //设置低列起始地址    // 修改低列起始，否则测试用屏幕显示不全
   256   2              OLED_WR_Byte(0x10,OLED_CMD);   //设置高列起始地址
@@ -338,7 +338,7 @@ stmt  level    source
   316   3                     OLED_BuffShowPoint(x1, y);             
   317   3              }
   318   2          }
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 6   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 6   
 
   319   1      }
   320          
@@ -406,7 +406,7 @@ stmt  level    source
   382   2              if (di < 0)di += 4 * a + 6;
   383   2              else
   384   2              {
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 7   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 7   
 
   385   3                  di += 10 + 4 * (a - b);
   386   3                  b--;
@@ -474,7 +474,7 @@ stmt  level    source
   446   5                              ShowBUFF[j+y][x+k]=~GBK16[i].gbk_font[j*16+k];
   447   5                      }
   448   4                  }
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 8   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 8   
 
   449   3                  break;
   450   3              }
@@ -542,7 +542,7 @@ stmt  level    source
   512          // 函数功能: OLED显示一个两位小数变量
   513          // 入口参数: @x：x点  @y：y点  @num：小数变量   @mode：0正显  1反显
   514          // 函数返回: 无
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 9   
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 9   
 
   515          // 当前版本: VER1.0
   516          // 修改日期: 2023 - 6 - 7
@@ -610,7 +610,7 @@ stmt  level    source
   577   2          }  
   578   1      } 
   579           
-C251 COMPILER V5.60.0,  oled                                                               05/04/24  11:56:13  PAGE 10  
+C251 COMPILER V5.60.0,  oled                                                               06/04/24  15:28:33  PAGE 10  
 
 
 

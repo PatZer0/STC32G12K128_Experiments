@@ -1,0 +1,1 @@
+"Externals\oled.c" XSMALL INTR2 BROWSE INCDIR(.\Internals;.\Externals) DEBUG PRINT(.\Listings\oled.lst) TABS (2) OBJECT(.\Objects\oled.obj)

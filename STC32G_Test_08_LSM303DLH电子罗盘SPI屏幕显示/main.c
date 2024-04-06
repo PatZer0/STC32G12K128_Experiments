@@ -2,7 +2,7 @@
 * 请勿更改此文件编码！
 * 必须保持为默认编码GB2312，否则汉字无法正常显示！
 
-* 时钟选择 33.1776MHz
+* 时钟选择 24MHz
 * 按键为 P1.0/1.1/1.3/1.4
 
 * --------------------------I2C-LSM303DLH模块-电子罗盘加速度计-----------------------------
@@ -42,38 +42,27 @@ unsigned char key2_up_store = 1; // 按键2状态暂存
 unsigned char key3_up_store = 1; // 按键3状态暂存
 unsigned char key4_up_store = 1; // 按键4状态暂存
 
+void OLED_LSM303DLH_MagX_GetDataNShow()
+{
+    float Mag;
+    unsigned char Str[10];
+    Mag = LSM303_Read_Mag('x');
+    OLED_BuffShowString(0,0,"MAG X:",0);
+    sprintf(Str, "%f", Mag);
+    OLED_BuffShowString(6*8,0,Str,0);
+    OLED_BuffShow();
+}
+
 void OLED_LSM303DLH_AccX_GetDataNShow()
 {
     float Acc;
     unsigned char Str[10];
-    Acc = LSM303_Read_Mag('x');
-    OLED_BuffShowString(0,0,"X:",0);
+    Acc = LSM303_Read_Acc('x');
+    OLED_BuffShowString(0,2,"ACC X:",0);
     sprintf(Str, "%f", Acc);
-    OLED_BuffShowString(2*8,0,Str,0);
+    OLED_BuffShowString(6*8,2,Str,0);
     OLED_BuffShow();
 }
-
-// void OLED_LSM303DLH_AccY_GetDataNShow()
-// {
-//     float Acc;
-//     unsigned char Str[10];
-//     Acc = LSM303_Read_Mag('y');
-//     OLED_BuffShowString(0,2,"Y:",0);
-//     sprintf(Str, "%f", Acc);
-//     OLED_BuffShowString(2*8,2,Str,0);
-//     OLED_BuffShow();
-// }
-
-// void OLED_LSM303DLH_AccZ_GetDataNShow()
-// {
-//     float Acc;
-//     unsigned char Str[10];
-//     Acc = LSM303_Read_Mag('z');
-//     OLED_BuffShowString(0,4,"Z:",0);
-//     sprintf(Str, "%f", Acc);
-//     OLED_BuffShowString(2*8,4,Str,0);
-//     OLED_BuffShow();
-// }
 
 void OLED_LSM303DLH_UI_Init()
 {
@@ -200,9 +189,8 @@ void main(void)
         key2_check();                   //检查按键2
         key3_check();                   //检查按键3
         key4_check();                   //检查按键4
+        OLED_LSM303DLH_MagX_GetDataNShow(); //获取磁场X数据并显示
         OLED_LSM303DLH_AccX_GetDataNShow(); //获取加速度X数据并显示
-        // OLED_LSM303DLH_AccY_GetDataNShow(); //获取加速度Y数据并显示
-        // OLED_LSM303DLH_AccZ_GetDataNShow(); //获取加速度Z数据并显示
-        delay_ms(100);                  //延时100ms
+        delay_ms(10);                  //延时10ms
     }
 }

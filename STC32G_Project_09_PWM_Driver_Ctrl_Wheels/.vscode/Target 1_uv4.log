@@ -1,0 +1,28 @@
+Build target 'Target 1'
+compiling main.c...
+main.c(3): error C318: can't open file 'zf_pwm.h'
+main.c(36): error C67: 'PWMx_InitDefine': undefined identifier
+main.c(36): error C25: syntax error near 'PWM1_Config'
+main.c(36): warning C34: 'PWM1_Config': missing declaration specifiers
+main.c(37): warning C34: 'PWM2_Config': missing declaration specifiers
+main.c(37): error C42: 'PWM2_Config': not in formal parameter list
+main.c(38): warning C34: 'PWMx_InitDefine': missing declaration specifiers
+main.c(38): error C42: 'PWMx_InitDefine': not in formal parameter list
+main.c(38): error C25: syntax error near 'PWM3_Config'
+main.c(38): warning C34: 'PWM3_Config': missing declaration specifiers
+main.c(38): error C42: 'PWM3_Config': not in formal parameter list
+main.c(39): warning C34: 'PWMx_InitDefine': missing declaration specifiers
+main.c(39): error C42: 'PWMx_InitDefine': not in formal parameter list
+main.c(39): error C25: syntax error near 'PWM4_Config'
+main.c(39): warning C34: 'PWM4_Config': missing declaration specifiers
+main.c(39): error C42: 'PWM4_Config': not in formal parameter list
+main.c(41): error C42: 'PWM1_USE_P60P61': not in formal parameter list
+main.c(42): error C42: 'PWM2_USE_P62P63': not in formal parameter list
+main.c(43): error C42: 'PWM3_USE_P64P65': not in formal parameter list
+main.c(44): error C42: 'PWM4_USE_P66P67': not in formal parameter list
+main.c(46): warning C34: 'PWM1_Config': missing declaration specifiers
+main.c(46): error C42: 'PWM1_Config': not in formal parameter list
+main.c(46): error C25: syntax error near '.'
+main.c(242): error C7: compilation aborted
+Target not created.
+Build Time Elapsed:  00:00:01

@@ -1,0 +1,352 @@
+C251 COMPILER V5.60.0,  main                                                               07/04/24  20:18:23  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE main
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE main.c XSMALL INTR2 BROWSE INCDIR(.\Internals;.\Externals;.\Libraries\
+                    -libraries;.\Libraries\seekfree_components;.\Libraries\seekfree_libraries;.\Libraries\seekfree_peripheral) DEBUG PRINT(.\
+                    -Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj) 
+
+stmt  level    source
+
+    1          #include <STC32G.H>
+    2          // #include "STC32G_PWM.h"
+    3          #include "zf_pwm.h"
+*** ERROR C25 IN LINE 363 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32Gxx.
+             -h: syntax error near '0x08'
+*** ERROR C48 IN LINE 642 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32Gxx.
+             -h: 'TAG_PWM_STRUCT': struct/union type redefinition
+*** ERROR C48 IN LINE 642 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32Gxx.
+             -h: 'PWM_STRUCT': struct/union type redefinition
+*** WARNING C317 IN LINE 1072 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FADDR'
+*** WARNING C317 IN LINE 1073 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'POWER'
+*** WARNING C317 IN LINE 1074 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INTRIN1'
+*** WARNING C317 IN LINE 1075 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INTROUT1'
+*** WARNING C317 IN LINE 1076 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INTRUSB'
+*** WARNING C317 IN LINE 1077 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INTRIN1E'
+*** WARNING C317 IN LINE 1078 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INTROUT1E'
+*** WARNING C317 IN LINE 1079 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INTRUSBE'
+*** WARNING C317 IN LINE 1080 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FRAME1'
+*** WARNING C317 IN LINE 1081 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FRAME2'
+*** WARNING C317 IN LINE 1082 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INDEX'
+*** WARNING C317 IN LINE 1083 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INMAXP'
+*** WARNING C317 IN LINE 1084 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'CSR0'
+*** WARNING C317 IN LINE 1085 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INCSR1'
+*** WARNING C317 IN LINE 1086 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'INCSR2'
+*** WARNING C317 IN LINE 1087 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'OUTMAXP'
+*** WARNING C317 IN LINE 1088 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'OUTCSR1'
+*** WARNING C317 IN LINE 1089 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'OUTCSR2'
+*** WARNING C317 IN LINE 1090 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'COUNT0'
+*** WARNING C317 IN LINE 1091 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'OUTCOUNT1'
+*** WARNING C317 IN LINE 1092 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'OUTCOUNT2'
+*** WARNING C317 IN LINE 1093 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FIFO0'
+*** WARNING C317 IN LINE 1094 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FIFO1'
+*** WARNING C317 IN LINE 1095 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FIFO2'
+C251 COMPILER V5.60.0,  main                                                               07/04/24  20:18:23  PAGE 2   
+
+*** WARNING C317 IN LINE 1096 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FIFO3'
+*** WARNING C317 IN LINE 1097 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FIFO4'
+*** WARNING C317 IN LINE 1098 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'FIFO5'
+*** WARNING C317 IN LINE 1099 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'UTRKCTL'
+*** WARNING C317 IN LINE 1100 OF \Coding\Keil\STC32G_EXP\STC32G_Test_09_PWM_Driver_Ctrl_Wheels\Libraries\libraries\STC32
+             -Gxx.h: attempt to redefine macro 'UTRKSTS'
+    4          
+    5          /*
+    6              一共有2块电机驱动板，分别为 Driver_Board1 和 Driver_Board2
+    7              Driver_Board1_A 为 X 方向前轮，Driver_Board1_B 为 X 方向后轮
+    8              Driver_Board2_A 为 Y 方向前轮，Driver_Board2_B 为 Y 方向后轮
+    9          
+   10              电机驱动板1（X方向轮）接线：
+   11              PA <--> P60     PB <--> P62
+   12              A1 <--> P40     A2 <--> P41
+   13              B1 <--> P42     B2 <--> P43
+   14          
+   15              电机驱动板2（Y方向轮）接线：
+   16              PA <--> P64     PB <--> P66
+   17              A1 <--> P44     A2 <--> P45
+   18              B1 <--> P46     B2 <--> P47
+   19          */
+   20          
+   21          // Driver_Board1
+   22          sbit x_front_wheel_clockwise = P4^0;        // X 方向前轮顺时针转动信号
+   23          sbit x_front_wheel_anticlockwise = P4^1;    // X 方向前轮逆时针转动信号
+   24          sbit x_rear_wheel_clockwise = P4^2;         // X 方向后轮顺时针转动信号
+   25          sbit x_rear_wheel_anticlockwise = P4^3;     // X 方向后轮逆时针转动信号
+   26          
+   27          // Driver_Board2
+   28          sbit y_front_wheel_clockwise = P4^4;        // Y 方向前轮顺时针转动信号
+   29          sbit y_front_wheel_anticlockwise = P4^5;    // Y 方向前轮逆时针转动信号
+   30          sbit y_rear_wheel_clockwise = P4^6;         // Y 方向后轮顺时针转动信号
+   31          sbit y_rear_wheel_anticlockwise = P4^7;     // Y 方向后轮逆时针转动信号
+   32          
+   33          // PWN 初始化配置
+   34          void PWM_Init()
+   35          {    
+   36   1          PWMx_InitDefine PWM1_Config;
+*** ERROR C67 IN LINE 36 OF main.c: 'PWMx_InitDefine': undefined identifier
+*** ERROR C25 IN LINE 36 OF main.c: syntax error near 'PWM1_Config'
+*** WARNING C34 IN LINE 36 OF main.c: 'PWM1_Config': missing declaration specifiers
+   37   1          PWMx_InitDefine PWM2_Config;
+*** WARNING C34 IN LINE 37 OF main.c: 'PWM2_Config': missing declaration specifiers
+*** ERROR C42 IN LINE 37 OF main.c: 'PWM2_Config': not in formal parameter list
+   38   1          PWMx_InitDefine PWM3_Config;
+*** WARNING C34 IN LINE 38 OF main.c: 'PWMx_InitDefine': missing declaration specifiers
+*** ERROR C42 IN LINE 38 OF main.c: 'PWMx_InitDefine': not in formal parameter list
+*** ERROR C25 IN LINE 38 OF main.c: syntax error near 'PWM3_Config'
+*** WARNING C34 IN LINE 38 OF main.c: 'PWM3_Config': missing declaration specifiers
+*** ERROR C42 IN LINE 38 OF main.c: 'PWM3_Config': not in formal parameter list
+   39   1          PWMx_InitDefine PWM4_Config;
+*** WARNING C34 IN LINE 39 OF main.c: 'PWMx_InitDefine': missing declaration specifiers
+*** ERROR C42 IN LINE 39 OF main.c: 'PWMx_InitDefine': not in formal parameter list
+*** ERROR C25 IN LINE 39 OF main.c: syntax error near 'PWM4_Config'
+*** WARNING C34 IN LINE 39 OF main.c: 'PWM4_Config': missing declaration specifiers
+*** ERROR C42 IN LINE 39 OF main.c: 'PWM4_Config': not in formal parameter list
+   40   1      
+   41   1          PWM1_USE_P60P61();
+*** ERROR C42 IN LINE 41 OF main.c: 'PWM1_USE_P60P61': not in formal parameter list
+   42   1          PWM2_USE_P62P63();
+*** ERROR C42 IN LINE 42 OF main.c: 'PWM2_USE_P62P63': not in formal parameter list
+C251 COMPILER V5.60.0,  main                                                               07/04/24  20:18:23  PAGE 3   
+
+   43   1          PWM3_USE_P64P65();
+*** ERROR C42 IN LINE 43 OF main.c: 'PWM3_USE_P64P65': not in formal parameter list
+   44   1          PWM4_USE_P66P67();
+*** ERROR C42 IN LINE 44 OF main.c: 'PWM4_USE_P66P67': not in formal parameter list
+   45   1      
+   46   1          PWM1_Config.PWM_Mode = CCMRn_PWM_MODE1;
+*** WARNING C34 IN LINE 46 OF main.c: 'PWM1_Config': missing declaration specifiers
+*** ERROR C42 IN LINE 46 OF main.c: 'PWM1_Config': not in formal parameter list
+*** ERROR C25 IN LINE 46 OF main.c: syntax error near '.'
+   47   1          PWM1_Config.PWM_Period = 10000;              // 周期为1000
+   48   1          PWM1_Config.PWM_Duty = 5000;                 // 占空比为50%
+   49   1          PWM1_Config.PWM_DeadTime = 122;               // 没有死区时间
+   50   1          PWM1_Config.PWM_EnoSelect = ENO1P;          // 选择输出通道ENO1P
+   51   1          PWM1_Config.PWM_CEN_Enable = ENABLE;        // 使能计数器
+   52   1          PWM1_Config.PWM_MainOutEnable = ENABLE;     // 使能主输出
+   53   1      
+   54   1          PWM2_Config.PWM_Mode = CCMRn_PWM_MODE1;
+   55   1          PWM2_Config.PWM_Period = 10000;              // 周期为1000
+   56   1          PWM2_Config.PWM_Duty = 5000;                 // 占空比为50%
+   57   1          PWM2_Config.PWM_DeadTime = 122;               // 没有死区时间
+   58   1          PWM2_Config.PWM_EnoSelect = ENO2P;          // 选择输出通道ENO1P
+   59   1          PWM2_Config.PWM_CEN_Enable = ENABLE;        // 使能计数器
+   60   1          PWM2_Config.PWM_MainOutEnable = ENABLE;     // 使能主输出
+   61   1      
+   62   1          PWM3_Config.PWM_Mode = CCMRn_PWM_MODE1;
+   63   1          PWM3_Config.PWM_Period = 10000;              // 周期为1000
+   64   1          PWM3_Config.PWM_Duty = 5000;                 // 占空比为50%
+   65   1          PWM3_Config.PWM_DeadTime = 122;               // 没有死区时间
+   66   1          PWM3_Config.PWM_EnoSelect = ENO3P;          // 选择输出通道ENO1P
+   67   1          PWM3_Config.PWM_CEN_Enable = ENABLE;        // 使能计数器
+   68   1          PWM3_Config.PWM_MainOutEnable = ENABLE;     // 使能主输出
+   69   1      
+   70   1          PWM4_Config.PWM_Mode = CCMRn_PWM_MODE1;
+   71   1          PWM4_Config.PWM_Period = 10000;              // 周期为1000
+   72   1          PWM4_Config.PWM_Duty = 5000;                 // 占空比为50%
+   73   1          PWM4_Config.PWM_DeadTime = 122;               // 没有死区时间
+   74   1          PWM4_Config.PWM_EnoSelect = ENO4P;          // 选择输出通道ENO1P
+   75   1          PWM4_Config.PWM_CEN_Enable = ENABLE;        // 使能计数器
+   76   1          PWM4_Config.PWM_MainOutEnable = ENABLE;     // 使能主输出
+   77   1      
+   78   1          PWM_Configuration(PWM1, &PWM1_Config); // 配置第一个PWM通道
+   79   1          PWM_Configuration(PWM2, &PWM2_Config); // 配置第二个PWM通道
+   80   1          PWM_Configuration(PWM3, &PWM3_Config); // 配置第三个PWM通道
+   81   1          PWM_Configuration(PWM4, &PWM4_Config); // 配置第四个PWM通道
+   82   1      }
+   83   1      
+   84   1      void PWM_Init_ZF()
+   85   1      {
+   86   1          pwm_init(PWMA_CH1P_P60, 100, 1000000);
+   87   1          pwm_init(PWMA_CH2P_P62, 100, 1000000);
+   88   1          pwm_init(PWMA_CH3P_P64, 100, 1000000);
+   89   1          pwm_init(PWMA_CH4P_P66, 100, 1000000);
+   90   1      }
+   91   1      
+   92   1      void GPIO_Init()
+   93   1      {
+   94   1          // P6M0 = 0x00; P6M1 = 0x00; 
+   95   1          P4M0 = 0xff; P4M1 = 0x00; 
+   96   1      }
+   97   1      
+   98   1      void delay_ms(unsigned int t)
+   99   1      {
+  100   1          // 延时函数，单位为 ms，主频为24MHz
+  101   1          unsigned int i, j;
+  102   1          for(i=0; i<t; i++)
+  103   1          {
+C251 COMPILER V5.60.0,  main                                                               07/04/24  20:18:23  PAGE 4   
+
+  104   1              for(j=0; j<12000; j++)
+  105   1              {
+  106   1                  ;
+  107   1              }
+  108   1          }
+  109   1      }
+  110   1      
+  111   1      void X_Front_Wheel_Forward()
+  112   1      {
+  113   1          x_front_wheel_clockwise = 1;
+  114   1          x_front_wheel_anticlockwise = 0;
+  115   1      }
+  116   1      
+  117   1      void X_Front_Wheel_Backward()
+  118   1      {
+  119   1          x_front_wheel_clockwise = 0;
+  120   1          x_front_wheel_anticlockwise = 1;
+  121   1      }
+  122   1      
+  123   1      void X_Front_Wheel_Stop()
+  124   1      {
+  125   1          x_front_wheel_clockwise = 0;
+  126   1          x_front_wheel_anticlockwise = 0;
+  127   1      }
+  128   1      
+  129   1      void X_Rear_Wheel_Forward()
+  130   1      {
+  131   1          x_rear_wheel_clockwise = 1;
+  132   1          x_rear_wheel_anticlockwise = 0;
+  133   1      }
+  134   1      
+  135   1      void X_Rear_Wheel_Backward()
+  136   1      {
+  137   1          x_rear_wheel_clockwise = 0;
+  138   1          x_rear_wheel_anticlockwise = 1;
+  139   1      }
+  140   1      
+  141   1      void X_Rear_Wheel_Stop()
+  142   1      {
+  143   1          x_rear_wheel_clockwise = 0;
+  144   1          x_rear_wheel_anticlockwise = 0;
+  145   1      }
+  146   1      
+  147   1      void Y_Front_Wheel_Forward()
+  148   1      {
+  149   1          y_front_wheel_clockwise = 1;
+  150   1          y_front_wheel_anticlockwise = 0;
+  151   1      }
+  152   1      
+  153   1      void Y_Front_Wheel_Backward()
+  154   1      {
+  155   1          y_front_wheel_clockwise = 0;
+  156   1          y_front_wheel_anticlockwise = 1;
+  157   1      }
+  158   1      
+  159   1      void Y_Front_Wheel_Stop()
+  160   1      {
+  161   1          y_front_wheel_clockwise = 0;
+  162   1          y_front_wheel_anticlockwise = 0;
+  163   1      }
+  164   1      
+  165   1      void Y_Rear_Wheel_Forward()
+  166   1      {
+  167   1          y_rear_wheel_clockwise = 1;
+  168   1          y_rear_wheel_anticlockwise = 0;
+  169   1      }
+C251 COMPILER V5.60.0,  main                                                               07/04/24  20:18:23  PAGE 5   
+
+  170   1      
+  171   1      void Y_Rear_Wheel_Backward()
+  172   1      {
+  173   1          y_rear_wheel_clockwise = 0;
+  174   1          y_rear_wheel_anticlockwise = 1;
+  175   1      }
+  176   1      
+  177   1      void Y_Rear_Wheel_Stop()
+  178   1      {
+  179   1          y_rear_wheel_clockwise = 0;
+  180   1          y_rear_wheel_anticlockwise = 0;
+  181   1      }
+  182   1      
+  183   1      void X_Wheels_Forward()
+  184   1      {
+  185   1          X_Front_Wheel_Forward();
+  186   1          X_Rear_Wheel_Forward();
+  187   1      }
+  188   1      
+  189   1      void X_Wheels_Backward()
+  190   1      {
+  191   1          X_Front_Wheel_Backward();
+  192   1          X_Rear_Wheel_Backward();
+  193   1      }
+  194   1      
+  195   1      void X_Wheels_Stop()
+  196   1      {
+  197   1          X_Front_Wheel_Stop();
+  198   1          X_Rear_Wheel_Stop();
+  199   1      }
+  200   1      
+  201   1      void Y_Wheels_Forward()
+  202   1      {
+  203   1          Y_Front_Wheel_Forward();
+  204   1          Y_Rear_Wheel_Forward();
+  205   1      }
+  206   1      
+  207   1      void Y_Wheels_Backward()
+  208   1      {
+  209   1          Y_Front_Wheel_Backward();
+  210   1          Y_Rear_Wheel_Backward();
+  211   1      }
+  212   1      
+  213   1      void Y_Wheels_Stop()
+  214   1      {
+  215   1          Y_Front_Wheel_Stop();
+  216   1          Y_Rear_Wheel_Stop();
+  217   1      }
+  218   1      
+  219   1      void All_Wheels_Stop()
+  220   1      {
+  221   1          X_Wheels_Stop();
+  222   1          Y_Wheels_Stop();
+  223   1      }
+  224   1      
+  225   1      void main()
+  226   1      {   
+  227   1          GPIO_Init();
+  228   1          // PWM_Init();
+  229   1          PWM_Init_ZF();
+  230   1          while(1)
+  231   1          {
+  232   1              // X_Wheels_Forward();
+  233   1              // Y_Wheels_Forward();
+  234   1              // delay_ms(1000);
+  235   1              // X_Wheels_Backward();
+C251 COMPILER V5.60.0,  main                                                               07/04/24  20:18:23  PAGE 6   
+
+  236   1              // Y_Wheels_Backward();
+  237   1              // delay_ms(1000);
+  238   1              Y_Front_Wheel_Forward();
+  239   1              // All_Wheels_Stop();
+  240   1              delay_ms(1000);
+  241   1          }
+  242   1      }
+*** ERROR C7 IN LINE 242 OF main.c: compilation aborted
+
+C251 COMPILATION COMPLETE.  36 WARNING(S),  19 ERROR(S)

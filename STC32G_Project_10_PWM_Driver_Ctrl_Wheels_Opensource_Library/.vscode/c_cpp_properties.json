@@ -1,0 +1,49 @@
+{
+    "configurations": [
+        {
+            "name": "STC32G12K128",
+            "includePath": [
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Libraries\\libraries",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Libraries\\seekfree_libraries",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Libraries\\seekfree_peripheral",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Project\\CODE",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Project\\USER\\inc",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Project\\USER\\src",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Libraries\\seekfree_components",
+                "C:\\Keil_v5\\C251\\INC",
+                "C:\\Keil_v5\\C251\\INC\\STC",
+                "e:\\Coding\\Keil\\STC32G_EXP\\Seekfree_STC32G12K128_Opensource_Library\\Libraries\\doc",
+                "${default}",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__C251__",
+                "__VSCODE_C251__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "edata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "far=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

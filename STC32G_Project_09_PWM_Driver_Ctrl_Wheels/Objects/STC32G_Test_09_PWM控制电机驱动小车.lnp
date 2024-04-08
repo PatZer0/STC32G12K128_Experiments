@@ -1,0 +1,6 @@
+".\Objects\main.obj",
+".\Objects\STC32G_PWM.obj" 
+TO ".\Objects\STC32G_Test_09_PWM控制电机驱动小车" 
+PRINT(".\Listings\STC32G_Test_09_PWM控制电机驱动小车.map") CASE 
+CLASSES (EDATA (0x0-0xFFF), 
+HDATA (0x0-0xFFF)) 

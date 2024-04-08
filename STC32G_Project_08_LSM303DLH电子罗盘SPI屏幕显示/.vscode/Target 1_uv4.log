@@ -1,0 +1,55 @@
+Build target 'Target 1'
+compiling lsm303.c...
+Externals\lsm303.c(49): warning C188: 'parameter 1': value truncated
+Externals\lsm303.c(69): warning C188: 'parameter 1': value truncated
+Externals\lsm303.c(224): warning C47: 'addr_starter': unreferenced local variable
+linking...
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_Loading/main
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_LSM303DLH_UI_Init/main
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    IIC_Write_NByte/iic
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    IIC_Read_NByte/iic
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LSM303_MasterWriteMultipleBytestoSlave/lsm303
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    LSM303_Read_Mag/lsm303
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowCircle/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowNum02F/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowBMP/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowChar32/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_LightSet/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowRectangle/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_BuffShowNum/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_DrawBMP/oled
+
+*** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
+    NAME:    OLED_DisplayOff/oled
+
+Program Size: data=8.0 edata+hdata=349 xdata=1047 const=91 code=12530
+creating hex file from ".\Objects\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示"...
+".\Objects\STC32G_Test_08_LSM303DLH电子罗盘SPI屏幕显示" - 0 Error(s), 18 Warning(s).
+Build Time Elapsed:  00:00:01

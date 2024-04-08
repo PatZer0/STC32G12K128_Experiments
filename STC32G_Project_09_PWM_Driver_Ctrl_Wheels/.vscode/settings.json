@@ -1,0 +1,7 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "stc32g_pwm.h": "c",
+        "config.h": "c"
+    }
+}

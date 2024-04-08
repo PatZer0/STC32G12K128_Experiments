@@ -1,0 +1,190 @@
+C251 COMPILER V5.60.0,  motor_driver_boards                                                08/04/24  18:24:52  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE motor_driver_boards
+OBJECT MODULE PLACED IN .\Out_File\motor_driver_boards.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE ..\USER\src\motor_driver_boards.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZ
+                    -E(0,SPEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_periphera
+                    -l;..\CODE;..\USER\inc;..\USER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\motor_driver_boards.lst) T
+                    -ABS(2) OBJECT(.\Out_File\motor_driver_boards.obj) 
+
+stmt  level    source
+
+    1          #include "motor_driver_boards.h"
+    2          
+    3          // 使用时建议将此函数复制到main.c中，并在初始化函数中调用
+    4          // 这样修改引脚只需要修改main.c即可
+    5          // 如果需要使用，记得要去.h中取消注释
+    6          // void motor_drivers_pwm_init()
+    7          // {
+    8          //     pwm_init(PWMA_CH1P_P60, 30000, 1000);
+    9          //     pwm_init(PWMA_CH2P_P62, 30000, 1000);
+   10          //     pwm_init(PWMA_CH3P_P64, 30000, 1000);
+   11          //     pwm_init(PWMA_CH4P_P66, 30000, 1000);
+   12          // }
+   13          
+   14          void wheel_x_front_forward()
+   15          {
+   16   1          // X 方向前轮正转
+   17   1          gpio_wheel_x_front_clockwise = 1;
+   18   1          gpio_wheel_x_front_counterclockwise = 0;
+   19   1      }
+   20          void wheel_x_front_backward()
+   21          {
+   22   1          // X 方向前轮反转
+   23   1          gpio_wheel_x_front_clockwise = 0;
+   24   1          gpio_wheel_x_front_counterclockwise = 1;
+   25   1      }
+   26          
+   27          void wheel_x_front_stop()
+   28          {
+   29   1          // X 方向前轮停止
+   30   1          gpio_wheel_x_front_clockwise = 0;
+   31   1          gpio_wheel_x_front_counterclockwise = 0;
+   32   1      }
+   33          
+   34          void wheel_x_rear_forward()
+   35          {
+   36   1          // X 方向后轮正转
+   37   1          gpio_wheel_x_rear_clockwise = 1;
+   38   1          gpio_wheel_x_rear_counterclockwise = 0;
+   39   1      }
+   40          
+   41          void wheel_x_rear_backward()
+   42          {
+   43   1          // X 方向后轮反转
+   44   1          gpio_wheel_x_rear_clockwise = 0;
+   45   1          gpio_wheel_x_rear_counterclockwise = 1;
+   46   1      }
+   47          
+   48          void wheel_x_rear_stop()
+   49          {
+   50   1          // X 方向后轮停止
+   51   1          gpio_wheel_x_rear_clockwise = 0;
+   52   1          gpio_wheel_x_rear_counterclockwise = 0;
+   53   1      }
+   54          
+   55          void wheels_x_forward()
+   56          {
+C251 COMPILER V5.60.0,  motor_driver_boards                                                08/04/24  18:24:52  PAGE 2   
+
+   57   1          // X 方向所有轮子正转
+   58   1          wheel_x_front_forward();
+   59   1          wheel_x_rear_forward();
+   60   1      }
+   61          
+   62          void wheels_x_backward()
+   63          {
+   64   1          // X 方向所有轮子反转
+   65   1          wheel_x_front_backward();
+   66   1          wheel_x_rear_backward();
+   67   1      }
+   68          
+   69          void wheels_x_stop()
+   70          {
+   71   1          // X 方向所有轮子停止
+   72   1          wheel_x_front_stop();
+   73   1          wheel_x_rear_stop();
+   74   1      }
+   75          
+   76          void wheel_y_front_forward()
+   77          {
+   78   1          // Y 方向前轮正转
+   79   1          gpio_wheel_y_front_clockwise = 1;
+   80   1          gpio_wheel_y_front_counterclockwise = 0;
+   81   1      }
+   82          
+   83          void wheel_y_front_backward()
+   84          {
+   85   1          // Y 方向前轮反转
+   86   1          gpio_wheel_y_front_clockwise = 0;
+   87   1          gpio_wheel_y_front_counterclockwise = 1;
+   88   1      }
+   89          
+   90          void wheel_y_front_stop()
+   91          {
+   92   1          // Y 方向前轮停止
+   93   1          gpio_wheel_y_front_clockwise = 0;
+   94   1          gpio_wheel_y_front_counterclockwise = 0;
+   95   1      }
+   96          
+   97          void wheel_y_rear_forward()
+   98          {
+   99   1          // Y 方向后轮正转
+  100   1          gpio_wheel_y_rear_clockwise = 1;
+  101   1          gpio_wheel_y_rear_counterclockwise = 0;
+  102   1      }
+  103          
+  104          void wheel_y_rear_backward()
+  105          {
+  106   1          // Y 方向后轮反转
+  107   1          gpio_wheel_y_rear_clockwise = 0;
+  108   1          gpio_wheel_y_rear_counterclockwise = 1;
+  109   1      }
+  110          
+  111          void wheel_y_rear_stop()
+  112          {
+  113   1          // Y 方向后轮停止
+  114   1          gpio_wheel_y_rear_clockwise = 0;
+  115   1          gpio_wheel_y_rear_counterclockwise = 0;
+  116   1      }
+  117          
+  118          void wheels_y_forward()
+  119          {
+  120   1          // Y 方向所有轮子正转
+  121   1          wheel_y_front_forward();
+  122   1          wheel_y_rear_forward();
+C251 COMPILER V5.60.0,  motor_driver_boards                                                08/04/24  18:24:52  PAGE 3   
+
+  123   1      }
+  124          
+  125          void wheels_y_backward()
+  126          {
+  127   1          // Y 方向所有轮子反转
+  128   1          wheel_y_front_backward();
+  129   1          wheel_y_rear_backward();
+  130   1      }
+  131          
+  132          void wheels_y_stop()
+  133          {
+  134   1          // Y 方向所有轮子停止
+  135   1          wheel_y_front_stop();
+  136   1          wheel_y_rear_stop();
+  137   1      }
+  138          
+  139          void wheels_all_stop()
+  140          {
+  141   1          // 所有轮子停止
+  142   1          gpio_wheel_x_front_clockwise = 0;
+  143   1          gpio_wheel_x_front_counterclockwise = 0;
+  144   1          gpio_wheel_x_rear_clockwise = 0;
+  145   1          gpio_wheel_x_rear_counterclockwise = 0;
+  146   1          gpio_wheel_y_front_clockwise = 0;
+  147   1          gpio_wheel_y_front_counterclockwise = 0;
+  148   1          gpio_wheel_y_rear_clockwise = 0;
+  149   1          gpio_wheel_y_rear_counterclockwise = 0;
+  150   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       151     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

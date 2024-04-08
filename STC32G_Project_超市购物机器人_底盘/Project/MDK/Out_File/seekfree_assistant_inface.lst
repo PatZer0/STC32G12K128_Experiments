@@ -1,0 +1,64 @@
+C251 COMPILER V5.60.0,  seekfree_assistant_inface                                          08/04/24  13:47:35  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE seekfree_assistant_inface
+OBJECT MODULE PLACED IN .\Out_File\seekfree_assistant_inface.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\seekfree_components\seekfree_assistant_inface.c XSMALL
+                    - INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\.
+                    -.\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_F
+                    -ile\seekfree_assistant_inface.lst) TABS(2) OBJECT(.\Out_File\seekfree_assistant_inface.obj) 
+
+stmt  level    source
+
+    1          #include "seekfree_assistant.h"
+    2          
+    3          
+    4          
+    5          
+    6          //-------------------------------------------------------------------------------------------------------
+             -------------
+    7          // 函数简介     逐飞助手发送函数
+    8          // 参数说明     *buff           需要发送的数据地址
+    9          // 参数说明     length          需要发送的长度
+   10          // 返回参数     uint32          剩余未发送数据长度
+   11          // 使用示例
+   12          //-------------------------------------------------------------------------------------------------------
+             -------------
+   13          uint32 (*seekfree_assistant_transfer)   (const uint8 *buff, uint32 length);
+   14          
+   15          
+   16          //-------------------------------------------------------------------------------------------------------
+             -------------
+   17          // 函数简介     逐飞助手接收数据函数
+   18          // 参数说明     *buff           需要接收的数据地址
+   19          // 参数说明     length          要接收的数据最大长度
+   20          // 返回参数     uint32          接收到的数据长度
+   21          // 使用示例
+   22          //-------------------------------------------------------------------------------------------------------
+             -------------
+   23          uint32 (*seekfree_assistant_receive)    (uint8 *buff, uint32 length);
+   24          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =         4     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

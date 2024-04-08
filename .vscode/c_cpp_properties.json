@@ -19,7 +19,9 @@
             "includePath": [
                 "C:\\Keil_v5\\C251\\INC",
                 "C:\\Keil_v5\\C251\\INC\\STC",
-                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_05_串口通信简易激光测距仪",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_09_PWM_Driver_Ctrl_Wheels",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_09_PWM_Driver_Ctrl_Wheels\\Internals",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_09_PWM_Driver_Ctrl_Wheels\\Libraries\\seekfree_libraries",
                 "${default}",
                 "${workspaceFolder}/**"
             ],

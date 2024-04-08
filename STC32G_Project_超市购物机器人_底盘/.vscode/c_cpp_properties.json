@@ -1,0 +1,49 @@
+{
+    "configurations": [
+        {
+            "name": "STC32G12K128",
+            "includePath": [
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Libraries\\libraries",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Libraries\\seekfree_libraries",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Libraries\\seekfree_peripheral",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Project\\CODE",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Project\\USER\\inc",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Project\\USER\\src",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Libraries\\seekfree_components",
+                "C:\\Keil_v5\\C251\\INC",
+                "C:\\Keil_v5\\C251\\INC\\STC",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_超市购物机器人_底盘\\Libraries\\doc",
+                "${default}",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__C251__",
+                "__VSCODE_C251__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "edata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "far=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

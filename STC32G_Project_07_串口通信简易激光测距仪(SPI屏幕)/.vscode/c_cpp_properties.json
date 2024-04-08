@@ -5,9 +5,9 @@
             "includePath": [
                 "C:\\Keil_v5\\C251\\INC",
                 "C:\\Keil_v5\\C251\\INC\\STC",
-                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕)",
-                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕)\\Externals",
-                "e:\\Coding\\Keil\\STC32G_EXP\\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕)\\Internals",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_07_串口通信简易激光测距仪(SPI屏幕)",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_07_串口通信简易激光测距仪(SPI屏幕)\\Externals",
+                "e:\\Coding\\Embedded\\STC32G_EXP\\STC32G_Project_07_串口通信简易激光测距仪(SPI屏幕)\\Internals",
                 "${default}",
                 "${workspaceFolder}/**"
             ],

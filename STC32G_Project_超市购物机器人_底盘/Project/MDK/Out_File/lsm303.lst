@@ -1,0 +1,199 @@
+C251 COMPILER V5.60.0,  lsm303                                                             08/04/24  18:54:51  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE lsm303
+OBJECT MODULE PLACED IN .\Out_File\lsm303.obj
+COMPILER INVOKED BY: C:\Keil_v5\C251\BIN\C251.EXE ..\USER\src\lsm303.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BR
+                    -OWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\
+                    -USER\inc;..\USER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\lsm303.lst) TABS(2) OBJECT(.\Out_File\l
+                    -sm303.obj) 
+
+stmt  level    source
+
+    1          #include "lsm303.h"
+    2          #include <MATH.H>
+    3          
+    4          void lsm303_init_all(void) 
+    5          {
+    6   1          lsm303_acc_init();
+    7   1          lsm303_mag_init();
+    8   1      }
+    9          
+   10          void lsm303_acc_init(void) 
+   11          {
+   12   1          // 初始化加速度传感器
+   13   1          // 写入LSM303_CTRL_REG[1:6]_A寄存器
+   14   1      
+   15   1          unsigned char CTRL_REG1;
+   16   1          unsigned char CTRL_REG2;
+   17   1          unsigned char CTRL_REG3;
+   18   1          unsigned char CTRL_REG4;
+   19   1          unsigned char CTRL_REG5;
+   20   1          unsigned char CTRL_REG6;
+   21   1      
+   22   1          CTRL_REG1 = 0x27;
+   23   1          // 配置为 0101 0111 = 0x57
+   24   1          // 前四位： 0000 关机模式
+   25   1          //          0011 通用1Hz    0010 通用10Hz   0011 通用25Hz   0100 通用50Hz   0101 通用100Hz
+   26   1          //          0110 通用200Hz  0111 通用400Hz  1000 低功耗1.620kHz             1001 普通1.344kH
+             -z/低功耗5.376kHz
+   27   1          // 后四位： *___ 0:低功耗模式关闭   /   1:低功耗模式开启
+   28   1          //          _*__ 0:Z轴关闭          /   1:Z轴开启
+   29   1          //          __*_ 0:Y轴关闭          /   1:Y轴开启
+   30   1          //          ___* 0:X轴关闭          /   1:X轴开启
+   31   1      
+   32   1          CTRL_REG2 = 0x00; // 高通滤波器配置关闭
+   33   1          CTRL_REG3 = 0x00; // 所有中断关闭
+   34   1          CTRL_REG4 = 0x00; // 数据输出格式设置为正常模式，±2g
+   35   1          CTRL_REG5 = 0x00; // FIFO关闭，不使用高通滤波器
+   36   1          CTRL_REG6 = 0x00; // 中断活动配置关闭
+   37   1      
+   38   1          // 写入寄存器
+   39   1          iic_write_reg(LSM303_ACC_ADDRESS, LSM303_CTRL_REG1_A, CTRL_REG1);
+   40   1          // iic_write_reg(LSM303_ACC_ADDRESS, LSM303_CTRL_REG2_A, CTRL_REG2);
+   41   1          // iic_write_reg(LSM303_ACC_ADDRESS, LSM303_CTRL_REG3_A, CTRL_REG3);
+   42   1          // iic_write_reg(LSM303_ACC_ADDRESS, LSM303_CTRL_REG4_A, CTRL_REG4);
+   43   1          // iic_write_reg(LSM303_ACC_ADDRESS, LSM303_CTRL_REG5_A, CTRL_REG5);
+   44   1          // iic_write_reg(LSM303_ACC_ADDRESS, LSM303_CTRL_REG6_A, CTRL_REG6);
+   45   1      }
+   46          
+   47          void lsm303_mag_init(void) {
+   48   1          // 初始化磁场传感器
+   49   1          unsigned char CRA_REG_M;
+   50   1          unsigned char CRB_REG_M;
+   51   1          unsigned char MR_REG_M;
+   52   1          // 配置CRA_REG_M，数据输出速率为220Hz，温度传感器开
+   53   1          CRA_REG_M = 0x9C; 
+   54   1          iic_write_reg(LSM303_MAG_ADDRESS, LSM303_CRA_REG_M, CRA_REG_M);
+   55   1      
+C251 COMPILER V5.60.0,  lsm303                                                             08/04/24  18:54:51  PAGE 2   
+
+   56   1          // 配置CRB_REG_M，增益配置为±1.3Gauss
+   57   1          CRB_REG_M = 0x20; // 0010 0000
+   58   1          // iic_write_reg(LSM303_MAG_ADDRESS, LSM303_CRB_REG_M, CRB_REG_M);
+   59   1      
+   60   1          // 配置MR_REG_M，设置为连续转换模式
+   61   1          MR_REG_M = 0x00; // 0000 0000
+   62   1          iic_write_reg(LSM303_MAG_ADDRESS, LSM303_MR_REG_M, MR_REG_M);
+   63   1          // iic_write_reg(LSM303_MAG_ADDRESS, LSM303_MR_REG_M, MR_REG_M);
+   64   1      }
+   65          
+   66          float lsm303_read_acc(char axis) 
+   67          {
+   68   1          unsigned char acc_data[2];
+   69   1          float acc_value;
+   70   1          unsigned char addr_low, addr_high;
+   71   1      
+   72   1          // 根据轴选择正确的寄存器地址
+   73   1          switch(axis) 
+   74   1          {
+   75   2              case 'x':
+   76   2                  addr_low = LSM303_OUT_X_L_A;
+   77   2                  addr_high = LSM303_OUT_X_H_A;
+   78   2                  break;
+   79   2              case 'y':
+   80   2                  addr_low = LSM303_OUT_Y_L_A;
+   81   2                  addr_high = LSM303_OUT_Y_H_A;
+   82   2                  break;
+   83   2              case 'z':
+   84   2                  addr_low = LSM303_OUT_Z_L_A;
+   85   2                  addr_high = LSM303_OUT_Z_H_A;
+   86   2                  break;
+   87   2              default:
+   88   2                  return 0; // 如果轴不正确，则返回0
+   89   2          }
+   90   1      
+   91   1          // 读取加速度计的数据
+   92   1          iic_read_reg_bytes(LSM303_ACC_ADDRESS, addr_low, acc_data, 2);
+   93   1          // LSM303_MasterRecieveOneBytefromSlave(LSM303_ACC_ADDRESS, addr_low, acc_data[0]);
+   94   1          // LSM303_MasterRecieveOneBytefromSlave(LSM303_ACC_ADDRESS, addr_high, acc_data[1]);
+   95   1      
+   96   1          // 计算加速度值，考虑到数据为16位，左移高位并加上低位
+   97   1          acc_value = ((short)(acc_data[1] << 8 | acc_data[0])) / 16384.0f;
+   98   1          // acc_value = ((float)(acc_data[1] << 8 | acc_data[0])) / 16.384f;
+   99   1      
+  100   1          return acc_value;
+  101   1      }
+  102          
+  103          float lsm303_read_mag(char axis) 
+  104          {
+  105   1          unsigned char mag_data_lo, mag_data_hi;
+  106   1          float mag_value;
+  107   1          unsigned char addr_low, addr_high;
+  108   1      
+  109   1          // 根据轴选择正确的寄存器地址
+  110   1          switch(axis) 
+  111   1          {
+  112   2              case 'x':
+  113   2                  addr_low = LSM303_OUT_X_L_M;
+  114   2                  addr_high = LSM303_OUT_X_H_M;
+  115   2                  break;
+  116   2              case 'y':
+  117   2                  addr_low = LSM303_OUT_Y_L_M;
+  118   2                  addr_high = LSM303_OUT_Y_H_M;
+  119   2                  break;
+  120   2              case 'z':
+  121   2                  addr_low = LSM303_OUT_Z_L_M;
+C251 COMPILER V5.60.0,  lsm303                                                             08/04/24  18:54:51  PAGE 3   
+
+  122   2                  addr_high = LSM303_OUT_Z_H_M;
+  123   2                  break;
+  124   2              default:
+  125   2                  return 0; // 如果轴不正确，则返回0
+  126   2          }
+  127   1      
+  128   1          // 读取磁场计的数据
+  129   1          // LSM303_MasterReceiveMultipleBytesfromSlave(LSM303_MAG_ADDRESS, addr, mag_data, 2);
+  130   1          iic_read_reg(LSM303_MAG_ADDRESS, addr_high, &mag_data_hi);
+  131   1          iic_read_reg(LSM303_MAG_ADDRESS, addr_low, &mag_data_lo);
+  132   1      
+  133   1          // 计算磁场值，由于磁场传感器的数据排列与加速度计不同，需要先读高位
+  134   1          mag_value = ((short)(mag_data_hi << 8 | mag_data_lo)) / 1100.0f;
+  135   1      
+  136   1          return mag_value;
+  137   1      }
+  138          
+  139          double lsm303_read_mag_angle()
+  140          {
+  141   1          #define M_PI 3.14159265358979323846
+  142   1          unsigned char mag_data[6];
+  143   1          double angle;
+  144   1          int mag_x, mag_y, mag_z;
+  145   1          // unsigned char addr_starter;
+  146   1      
+  147   1          iic_read_reg_bytes(LSM303_MAG_ADDRESS, LSM303_OUT_X_L_M, mag_data, 6);
+  148   1      
+  149   1          mag_x = mag_data[0] << 8 | mag_data[1];
+  150   1          mag_y = mag_data[2] << 8 | mag_data[3];
+  151   1          mag_z = mag_data[4] << 8 | mag_data[5];
+  152   1      
+  153   1          // 计算磁场角度
+  154   1          angle = atan2((double)mag_y, (double)mag_x) * (180 / M_PI) + 180;
+  155   1          angle *= 10;
+  156   1      
+  157   1          return angle;
+  158   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       478     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        43     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

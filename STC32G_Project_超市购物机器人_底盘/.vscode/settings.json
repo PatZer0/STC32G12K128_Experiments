@@ -1,0 +1,11 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "motor_driver_boards.h": "c",
+        "headfile.h": "c",
+        "zf_iic.h": "c",
+        "zf_adc.h": "c",
+        "STC_LSM303DLH.C": "cpp",
+        "lsm303_sw.h": "c"
+    }
+}

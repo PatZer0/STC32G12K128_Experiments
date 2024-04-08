@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               03/04/24  18:58:06  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               08/04/24  20:37:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -18,7 +18,7 @@ stmt  level    source
     8          * OLED显示屏端口设置见下方
     9          
    10          * ------------------------------------UART1串口通信----------------------------------------
-   11              - 默认使用P3.6/P3.7为RX/TX，修改请看 uart.c -> Uart1_Config() 函数。
+   11              - 默认使用P4.3/4.4为RX/TX，修改请看 uart.c -> Uart1_Config() 函数。
    12              - 如果实验P3.0/P3.1，可能导致无法下载程序。
    13              - 默认使用9600bps波特率（匹配激光测距模块），修改请看 uart.h 定义部分。
    14          * -----------------------------------SPI-OLED显示屏----------------------------------------
@@ -66,7 +66,7 @@ stmt  level    source
    56   1          {
    57   2              OLED_BuffShowString(0,6,"OFF",0);  //显示数据
    58   2              OLED_BuffShow();                    //将缓存写入显示屏显示
-C251 COMPILER V5.60.0,  main                                                               03/04/24  18:58:06  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               08/04/24  20:37:08  PAGE 2   
 
    59   2          }
    60   1          else
@@ -134,7 +134,7 @@ stmt  level    source
   122          
   123          void key3_short_press()
   124          {
-C251 COMPILER V5.60.0,  main                                                               03/04/24  18:58:06  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               08/04/24  20:37:08  PAGE 3   
 
   125   1          // 短按键3功能
   126   1      }
@@ -202,7 +202,7 @@ stmt  level    source
   188   1          if(key3 == 1 && key3_up_store == 0)
   189   1          {
   190   2              key3_up_store = 1; // 标记按键被释放
-C251 COMPILER V5.60.0,  main                                                               03/04/24  18:58:06  PAGE 4   
+C251 COMPILER V5.60.0,  main                                                               08/04/24  20:37:08  PAGE 4   
 
   191   2              key3_short_press(); // 触发短按键3功能
   192   2          }
@@ -270,7 +270,7 @@ stmt  level    source
   254   1          P4M1 = 0x00;   P4M0 = 0x00;   //设置为准双向口
   255   1          P5M1 = 0x00;   P5M0 = 0x00;   //设置为准双向口
   256   1          P6M1 = 0x00;   P6M0 = 0x00;   //设置为准双向口
-C251 COMPILER V5.60.0,  main                                                               03/04/24  18:58:06  PAGE 5   
+C251 COMPILER V5.60.0,  main                                                               08/04/24  20:37:08  PAGE 5   
 
   257   1          P7M1 = 0x00;   P7M0 = 0x00;   //设置为准双向口
   258   1      }

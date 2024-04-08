@@ -1,4 +1,4 @@
-L251 LINKER/LOCATER V4.66.93.0                                                          04/03/2024  18:58:06  PAGE 1
+L251 LINKER/LOCATER V4.66.93.0                                                          04/08/2024  20:37:08  PAGE 1
 
 
 L251 LINKER/LOCATER V4.66.93.0, INVOKED BY:
@@ -67,7 +67,7 @@ MEMORY MAP OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕) 
 
 
 START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 2
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 2
 
 
 =========================================================================
@@ -135,7 +135,7 @@ FF2ADAH   FF2B10H   000037H   BYTE   INSEG    CODE           ?PR?UART3_ISR?UART
 FF2B11H   FF2B47H   000037H   BYTE   INSEG    CODE           ?PR?UART4_ISR?UART
 FF2B48H   FF2B7DH   000036H   BYTE   INSEG    CODE           ?PR?OLED_LASERRANGING_UI_REFRESH?MAIN
 FF2B7EH   FF2BB0H   000033H   BYTE   INSEG    CODE           ?PR?OLED_BUFFSHOWRECTANGLE?OLED
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 3
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 3
 
 
 FF2BB1H   FF2BDDH   00002DH   BYTE   INSEG    CODE           ?PR?SPI_INIT?SPI
@@ -203,7 +203,7 @@ OLED_BuffShowString/oled                      00E2H 00E6H  ----- -----
 
 OLED_BuffShowChar/oled                        ----- -----  ----- -----
 
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 4
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 4
 
 
 OLED_BuffShowGBK/oled                         ----- -----  ----- -----
@@ -271,7 +271,7 @@ OLED_Init/oled                                ----- -----  ----- -----
 delay_ms/oled                                 ----- -----  ----- -----
 
 OLED_DisplayOn/oled                           ----- -----  ----- -----
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 5
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 5
 
 
   +--> OLED_WR_Byte/oled
@@ -339,7 +339,7 @@ LaserRanging_Range_Decrease/laser_rangin+     ----- -----  ----- -----
   +--> LaserRanging_Range_Set/laser_ranging
 
 key2_check/main                               ----- -----  ----- -----
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 6
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 6
 
 
   +--> OLED_BuffShowString/oled
@@ -407,7 +407,7 @@ PUBLIC SYMBOLS OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏
       00FF0000H   CODE     ---       ?C?STARTUP
       00000001H   NUMBER   ---       ?C?XDATASEG
       00FF0000H   CODE     ---       ?C_STARTUP
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 7
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 7
 
 
       0000010AH   EDATA    ---       ?sprintf?BYTE
@@ -475,7 +475,7 @@ PUBLIC SYMBOLS OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏
       00000084H   EDATA    ---       LaserRanging_Cmd_SetResolution_1mm
       0000008DH   EDATA    ---       LaserRanging_Cmd_Shutdown
       00000021H   EDATA    ---       LaserRanging_Cmd_Single
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 8
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 8
 
 
       00000089H   EDATA    ---       LaserRanging_Cmd_Single_Broadcast
@@ -543,7 +543,7 @@ PUBLIC SYMBOLS OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏
 *SFR* 00000095H   DATA     BYTE      P2M1
 *SFR* 000000B0H   DATA     BYTE      P3
 *SFR* 000000B2H   DATA     BYTE      P3M0
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 9
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 9
 
 
 *SFR* 000000B1H   DATA     BYTE      P3M1
@@ -611,7 +611,7 @@ PUBLIC SYMBOLS OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏
       00FF2D9FH   CODE     ---       Uart2_SendCmd
       00FF2E92H   CODE     ---       Uart2_SendString
       00000020H.1 BIT      BIT       Uart2_TX_Busy
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 10
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 10
 
 
       000000D6H   EDATA    BYTE      Uart2_TX_Counter
@@ -679,7 +679,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00000097H   SFRSYM    DATA     BYTE      AUXR2
       000000EAH   SFRSYM    DATA     BYTE      CKCON
       000000EFH   SFRSYM    DATA     BYTE      AUXINTIF
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 11
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 11
 
 
       000000FDH   SFRSYM    DATA     BYTE      S4CON
@@ -747,7 +747,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2D0DH   LINE      CODE     ---       #55
       00FF2D13H   LINE      CODE     ---       #57
       00FF2D1FH   LINE      CODE     ---       #58
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 12
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 12
 
 
       00FF2D1FH   LINE      CODE     ---       #59
@@ -815,7 +815,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       ---         BLOCKEND  ---      ---       LVL=0
 
       00FF27C9H   BLOCK     CODE     ---       LVL=0
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 13
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 13
 
 
       00FF27C9H   LINE      CODE     ---       #128
@@ -883,7 +883,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2834H   LINE      CODE     ---       #202
       00FF2840H   LINE      CODE     ---       #203
       00FF2840H   LINE      CODE     ---       #204
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 14
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 14
 
 
       00FF2842H   LINE      CODE     ---       #207
@@ -951,7 +951,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2454H   PUBLIC    CODE     ---       OLED_BuffShowChar
       00FF22D3H   PUBLIC    CODE     ---       OLED_BuffShowLine
       00FF29AAH   PUBLIC    CODE     ---       OLED_BuffShowPoint
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 15
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 15
 
 
       00FF2CBBH   PUBLIC    CODE     ---       OLED_Set_Pos
@@ -1019,7 +1019,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2F24H   LINE      CODE     ---       #19
       00FF2F24H   LINE      CODE     ---       #20
       00FF2F24H   LINE      CODE     ---       #23
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 16
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 16
 
 
       00FF2F2EH   LINE      CODE     ---       #24
@@ -1087,7 +1087,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF226FH   LINE      CODE     ---       #108
       00FF2276H   LINE      CODE     ---       #109
       00FF227DH   LINE      CODE     ---       #110
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 17
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 17
 
 
       00FF2284H   LINE      CODE     ---       #111
@@ -1155,7 +1155,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       R15         REGSYM    ---      BYTE      num
       00FF2D5DH   LINE      CODE     ---       #214
       00FF2D61H   LINE      CODE     ---       #216
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 18
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 18
 
 
       00FF2D68H   LINE      CODE     ---       #217
@@ -1223,7 +1223,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF235BH   LINE      CODE     ---       #311
       00FF2373H   LINE      CODE     ---       #312
       00FF2375H   LINE      CODE     ---       #315
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 19
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 19
 
 
       00FF237BH   LINE      CODE     ---       #316
@@ -1291,7 +1291,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF21E3H   LINE      CODE     ---       #387
       00FF21E3H   LINE      CODE     ---       #388
       00FF21EEH   LINE      CODE     ---       #389
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 20
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 20
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -1359,7 +1359,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF250BH   LINE      CODE     ---       #473
       00FF2515H   LINE      CODE     ---       #474
       00FF2517H   LINE      CODE     ---       #475
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 21
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 21
 
 
       00FF2519H   LINE      CODE     ---       #478
@@ -1427,7 +1427,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2664H   LINE      CODE     ---       #552
       00FF266BH   LINE      CODE     ---       #553
       ---         BLOCKEND  ---      ---       LVL=0
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 22
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 22
 
 
 
@@ -1495,7 +1495,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       000000FDH   SFRSYM    DATA     BYTE      S4CON
       000000ACH   SFRSYM    DATA     BYTE      S3CON
       0000009AH   SFRSYM    DATA     BYTE      S2CON
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 23
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 23
 
 
       000000B7H   SFRSYM    DATA     BYTE      IPH
@@ -1563,7 +1563,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF20EDH   LINE      CODE     ---       #124
       00FF20EDH   LINE      CODE     ---       #125
       00FF20EDH   LINE      CODE     ---       #126
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 24
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 24
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -1631,7 +1631,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2D35H   LINE      CODE     ---       #193
       00FF2D35H   LINE      CODE     ---       #195
       00FF2D3EH   LINE      CODE     ---       #196
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 25
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 25
 
 
       00FF2D47H   LINE      CODE     ---       #198
@@ -1699,7 +1699,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       000000CEH   SFRSYM    DATA     BYTE      SPCTL
       000000F8H   SFRSYM    DATA     BYTE      P7
       000000A0H.3 SFRSYM    DATA     BIT       SPI_MOSI
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 26
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 26
 
 
       000000E8H   SFRSYM    DATA     BYTE      P6
@@ -1767,7 +1767,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       000000D4H   PUBLIC    EDATA    BYTE      Uart1_TX_Counter
       000000D5H   PUBLIC    EDATA    BYTE      Uart4_RX_Counter
       000000D6H   PUBLIC    EDATA    BYTE      Uart2_TX_Counter
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 27
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 27
 
 
       000000D7H   PUBLIC    EDATA    BYTE      Uart3_TX_Counter
@@ -1835,7 +1835,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2F65H   LINE      CODE     ---       #16
       00FF2F65H   LINE      CODE     ---       #18
       00FF2F68H   LINE      CODE     ---       #19
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 28
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 28
 
 
       00FF2F6BH   LINE      CODE     ---       #20
@@ -1903,7 +1903,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2EBAH   LINE      CODE     ---       #77
       00FF2EBCH   LINE      CODE     ---       #79
       00FF2EC1H   LINE      CODE     ---       #80
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 29
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 29
 
 
       00FF2EC3H   LINE      CODE     ---       #81
@@ -1971,7 +1971,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2DE5H   LINE      CODE     ---       #123
       00FF2DF0H   LINE      CODE     ---       #124
       00FF2DF2H   LINE      CODE     ---       #125
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 30
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 30
 
 
       00FF2DF5H   LINE      CODE     ---       #126
@@ -2039,7 +2039,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
       00FF2BDEH   LINE      CODE     ---       #195
       00FF2BEBH   LINE      CODE     ---       #197
       00FF2BF7H   LINE      CODE     ---       #198
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 31
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 31
 
 
       00FF2BF9H   LINE      CODE     ---       #199
@@ -2107,7 +2107,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
 
       ---         MODULE    ---      ---       ?C_START
       00FF0000H   PUBLIC    CODE     ---       ?C?STARTUP
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 32
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 32
 
 
       00FF0000H   PUBLIC    CODE     ---       ?C_STARTUP
@@ -2175,7 +2175,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC32G_Test_07_串口通信简易激光测距仪(SPI屏幕
     NAME:    Uart4_Running/uart
 
 *** WARNING L57: UNCALLED FUNCTION, IGNORED FOR OVERLAY PROCESS
-L251 LINKER/LOCATER V4.66.93.0                                                        04/03/2024  18:58:06  PAGE 33
+L251 LINKER/LOCATER V4.66.93.0                                                        04/08/2024  20:37:08  PAGE 33
 
 
     NAME:    Uart1_SendString/uart
